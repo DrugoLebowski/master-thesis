@@ -1,0 +1,88 @@
+\include{introduction}\include{sl-nn}\include{nram}\include{de}\include{conclusion}\include{experiments}\include{implementation}% Classe appositamente creata per tesi di Ingegneria Informatica all'università Roma Tre
+\documentclass{TesiValerio}
+
+
+% --- INIZIO dati relativi al template TesiDiaUniroma3
+% dati obbligatori, necessari al frontespizio
+\titolo{DE-NRAM: an differential evolutionary approach}
+\autore{Valerio Belli}
+\matricola{283514}
+\relatore{Prof.ssa Valentina Poggioni Prof. Marco Baioletti}
+\correlatore{Prof. ..... .....} % modifica anche TesiDiaUniroma3.cls se vuoi avere un correlatore
+\annoAccademico{2016/2017}
+
+% dati opzionali
+\dedica{Alla mia famiglia...} % solo se nel documento si usa il comando \generaDedica
+% --- FINE dati relativi al template TesiDiaUniroma3
+
+% --- INIZIO richiamo di pacchetti di utilità. Questi sono un esempio e non sono strettamente necessari al modello per la tesi.
+\usepackage[utf8]{inputenc}
+\usepackage[plainpages=false]{hyperref}	% generazione di collegamenti ipertestuali su indice e riferimenti
+\usepackage[all]{hypcap} % per far si che i link ipertestuali alle immagini puntino all'inizio delle stesse e non alla didascalia sottostante
+\usepackage{amsthm}	% per definizioni e teoremi
+\usepackage{amsmath}	% per ``cases'' environment
+\usepackage[labelfont=bf]{caption} %Per i nomi delle figure in grassetto
+% --- FINE riachiamo di pacchetti di utilità
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{fourier} 
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+\lstset{style=mystyle}
+
+%Modifica dell'utilizzo del paragraph
+
+\begin{document}
+% ----- Pagine di frontespizio, numerate in romano (i,ii,iii,iv...) (obbligatorio)
+\frontmatter
+\generaFrontespizio
+\generaDedica\introduzione{introduction}		% inserisce l'introduzione e la prende in questo caso da introduzione.tex
+\generaIndice
+\generaIndiceFigure
+
+% ----- Pagine di tesi, numerate in arabo (1,2,3,4,...) (obbligatorio)
+\mainmatter
+% il comando ``capitolo'' ha come parametri:
+% 1) il titolo del capitolo
+% 2) il nome del file tex (senza estensione) che contiene il capitolo. Tale nome \`e usato anche come label del capitolo
+\capitolo{Neural networks}{neural-networks}
+\capitolo{Neural Random-Access Machines}{neural-random-access-machine}
+\capitolo{Differential evolution}{differential-evolution}
+\capitolo{Implementation}{implementation}
+\capitolo{Experiments}{experiments}
+
+% ----- Parte finale della tesi (obbligatorio)
+\backmatter
+\conclusioni{conclusion}
+
+
+% Bibliografia con BibTeX (obbligatoria)
+% Non si deve specificare lo stile della bibliografia
+\bibliography{bibliografia} % inserisce la bibliografia e la prende in questo caso da bibliografia.bib
+\ringraziamenti{ringraziamenti}	% inserisce i ringraziamenti e li prende in questo caso da ringraziamenti.tex
+\end{document}
+
