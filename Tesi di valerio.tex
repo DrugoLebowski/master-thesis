@@ -1,4 +1,4 @@
-\include{introduction}\include{sl-nn}\include{nram}\include{de}\include{conclusion}\include{experiments}\include{implementation}% Classe appositamente creata per tesi di Ingegneria Informatica all'università Roma Tre
+% Classe appositamente creata per tesi di Ingegneria Informatica all'università Roma Tre
 \documentclass{TesiValerio}
 
 
@@ -12,7 +12,7 @@
 \annoAccademico{2016/2017}
 
 % dati opzionali
-\dedica{Alla mia famiglia...} % solo se nel documento si usa il comando \generaDedica
+\dedica{Alla mia famiglia.} % solo se nel documento si usa il comando \generaDedica
 % --- FINE dati relativi al template TesiDiaUniroma3
 
 % --- INIZIO richiamo di pacchetti di utilità. Questi sono un esempio e non sono strettamente necessari al modello per la tesi.
@@ -35,7 +35,15 @@
 	\usetikzlibrary{decorations.pathreplacing}
 	\usetikzlibrary{fadings}
 	\usetikzlibrary{positioning}
+\usepackage{pgfplots}
+\usepackage{siunitx}
 
+\pgfplotsset{compat=newest} % Allows to place the legend below plot
+\usepgfplotslibrary{units} % Allows to enter the units nicely
+\sisetup{
+  round-mode          = places,
+  round-precision     = 2,
+}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -67,16 +75,17 @@
 % ----- Pagine di frontespizio, numerate in romano (i,ii,iii,iv...) (obbligatorio)
 \frontmatter
 \generaFrontespizio
-\generaDedica\introduzione{introduction}		% inserisce l'introduzione e la prende in questo caso da introduzione.tex
+\generaDedica
+\introduzione{introduction}		% inserisce l'introduzione e la prende in questo caso da introduzione.tex
 \generaIndice
 \generaIndiceFigure
 
 % ----- Pagine di tesi, numerate in arabo (1,2,3,4,...) (obbligatorio)
 \mainmatter
 % il comando ``capitolo'' ha come parametri:
-% 1) il titolo del capitolo
+% 1) il titolo del capitolo\include{neural-networks}
 % 2) il nome del file tex (senza estensione) che contiene il capitolo. Tale nome \`e usato anche come label del capitolo
-\capitolo{Neural networks}{neural-networks}
+\capitolo{Artificial Neural networks}{neural-networks}
 \capitolo{Neural Random-Access Machines}{neural-random-access-machine}
 \capitolo{Differential evolution}{differential-evolution}
 \capitolo{Implementation}{implementation}

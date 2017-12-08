@@ -1,10 +1,10 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{TesiValerio}[2008/02/13 v1.0 Tesi - Valerio]
 
-\LoadClass[a4paper,12pt,oneside,italian]{memoir}
+\LoadClass[a4paper,12pt,oneside,english]{memoir}
 
 % Si utilizza la sillabazione italiana
-\RequirePackage[italian]{babel}
+\RequirePackage[english]{babel}
 % Load graphicx
 \RequirePackage{graphicx}
 % Line spacing
@@ -63,7 +63,7 @@
 		\large {UNIVERSIT\`{A} DEGLI STUDI DI PERUGIA\\ Dipartimento di Matematica ed Informatica} 
 		\vspace{5mm}
 		\begin{center}
-			\includegraphics[width=0.30\textwidth]{figure/unipg.png}
+			\includegraphics[width=0.30\textwidth]{figures/unipg.png}
 		\end{center}
 		\vspace{5mm}
 		{\Large Corso di Laurea Magistrale in Informatica} \\
@@ -111,11 +111,11 @@
 
 % Comandi riguardanti la generazione di indici
 \newcommand{\generaIndice}{
-	%\fancyhead[L]{\textbf{\rightmark}}
+	\fancyhead[L]{\textbf{\rightmark}}
 	\newpage
 	\tableofcontents
 	\clearpage
-	%\fancyhead[L]{\textbf{\leftmark}}
+	\fancyhead[L]{\textbf{\leftmark}}
 }
 \newcommand{\generaIndiceTabelle}{\newpage \listoftables}
 \newcommand{\generaIndiceFigure}{\newpage \listoffigures}
