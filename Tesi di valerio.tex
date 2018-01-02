@@ -19,7 +19,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[plainpages=false]{hyperref}	% generazione di collegamenti ipertestuali su indice e riferimenti
 \usepackage[all]{hypcap} % per far si che i link ipertestuali alle immagini puntino all'inizio delle stesse e non alla didascalia sottostante
-\usepackage{amsthm}	% per definizioni e teoremi
+\usepackage{amsthm, relsize}	% per definizioni e teoremi
 
 \usepackage{mathtools, amssymb, latexsym}	% per ``cases'' environment
 	\numberwithin{equation}{subsection}
@@ -40,6 +40,11 @@
 	\usetikzlibrary{positioning}
 \usepackage{pgfplots}
 \usepackage{siunitx}
+
+\usepackage{mwe}
+\usepackage{subfig}
+
+\usepackage[font=footnotesize]{caption}
 
 \pgfplotsset{compat=newest} % Allows to place the legend below plot
 \usepgfplotslibrary{units} % Allows to enter the units nicely

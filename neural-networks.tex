@@ -89,7 +89,7 @@ The multilayer perceptron, known as feedforward neural networks, can be seen as 
 
 \begin{figure}[t!]
 	\centering
-	\begin{tikzpicture}
+	\begin{tikzpicture}[scale=.6]
 		\begin{axis}[
 			width=\linewidth, % Scale the plot to \linewidth
     	     	grid=major, % Display a grid
@@ -312,11 +312,81 @@ where, considering the two case in \ref{eq:partial-derivative-output-layer} and 
 
 Once all the $\delta$ are calculated then all the parameters can be updated with one of the existent algorithm, like Stochastic Gradient Descent (\textbf{SGD}) or the recent Adaptive Moment (\textbf{ADAM}).
 
+
 \subsection{Optimization algorithms gradient based}
 Once the the gradients are calculated they can be used to recalculate the associated parameters. To do this exist some specialized optimization algorithms that implement gradient descent.
 
 These algorithm have as objective the research of a global minimum of the cost function with a research that, with a similitude, is similar to the descent of a bowl (that can be associated to the complete plot of the objective function) by an hypothetical ball, where the bottom of the bowl correspond to the global minimum of the function.
-%TODO Inserisci una immagine del plot della discesa
+
+
+%\pgfplotsset{every axis/.append style={tick label style={/pgf/number format/fixed},font=\scriptsize,ylabel near ticks,xlabel near ticks,grid=major}}
+
+\pgfdeclareradialshading{ring}{\pgfpoint{0cm}{0cm}}%
+{rgb(0cm)=(1,1,1);
+rgb(0.7cm)=(1,1,1);
+rgb(0.719cm)=(1,1,1);
+rgb(0.72cm)=(0.975,0,0);
+rgb(0.9cm)=(1,1,1)}
+
+\definecolor{GDFirst}{RGB}{203,62,63}
+\definecolor{GDSecond}{RGB}{238,138,112}
+\definecolor{GDThird}{RGB}{245,191,113}
+\definecolor{GDFourth}{RGB}{221,220,220}
+\definecolor{GDFiveth}{RGB}{179,205,249}
+\definecolor{GDSixth}{RGB}{129,165,247}
+\definecolor{GDSeventh}{RGB}{82,110,215}
+\begin{figure}[!ht]
+     \subfloat[The Gradient Descent can be seen as the descent of a bowl by a ball. The end of each arrow is a descent step of an hypothetical ball.\label{subfig-1:gradient-descent-1}]{%
+		\begin{tikzpicture}[samples=100,smooth, scale=.9]
+			\begin{scope}
+				\draw[opacity=0,fill=GDFirst,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(20/(sin(2*\x)+2))},{sin(\x)*sqrt(20/(sin(2*\x)+2))});
+				\draw[opacity=0,fill=GDSecond,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(16/(sin(2*\x)+2))},{sin(\x)*sqrt(16/(sin(2*\x)+2))});
+				\draw[opacity=0,fill=GDThird,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(12/(sin(2*\x)+2))},{sin(\x)*sqrt(12/(sin(2*\x)+2))});
+				\draw[opacity=0,fill=GDFourth,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(8/(sin(2*\x)+2))},{sin(\x)*sqrt(8/(sin(2*\x)+2))});
+				\draw[opacity=0,fill=GDFiveth,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(4/(sin(2*\x)+2))},{sin(\x)*sqrt(4/(sin(2*\x)+2))});
+				\draw[opacity=0,fill=GDSixth,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(1/(sin(2*\x)+2))},{sin(\x)*sqrt(1/(sin(2*\x)+2))});
+				\draw[opacity=0,fill=GDSeventh,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(0.0625/(sin(2*\x)+2))},{sin(\x)*sqrt(0.0625/(sin(2*\x)+2))});
+			
+				\draw[->,blue,ultra thick] (-2,3.65) to (-1.93,3);
+				\draw[->,blue,ultra thick] (-1.93,3) to (-1.75,2.4);
+				\draw[->,blue,ultra thick] (-1.75,2.4) to (-1.5,1.8);
+				\draw[->,blue,ultra thick] (-1.5,1.8) to (-1.15,1.3);
+			
+				%\node at (-1.4,3.8){\scriptsize $w[0]$};
+				%\node at (-1.2,3.2){\scriptsize $w[1]$};
+				%\node at (-1.05,2.6){\scriptsize $w[2]$};
+				%\node at (-0.8,2){\scriptsize $w[3]$};
+				%\node at (-0.6,1.4){\scriptsize $w[4]$};
+			\end{scope}
+		\end{tikzpicture}     
+	}
+     \hfill
+     \subfloat[Second example plot of gradient descent. As we can see is not certain that the global maximum can be reached. \label{subfig-2:gradient-descent-2}]{%
+\begin{tikzpicture}[samples=100,smooth,scale=.9]
+			\begin{scope}
+				\clip(-4,-1) rectangle (4,4);
+				\draw plot[domain=0:360, fill={rgb:red,203;green,67;blue,63}] ({cos(\x)*sqrt(20/(sin(2*\x)+2))},{sin(\x)*sqrt(20/(sin(2*\x)+2))});
+				\draw plot[domain=0:360] ({cos(\x)*sqrt(16/(sin(2*\x)+2))},{sin(\x)*sqrt(16/(sin(2*\x)+2))});
+				\draw plot[domain=0:360] ({cos(\x)*sqrt(12/(sin(2*\x)+2))},{sin(\x)*sqrt(12/(sin(2*\x)+2))});
+				\draw plot[domain=0:360] ({cos(\x)*sqrt(8/(sin(2*\x)+2))},{sin(\x)*sqrt(8/(sin(2*\x)+2))});
+				\draw plot[domain=0:360] ({cos(\x)*sqrt(4/(sin(2*\x)+2))},{sin(\x)*sqrt(4/(sin(2*\x)+2))});
+				\draw plot[domain=0:360] ({cos(\x)*sqrt(1/(sin(2*\x)+2))},{sin(\x)*sqrt(1/(sin(2*\x)+2))});
+				\draw plot[domain=0:360] ({cos(\x)*sqrt(0.0625/(sin(2*\x)+2))},{sin(\x)*sqrt(0.0625/(sin(2*\x)+2))});
+			
+				\draw[->,blue,ultra thick] (-2,3.65) to (-1.93,3);
+				\draw[->,blue,ultra thick] (-1.93,3) to (-1.75,2.4);
+				\draw[->,blue,ultra thick] (-1.75,2.4) to (-1.5,1.8);
+				\draw[->,blue,ultra thick] (-1.5,1.8) to (-1.15,1.3);
+			
+				\node at (-1.4,3.8){\scriptsize $w[0]$};
+				node at (-1.2,3.2){\scriptsize $w[1]$};
+				\node at (-1.05,2.6){\scriptsize $w[2]$};
+				\node at (-0.8,2){\scriptsize $w[3]$};
+				\node at (-0.6,1.4){\scriptsize $w[4]$};
+			\end{scope}
+		\end{tikzpicture}}
+     \label{fig:dummy}
+   \end{figure}
 
 This research of a better parameter configuration not only work with the discovered delta, but also with a parameter $\lambda$ called learning rate. This latter must be small for a better research, because otherwise the optimization algorithm could be direct to a local minimum than to the global, and not too small because otherwise it leads to a slow convergence. So to all weights are not associated only $\delta$ but 
 \begin{center}
@@ -334,7 +404,7 @@ Using the equation \ref{eq:delta-learning-rate} the parameters are updated as fo
 \end{center}
 
 \subsubsection*{Adaptive Moment (ADAM)}
-Let $\beta_1$ and $\beta_2$ exponential decay rates used for the moment estimates, $m_0$ the $1^{st}$ moment vector, $v_0$ the $2^{nd}$ moment vector and a $\epsilon$, a small real valued scalar used to avoid the possibility of division by zero, we have 
+Let $\beta_1$ and $\beta_2$ exponential decay rates used for the moment estimates, $m_0$ the $1^{st}$ moment vector, $v_0$ the $2^{nd}$ moment vector and $\epsilon$ a small real valued scalar we have 
 \begin{center}
 	\begin{equation}
 		m_{ij}^{(t)} = \beta_1m_{ij}^{(t-1)} + (1 - \beta_1)\delta_{ij}^{(t)}
