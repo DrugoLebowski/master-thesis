@@ -5,7 +5,7 @@ In this chapter we will make an overview about the aspects of Neural Random-Acce
 The simplified NRAM model can be divided in three main pieces: the controller, the registers and the gates (modules). The central part is the controller that can be a FNN or an LSTM and is the only part that is trainable. The registers is a set of variable-sized memory cells. The point of contact between controller and the registers is a set of gates (named also modules) with which the controller, connecting these latter as a "logic" or "fuzzy" circuit, can modify the registers value. 
 
 \subsubsection*{The registers}
-At high level, the registers contain integer values, but because the paper version of the NRAM is trained with the gradient descent the registers does not contain directly the integer values but the fuzzy version of them, so the NRAM can be thus fully differentiable. In other word, let $N\ =\ \{0,\ 1,\ 2,\ \dots,\ I - 1\}$ a set of integers associated to the NRAM for some integer constant $I$, then each register contains a vector $p \in \textrm{I\!R}^{|N|}$ where to every cell is associated an integer value of the set M. So then every cell of the vector contains the probability that the associated register get the integer value associated to the cell. Furthermore the vector values must satisfy $p_{i} \geq 0$ and $\sum\limits_{i = 0}^{|N|} p_{i} = 1$.
+At high level, the registers contain integer values, but because the paper version of the NRAM is trained with the gradient descent the registers does not contain directly the integer values but the fuzzy version of them, so the NRAM can be thus fully differentiable. In other word, let $N\ =\ \{0,\ 1,\ 2,\ \dots,\ I - 1\}$ a set of integers associated to the NRAM for some integer constant $I$, then each register contains a vector $p \in \textrm{I\!R}^{|N|}$ where to every cell is associated an integer value of the set M. So then every cell of the vector contains the probability that the associated register contain the integer value associated to the cell. Furthermore the vector values must satisfy $p_{i} \geq 0$ and $\sum\limits_{i = 0}^{|N|} p_{i} = 1$.
 
 \subsubsection*{The modules}
 In the original paper three types of gates have been introduced: constant, unary and binary. Let $M\ =\ \{m_1, m_2, \dots, m_Q \}$ the set of the modules, then each of them can be represented as a function as follow
@@ -106,9 +106,28 @@ At the same time of the emission of the vectors $a_{i}, b_{i} \in \textrm{I\!R}^
 	\end{equation}
 \end{center}
 
-\subsubsection*{Controller's input}
+
+
 As stated previously, at the line \ref{lst:nram:line-6} the controller get some input from the registers. This input could be all the registers content, but in this way the controller's parameters would depend directly on M. This case is undesirable because this latter could learn the specific problem on which it trains, preventing this latter to generalize to different size of M. 
 
 Hence to resolve this inconvenient, in the original paper the controller receives from all the registers $R$ only $P(r_{i} = 0)$, i.e. the probability that a register content is equal to zero. Another possibility that we have experimented is to give as input to the controller the integer with the greatest probability for each register $r_{i}$. In other words what we have done is to convert the probability distribution contained in the registers into integer, using these as input of the controller. We have tested and compared this last solution with the original, all the results can be read in the chapter \ref{experiments}
 
 Both the solution limits the information available to the controller, forcing it to solve the problem with the modules instead to its own, and reduces the problem complexity.
+
+\subsection{Memory augmented model}
+The described model can work only with the registers, initializing them with the problem input sequence. The main disadvantage of this solution is that the model is constrained to the number of the registers, unable to generalize to longer sequence of a problem because simply the model cannot process sequences longer than the number of the register which is constant.
+
+Hence, to resolve this problem, the model is augmented with a variable-sized memory tape of $|N|$ memory cell, where each of them stores a distribution over the set $N$. Each distribution both in registers and in memory could be seen as a fuzzy address and so used by the NRAM as a fuzzy pointer. So the memory can be formalized as a matrix $\mathcal{M} \in \textrm{I\!R}_{|N|}^{|N|}$, where a value $\mathcal{M}_{i,j}$ is the probability that the $i^{th}$ memory cell contains the $j^{th}$ integer value.
+
+To interact with the memory there are another two modules:
+\begin{itemize}
+	\item{\textbf{Read}: this module takes as input a pointer and returns as output the memory content at the location indicated by the pointer. This behaviour is the same both the pointer is an integer or a probability distribution, what change is the system with which the module access the memory cell. More precisely, if the pointer $p\in\textrm{I\!R}^{|N|}$ is a probability distribution represented as a column vector, then the module returns $\mathcal{M}^{T}p$.}
+	\item{\textbf{Write}: this module takes as input a pointer and a value and returns zero. As for the \textbf{Read} module,  what change is the behaviour of the module due to the input type. In the case the inputs are probability distributions the module behave as follows:
+\begin{center}
+	\begin{equation}
+	\mathcal{M} = (J - p)J^{T} \cdot \mathcal{M} + pa^{T}
+	\end{equation}
+\end{center}	
+where $J \in \{1\}^{|N|}$ is a column vector and $\cdot$ denotes a coordinate-wise multiplication.
+}
+\end{itemize}
