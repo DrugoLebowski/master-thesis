@@ -1,4 +1,4 @@
-In this chapter we will make an overview about the aspects of Neural Random-Access Machines \cite{NRAM:2015}, a model ANN-based that has as objective the learning of algorithms. So starting from a simplified design that does not include an external memory to the version with this latter. Then we will introduce the design that we have adopted for the modules which is not included in the original paper. 
+In this chapter we will make an overview about the aspects of Neural Random-Access Machines \cite{NRAM:2015}, a model inspired by the Random Access Machine (not to confuse with Random Access Memory) and ANN-based that has as scope the learning of algorithms. So starting from a simplified design that does not include an external memory to the version with this latter. Then we will introduce the design that we have adopted for the modules which is not included in the original paper. 
 
 
 \section{Registers only model}
@@ -114,12 +114,12 @@ Hence to resolve this inconvenient, in the original paper the controller receive
 
 Both the solution limits the information available to the controller, forcing it to solve the problem with the modules instead to its own, and reduces the problem complexity.
 
-\subsection{Memory augmented model}
-The described model can work only with the registers, initializing them with the problem input sequence. The main disadvantage of this solution is that the model is constrained to the number of the registers, unable to generalize to longer sequence of a problem because simply the model cannot process sequences longer than the number of the register which is constant.
+\section{Memory augmented model}
+The previously described model work only with the registers. Hence to make the ANN learn an algorithm, the learning process starts initializing the registers with the problem starting input sequence. The main disadvantage of this solution is that the model is constrained to the number of the registers, unable to generalize to longer sequence of a problem because, simply, the model cannot process sequences longer than the number of the registers which is constant.
 
-Hence, to resolve this problem, the model is augmented with a variable-sized memory tape of $|N|$ memory cell, where each of them stores a distribution over the set $N$. Each distribution both in registers and in memory could be seen as a fuzzy address and so used by the NRAM as a fuzzy pointer. So the memory can be formalized as a matrix $\mathcal{M} \in \textrm{I\!R}_{|N|}^{|N|}$, where a value $\mathcal{M}_{i,j}$ is the probability that the $i^{th}$ memory cell contains the $j^{th}$ integer value.
+Hence to resolve this problem, the model is augmented with a variable-sized memory tape of $|N|$ memory cells, where each of them stores a distribution over the set $N$. Each distribution both in registers and in memory could be seen as a fuzzy address and so used by the NRAM as a fuzzy pointer to a memory location. The memory can be formalized as a matrix $\mathcal{M} \in \textrm{I\!R}_{|N|}^{|N|}$, where a value $\mathcal{M}_{i,j}$ is the probability that the $i^{th}$ memory cell contains the $j^{th}$ integer value.
 
-To interact with the memory there are another two modules:
+Hence, to interact with the memory the NRAM contains another two modules:
 \begin{itemize}
 	\item{\textbf{Read}: this module takes as input a pointer and returns as output the memory content at the location indicated by the pointer. This behaviour is the same both the pointer is an integer or a probability distribution, what change is the system with which the module access the memory cell. More precisely, if the pointer $p\in\textrm{I\!R}^{|N|}$ is a probability distribution represented as a column vector, then the module returns $\mathcal{M}^{T}p$.}
 	\item{\textbf{Write}: this module takes as input a pointer and a value and returns zero. As for the \textbf{Read} module,  what change is the behaviour of the module due to the input type. In the case the inputs are probability distributions the module behave as follows:
@@ -131,3 +131,21 @@ To interact with the memory there are another two modules:
 where $J \in \{1\}^{|N|}$ is a column vector and $\cdot$ denotes a coordinate-wise multiplication.
 }
 \end{itemize}
+The architecture of the memory augmented NRAM is presented in the figure \ref{fig:memory-nram}.
+
+Recalling the learning process of the registers only model, in this case the memory is initialized with the problem starting input sequence used as a I/O device. In this way the controller can learn an algorithm operations over a sequence of limited size and later could apply them to a longer sequence.
+
+Moreover, the NRAM use a system with which can decide if the execution can be terminated. Recalling that the execution is divided $T$ timesteps, in each of them the controller emits along the various $a, b, c$ vectors a scalar $f_{t} \in [0, 1]$\footnote{The controller emits a scalar $x_{i}$, with which is produced the $f_i = \textbf{sigmoid}(x_{i})$.}, defined in other words as the willingness of finish the execution in the current timestep $t$. Thus, starting from this we have that the probability that the execution is not finished in the previous timestep is $\prod\limits_{i=1}^{t-1}(1 - f_{i})$ and the probability that the output is produced in the current timestep is $p_{t} = f_{t} \cdot \prod\limits_{i=1}^{t-1}(1 - f_{i})$. 
+
+As stated previously, the execution is continued for a maximum of timestep $T$, except for the previous cases, where the NRAM is forced to emits an output and, due to this, the probability to terminate is $p_{T} = 1 - \sum\limits_{i=1}^{T-1}p_{i}$ regardless of the $f_{T}$ of the last timestep.
+
+\subsection{Cost function}
+The NRAM is a more complex system respect to an ANN and due to this the cost function is not standard because it can not capture how much the neural network departs from the expected output because, simply, we do not have it. 
+
+So let $\mathcal{M}^{(t)} \in \textrm{I\!R}^{|N|}_{|N|}$ the memory matrix at the end of the execution of the timestep $t$ and $(x, y) \in N^{|N|}$ a couple which contains the starting input sequence and the expected output sequence, the cost function is defined as the expected negative log-likelihood of producing the correct output, i.e.
+\begin{center}
+	\begin{equation}
+		-\sum\limits_{i=1}^{T}\Bigg(p_{t}\cdot\sum\limits_{i=1}^{|N|}log(\mathcal{M}_{i, y_{i}}^{(t)})\Bigg)
+	\end{equation}
+\end{center}
+where $y_i$ is the expected value at the $i^{th}$ memory cell.
