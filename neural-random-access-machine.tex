@@ -123,7 +123,7 @@ As stated previously, at the line \ref{lst:nram:line-6} the controller get some 
 
 Hence to resolve this inconvenient, in the original paper the controller receives from all the registers $R$ only $P(r_{i} = 0)$, i.e. the probability that a register content is equal to zero. Another possibility that we have experimented is to give as input to the controller the integer with the greatest probability for each register $r_{i}$. In other words what we have done is to convert the probability distribution contained in the registers into integer, using these as input of the controller. We have tested and compared this last solution with the original, all the results can be read in the chapter \ref{experiments}
 
-Both the solution limits the information available to the controller, forcing it to solve the problem with the modules instead to its own, and reduces the problem complexity.
+Both the solutions limits the information available to the controller, forcing it to solve the problem with the modules instead to its own, and reduces the problem complexity.
 
 \section{Memory augmented model}\label{sec:nram-memory}
 The previously described model work only with the registers. Hence to make the ANN learn an algorithm, the learning process starts initializing the registers with the problem starting input sequence. The main disadvantage of this solution is that the model is constrained to the number of the registers, unable to generalize to longer sequence of a problem because, simply, the model cannot process sequences longer than the number of the registers which is constant.
@@ -139,8 +139,7 @@ Hence, to interact with the memory the NRAM contains another two modules:
 	\mathcal{M} = (J - p)J^{T} \cdot \mathcal{M} + pa^{T}
 	\end{equation}
 \end{center}	
-where $J \in \{1\}^{|N|}$ is a column vector and $\cdot$ denotes a coordinate-wise multiplication.
-}
+where $J \in \{1\}^{|N|}$ is a column vector and $\cdot$ denotes a coordinate-wise multiplication.}
 \end{itemize}
 The architecture of the memory augmented NRAM is presented in the figure \ref{fig:memory-nram}.
 
@@ -149,7 +148,7 @@ Recalling the learning process of the registers only model, in this case the mem
 \begin{figure}[t!]
 	\centering
 	\includegraphics[width=\textwidth]{figures/memory-augmented-model.png}
-	\caption{Execution of the NRAM memory augmented architecture with $R$ = 4 registers. As can be seen the controllers get a registers ``binarized'' version, with which coefficients and the $f_{i}$ are produced. As stated previously in subsection \ref{subsec:execution-register-only}, the coefficients are used to select connections that here are represented with solid lines. Instead, with the dashed connections are represented the interactions by the \textbf{Read} and \textbf{Write} modules with the memory.}
+	\caption{Execution of the NRAM memory augmented architecture with $R$ = 4 registers. As can be seen the controllers get a registers \qq{binarized} version, with which coefficients and the $f_{i}$ are produced. As stated previously in subsection \ref{subsec:execution-register-only}, the coefficients are used to select connections that here are represented with solid lines. Instead, with the dashed connections are represented the interactions by the \textbf{Read} and \textbf{Write} modules with the memory.}
 	\label{fig:perceptron-boundaries}
 \end{figure}
 

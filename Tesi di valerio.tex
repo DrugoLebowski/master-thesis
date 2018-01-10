@@ -4,10 +4,11 @@
 
 % --- INIZIO dati relativi al template TesiDiaUniroma3
 % dati obbligatori, necessari al frontespizio
-\titolo{DE-NRAM: a differential evolutionary approach}
+\titolo{Supervised Learning of Neural Random-Access Machines with Differential Evolution}
 \autore{Valerio Belli}
 \matricola{283514}
-\relatore{Prof.ssa Valentina Poggioni Prof. Marco Baioletti}
+\relatore{Prof.ssa Valentina Poggioni}
+\relatoredue{Prof. Marco Baioletti}
 \correlatore{Prof. ..... .....} % modifica anche TesiDiaUniroma3.cls se vuoi avere un correlatore
 \annoAccademico{2016/2017}
 
@@ -38,6 +39,7 @@
 	\usetikzlibrary{decorations.pathreplacing}
 	\usetikzlibrary{fadings}
 	\usetikzlibrary{positioning}
+	\usetikzlibrary{calc}
 \usepackage{pgfplots}
 \usepackage{siunitx}
 
@@ -46,9 +48,11 @@
 
 \usepackage{wrapfig}
 
+\usepackage{textcmds}
+
 \usepackage[font=footnotesize]{caption}
 
-\pgfplotsset{compat=newest} % Allows to place the legend below plot
+%\pgfplotsset{compat=newest} % Allows to place the legend below plot
 \usepgfplotslibrary{units} % Allows to enter the units nicely
 \sisetup{
   round-mode          = places,

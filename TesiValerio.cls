@@ -48,6 +48,10 @@
 % Relatore (Titolo Nome Cognome, es: Prof. Pippo Caruso)
 \newcommand{\@relatore}{Prof. Nome Cognome}
 \newcommand{\relatore}[1]{\renewcommand{\@relatore}{#1}}
+\newcommand{\@relatoredue}{Prof. Nome Cognome}
+\newcommand{\relatoredue}[1]{\renewcommand{\@relatoredue}{#1}}
+%\newcommand{\@relatori}{\@relatore{Prof. Nome Cognome}}{\@relatore{Prof. Nome Cognome}}
+%\newcommand{\relatori}[2]{\renewcommand{\@relatori}{\@relatore{#1} \linebreak \@relatore{#2}}}
 % Correlatore (Titolo Nome Cognome, es: Dott. Pippo Caruso)
 \newcommand{\@correlatore}{}
 \newcommand{\correlatore}[1]{\renewcommand{\@correlatore}{#1}}
@@ -82,9 +86,9 @@
       \begin{tabular}{c  @{\hspace{2.5cm}}  c}
        \large Laureando & \large Relatore \\
        {\textbf{\@autore}} & {\textbf{\@relatore}}\\
-       {\textbf{Matricola \@matricola}} & 
+       {\textbf{Matricola \@matricola}} & {\textbf{\@relatoredue}}
       \end{tabular} \\
-\vspace{15mm}
+\vspace{10mm}
 		\vfill
 		{\large Anno Accademico \@annoAccademico} \\
 	\end{center}
