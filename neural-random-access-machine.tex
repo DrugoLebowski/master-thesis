@@ -1,4 +1,4 @@
-In this chapter we will make an overview about the aspects of Neural Random-Access Machines \cite{NRAM:2015}, a model inspired by the Random Access Machine (not to confuse with Random Access Memory) and ANN-based that has as scope the learning of algorithms. So starting from a simplified design that does not include an external memory to the version with this latter. Then we will introduce the design that we have adopted for the modules which is not included in the original paper. 
+In this chapter we will make an overview about the aspects of Neural Random-Access Machines \cite{NRAM:2016}, a model inspired by the Random Access Machine (not to confuse with Random Access Memory) and ANN-based that has as scope the learning of algorithms. So starting from a simplified design that does not include an external memory to the version with this latter. Then we will introduce the design that we have adopted for the modules which is not included in the original paper.
 
 
 \section{Registers only model}
@@ -53,7 +53,8 @@ For a better comprehension of the NRAM execution can be read the pseudocode in t
 			\If{controller is a LSTM}
 				\State Controller update its internal state
 			\EndIf
-			\State Controller outputs one-shot the configuration of the NRAM circuit\label{lst:nram:line-8}
+			\State Controller outputs one-shot the configuration of the NRAM 
+			\label{lst:nram:line-8}
 			\State The "fuzzy circuit" is executed \label{lst:nram:line-9}
 			\State The values of the registers is updated\label{lst:nram:line-10}
 		\EndFor

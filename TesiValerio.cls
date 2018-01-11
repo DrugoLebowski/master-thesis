@@ -108,9 +108,9 @@
 
 % Comandi riguardanti l'inserimento di capitoli
 \newcommand{\cchapter}[1]{\chapter[#1]{\centering #1}}
-\newcommand{\introduzione}[1]{\newpage \chapter{Introduzione} \input{#1}}
-\newcommand{\conclusioni}[1]{\newpage \chapter{Conclusioni} \markboth{CONCLUSIONI}{CONCLUSIONI} \input{#1}}
-\newcommand{\ringraziamenti}[1]{\newpage \cchapter{Ringraziamenti} \input{#1}}
+\newcommand{\introduzione}[1]{\newpage \chapter{Introduction} \input{#1}}
+\newcommand{\conclusioni}[1]{\newpage \chapter{Conclusions} \markboth{CONCLUSIONI}{CONCLUSIONI} \input{#1}}
+\newcommand{\ringraziamenti}[1]{\newpage \cchapter{Acknowledgements} \input{#1}}
 \newcommand{\capitolo}[2]{\newpage \chapter{#1}\label{cap:#2}\input{#2}}
 
 % Comandi riguardanti la generazione di indici
