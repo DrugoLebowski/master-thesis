@@ -37,12 +37,41 @@ Summing up, after the random initialization of the first donors vector, the oper
 	}
 \end{itemize}
 
-In the algorithm explanation we have introduced one strategy both for the mutation and crossover step, but are not the unique. Hence, in order to classify all the variants it's used the notation $D/x/y/z$ where:
+During the algorithm explanation is introduced one strategy both for the mutation and crossover step, but they are not the unique even regard the optimization algorithm. Hence, in order to classify all the variants it's used the notation $DE/x/y/z$ where:
 \begin{itemize}
-	\item{\textbf{x}:}
-	\item{\textbf{y}:}
-	\item{\textbf{z}:}
+	\item{\textbf{DE}: indicates the used optimization algorithm;}
+	\item{\textbf{x}: indicates the mutation strategy;}
+	\item{\textbf{y}: indicates how many donors are selected to mutate another;}
+	\item{\textbf{z}: indicates the crossover strategy;}
 \end{itemize}
+Hence, for example, a possible variant is DE/rand/1/bin. For the thesis work have been used and tested some combinations of DE made available by the framework DENN, introduced in the next section \ref{sec:DENN}: so to this scope following are introduced some of the used algorithms and strategies.
+\subsection{Optimization algorithm variants}
+Here we rapidly introducing some variants of the standard Differential Evolution.
+\subsubsection{JADE}
+
+\subsubsection{SHADE}
+
+\subsubsection{L-SHADE}
+
+\subsection{Mutation strategies}
+Here we introducing some mutation strategies.
+
+\subsubsection{Rand}
+
+\subsubsection{Best}
+
+\subsubsection{DEGL} % Rename with the true name
+
+\subsubsection{Curr p best }
+
+\subsection{Crossover strategies}
+Here we introducing some crossover strategies.
+
+\subsubsection{Bin}
+
+\subsubsection{Exp}
+
+\subsubsection{Interm}
 
 \begin{figure}[h!]
 
@@ -66,4 +95,4 @@ In the algorithm explanation we have introduced one strategy both for the mutati
 \end{figure}
 		
 
-\section{DENN}
+\section{DENN}\label{sec:DENN}
