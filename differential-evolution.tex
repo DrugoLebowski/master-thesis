@@ -12,49 +12,47 @@ Differential Evolution is a parallel iterative direct search metaheuristic which
 \end{center}
 called \textbf{population}, where each of them is called \textbf{individual}, that are manipulated for \textbf{G} generation, where the NP are not reduced nor incremented, in searching of an individual that can be considered as solution given an objective. This objective, as for the gradient based optimization algorithms, is represented by a function called in this case \textbf{fitness function} that represented the goodness of an individual and do. For a better exploration of a solution, the individuals must be randomly initialized covering the entire parameters space. 
 
-As stated previously, the algorithm go on for G generation where in each of these are generated three set of individuals called, respectively, \textbf{donors}, \textbf{trials} and \textbf{targets}. The donors set is formed by individual which are selected for the creation of trial set, called also mutant. Once the mutants are generated, the donor and trial set are mixed up with some strategy/method creating finally the targets set that is used for the creation of the donors vector of the next generation. \\
+As stated previously, the algorithm go on for G generation where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individual which are selected for the creation of donors set, called also mutant. Once the mutants are generated, targets and donors sets are mixed up with some crossover strategy creating finally the trials set. Following the latter is used for the creation of next generation targets set. \\
 
-Summing up, after the random initialization of the first donors vector, the operations executed in every generation of Differential Evolution are:
+Summing up, after the targets set initialization, the step executed in every DE generation are:
 \begin{itemize}
-	\item{\textbf{Mutation}: Let trial $x$ at the generation $G$, a mutant is generated combining $x$ through a summation with some others trials combined with some strategy and scaled through a real valued constant $F$. As example, with the strategy \textbf{rand/1} introduced in \cite{DESEHGOCS:1997} we have
+	\item{\textbf{Mutation}: Let target $x$ at the generation $G$, a mutant is generated combining $x$ through a summation with some others targets combined with some strategy and scaled through a global real valued user defined constant $F$. As example, with the strategy \textbf{rand/1} introduced in \cite{DESEHGOCS:1997} we have
 	\begin{center}
 		\begin{equation}
 			v_{i,G+1} = x_{r_{1},G} + F\cdot(x_{r_{2},G} - x_{x_{3},G})
 		\end{equation}
 	\end{center}
-	where $r_{1},r_{2},r_{3} \in \{1,2,\dots,NP\}$ and must be each other different.
-	}
-	\item{\textbf{Crossover}: Because the mutation itself could leads to the creation of equal mutants, this step is introduced. As stated previously, the crossover does nothing else than mixing up the donors with the mutants with some strategy, generating the trials. For example, let the donor vector $x_{i,G}$ and the mutant $v_{i,G+1}$ the \textbf{bin} strategy work as follows
+	where $r_{1},r_{2},r_{3} \in \{1,2,\dots,NP\}$ and must be each other different.}
+	\item{\textbf{Crossover}: Because the mutation itself could leads to the creation of equal mutants, this step is introduced. As stated previously, the crossover does nothing else than mixing up the targets with the mutants (donors) with some strategy, generating the trials. For example, let the target vector $x_{i,G}$ and the mutant $v_{i,G+1}$ the \textbf{bin} strategy work as follows
 	\begin{equation}
 		u_{ji, G+1} = \begin{cases}
 			v_{ji,G+1}, & \textrm{if}\ (\textit{randb}(j) \leq \textit{CR})\ \textrm{or}\ j=\textit{rnbr}(i)\\
 			x_{ji,G}, & \textrm{if}\ (\textit{randb}(j) > \textit{CR})\ \textrm{and}\ j\neq\textit{rnbr(i)}
 		\end{cases}
 	\end{equation}
-	for $i=1,2,\dots,D$. The function $\textit{randb}(j)$ generate a real valued number for the $j^{th}$ parameter $\textrm{CR}\in[0,1]$ is the user defined crossover constant used as a threshold and $\textit{rnbr}(i)$ is a function that generate randomly an index which ensures that is selected at least one parameter of the mutant $v_{i}$.
-	}
-	\item{\textbf{Selection}: After the trials set is generated is made a comparison respect to the donors set for each vector, i.e. the donor $x_{i, G}$ is compared respect to the trial $u_{i,G+1}$ using the cost function. Hence, if the donor have a smaller cost respect to the trial, than it is retained for the next generation donors set and vice-versa.
-	}
+	for $i=1,2,\dots,D$. The function $\textit{randb}(j)$ generate a real valued number for the $j^{th}$ parameter according to binomial distribution, $\textrm{CR}\in[0,1]$ is the global user defined crossover constant used as a threshold and $\textit{rnbr}(i)$ is a function that generate randomly an index which ensures that is selected at least one parameter of the mutant $v_{i}$.}
+	\item{\textbf{Selection}: After the trials set is generated is made a comparison respect to the donors set for each vector, i.e. the donor $x_{i, G}$ is compared respect to the trial $u_{i,G+1}$ using the cost function. Hence, if the donor have a smaller cost respect to the trial, than it is retained for the next generation donors set and vice-versa.}
 \end{itemize}
 
 During the algorithm explanation is introduced one strategy both for the mutation and crossover step, but they are not the unique even regard the optimization algorithm. Hence, in order to classify all the variants it's used the notation $DE/x/y/z$ where:
 \begin{itemize}
 	\item{\textbf{DE}: indicates the used optimization algorithm;}
 	\item{\textbf{x}: indicates the mutation strategy;}
-	\item{\textbf{y}: indicates how many donors are selected to mutate another;}
+	\item{\textbf{y}: indicates how many targets couple are selected in the mutation step;}
 	\item{\textbf{z}: indicates the crossover strategy;}
 \end{itemize}
-Hence, for example, a possible variant is DE/rand/1/bin. For the thesis work have been used and tested some combinations of DE made available by the framework DENN, introduced in the next section \ref{sec:DENN}: so to this scope following are introduced some of the used algorithms and strategies.
-\subsection{Optimization algorithm variants}
-Here we rapidly introducing some variants of the standard Differential Evolution.
+Hence, for example, a possible variant is \textit{DE/rand/1/bin}. For the thesis work have been used and tested DE's different configurations made available by the framework DENN (\ref{sec:DENN}). Hence, about this following are introduced some of the used algorithms and strategies.
+\subsection{Differential Evolution variants}
 \subsubsection{JADE}
+The base version of Differential Evolution is powerful, but one of its biggest drawback is that the constants $F$ and $CR$ are leave to the user decision. Though is suggest in \cite{RPODE:2005} to set the $F\in[0.4, 0.95]$ and $CR \in (0, 0.2)$ if the function is separable and $CR \in (0.9, 1.0)$ when the function's parameters are dependent, remain always the fact that are problem dependent. 
+
+Hence trying to resolve this problem in \cite{JADE:2009} is introduced JADE. This DE variant 
 
 \subsubsection{SHADE}
 
 \subsubsection{L-SHADE}
 
 \subsection{Mutation strategies}
-Here we introducing some mutation strategies.
 
 \subsubsection{Rand}
 
@@ -62,16 +60,13 @@ Here we introducing some mutation strategies.
 
 \subsubsection{DEGL} % Rename with the true name
 
-\subsubsection{Curr p best }
+\subsubsection{Current to pbest}
 
 \subsection{Crossover strategies}
-Here we introducing some crossover strategies.
 
 \subsubsection{Bin}
 
 \subsubsection{Exp}
-
-\subsubsection{Interm}
 
 \begin{figure}[h!]
 
