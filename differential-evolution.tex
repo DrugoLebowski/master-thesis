@@ -14,6 +14,12 @@ called \textbf{population}, where each of them is called \textbf{individual}, th
 
 As stated previously, the algorithm go on for G generation where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individual which are selected for the creation of donors set, called also mutant. Once the mutants are generated, targets and donors sets are mixed up with some crossover strategy creating finally the trials set. Following the latter is used for the creation of next generation targets set. \\
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{figures/de-flow.png}
+	\caption{Differential Evolution flow diagram.}
+\end{figure}
+
 Summing up, after the targets set initialization, the step executed in every DE generation are:
 \begin{itemize}
 	\item{\textbf{Mutation}: Let target $x$ at the generation $G$, a mutant is generated combining $x$ through a summation with some others targets combined with some strategy and scaled through a global real valued user defined constant $F$. As example, with the strategy \textbf{rand/1} introduced in \cite{DESEHGOCS:1997} we have
@@ -43,12 +49,57 @@ During the algorithm explanation is introduced one strategy both for the mutatio
 \end{itemize}
 Hence, for example, a possible variant is \textit{DE/rand/1/bin}. For the thesis work have been used and tested DE's different configurations made available by the framework DENN (\ref{sec:DENN}). Hence, about this following are introduced some of the used algorithms and strategies.
 \subsection{Differential Evolution variants}
-\subsubsection{JADE}
+\subsubsection{Adaptive DE (JADE)}
 The base version of Differential Evolution is powerful, but one of its biggest drawback is that the constants $F$ and $CR$ are leave to the user decision. Though is suggest in \cite{RPODE:2005} to set the $F\in[0.4, 0.95]$ and $CR \in (0, 0.2)$ if the function is separable and $CR \in (0.9, 1.0)$ when the function's parameters are dependent, remain always the fact that are problem dependent. 
 
-Hence trying to resolve this problem in \cite{JADE:2009} is introduced JADE. This DE variant 
+Hence trying to resolve this problem in \cite{JADE:2009} is introduced JADE. Briefly, this DE variant lift the user from the duty of selecting the best combination of $F$ and $CR$ constant. This is done with a parameter adaptation system that search the constants best values refining them for each generation. Moreover, these constants are generated for each individual and so they are, generally, different one from the another, e.g. $\textit{CR}_{1} \neq \textit{CR}_{i}$. Formally what is done is the following:
+\begin{itemize}
+	\item{\textbf{CR}: Let $\mu_{\textit{CR}}$ the \textit{CR}'s mean, initialized previous the first generation to $0.5$. For each generation the crossover probability $\textit{CR}_{i}$ associated to the $x_{i}$ individual, is generated according to a normal distribution with mean $\mu_{CR}$ and a standard deviation $0.1$
+	\begin{center}
+		\begin{equation}
+			\textit{CR}_{i} = \textrm{randn}_{i}(\mu_{\textit{CR}}, 0.1)
+		\end{equation}
+	\end{center}
+	truncated respect to the interval $[0, 1]$. 
+	
+	
+	After the generation ending the best $\textit{CR}_{i}$s, i.e. the \textit{CR}s associated to the trials $v$ better than the targets $x$, are added to the set $S_{\textit{CR}}$, i.e. the set containing the $\textit{CR}_{i}$ that is successful. After this, the mean $\mu_{\textit{CR}}$ is recalculated as follows:
+	\begin{center}
+		\begin{equation}
+			\mu_{\textit{CR}} = (1 - c)\cdot\mu_{\textit{CR}} + c\cdot\textrm{mean}_{A}(S_{\textit{CR}})
+		\end{equation}
+	\end{center}
+	where the $c$ is a positive constant between 0 and 1 and $mean_{A}(\cdot)$ is the arithmetic mean.	
+	}
+	\item{\textbf{F}: similarly to CR, \textit{F} is generated for each target with a system similar to that used for CR. Let $\mu_{F}$ the F's mean, initialized previous the first generation to $0.5$. Hence, for each generation and for each target individual, is generated a $F_{i}$ using the mean $\mu_{F}$ and a standard deviation $0.1$ as follows:
+		\begin{center}
+			\begin{equation}
+				F_{i} = \textrm{randc}_{i}(\mu_{F}, 0.1)
+			\end{equation}
+		\end{center}
+		that is truncated if $F_{i} > 1$ and regenerated if $F_{i} \leq 0$, so that a $F_{i} \in (0, 1]$ and $\textrm{randc}_{i}$ is a Cauchy random generator associated to each target individual.
+		
+		As for the CR case, denoting $S_{\textit{F}}$ the set of successful mutation factors, to which are added the successful Fs at the end of a generation. Then for each generation the mean $\mu_{F}$ is generated as follows:
+		\begin{center}
+			\begin{equation}
+				\mu_{F} = (1 - c)\cdot\mu_{F} + c\cdot\textrm{mean}_{L}(S_{F})
+			\end{equation}
+		\end{center}
+		where the $c$ is also here a positive constant in $[0, 1]$ and $\textit{mean}_{L}$ is the Lehmer mean defined as:
+		\begin{center}
+			\begin{equation}
+				\textrm{mean}_{L}(S_{F}) = \frac{\sum_{F \in S_{F}}F^{2}}{\sum\limits{F \in S_{F}}F} 
+			\end{equation}
+		\end{center}
+		}
+\end{itemize}
 
-\subsubsection{SHADE}
+Moreover, JADE has introduced an optional external memory denoted as \textbf{A} with size equal than \textit{NP}, where is stored all the targets that have failed the selection process. Once the memory is full and is necessary adding a new one, an individual is randomly deleted.
+
+\subsubsection{Success-History based Adaptive DE (SHADE)}
+The JADE's main problem is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performance. 
+
+SHADE introduced in \cite{SHADE:2013} aims to increment the robustness of JADE introducing an alternative system of crossover and mutation constants generation.
 
 \subsubsection{L-SHADE}
 
@@ -60,7 +111,7 @@ Hence trying to resolve this problem in \cite{JADE:2009} is introduced JADE. Thi
 
 \subsubsection{DEGL} % Rename with the true name
 
-\subsubsection{Current to pbest}
+\subsubsection{Current to pbest}\label{subsubsec:curr_p_best}
 
 \subsection{Crossover strategies}
 
