@@ -99,8 +99,58 @@ Moreover, JADE has introduced an optional external memory denoted as \textbf{A} 
 \subsubsection{Success-History based Adaptive DE (SHADE)}
 The JADE's main problem is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performance. 
 
-SHADE introduced in \cite{SHADE:2013} aims to increment the robustness of JADE introducing an alternative system of crossover and mutation constants generation.
+SHADE introduced in \cite{SHADE:2013} aims to toughen JADE introducing a crossover and mutation constants generation alternative system. This is done leaving out the $S_{\textit{CR}}$ and $S_{F}$ memories and adding two new memories, named \textit{historical memories}, $M_{\textit{CR}}$ and $M_{F}$ where are stored the constants that have well performed in the past.\\
 
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|l|}
+		\hline
+		Index             & 1                   & 2                   & $\dots$ & $H -1$                & $H$                 \\ 
+		\hline
+		$M_{\textit{CR}}$ & $M_{\textit{CR},1}$ & $M_{\textit{CR},2}$ & $\dots$ & $M_{\textit{CR},H-1}$ & $M_{\textit{CR},H}$ \\ 
+		\hline
+		$M_{F}$           & $M_{F, 1}$          & $M_{F, 2}$          & $\dots$ & $M_{F, H-1}$          & $M_{F, H}$          \\ 
+		\hline
+	\end{tabular}
+	\caption{Historical memories $M_{\textit{CR}}$ and $M_{F}$}
+\end{table}
+
+Formally, let $M_{F}$ and $M_{\textit{CR}}$ two memories with $H$ cells, where the content of each of the latter is initialized to $0.5$. Similarly to JADE, the constants are generated in each generation for all the individuals like follows:
+\begin{center}
+	\begin{equation}
+		F_i = \textrm{randc}_{i}(M_{F, r_{i}}, 0.1)
+	\end{equation}
+	\begin{equation}
+		\textit{CR}_i = \textrm{randn}_{i}(M_{\textit{CR},r_{i}}, 0.1)
+	\end{equation}
+\end{center}
+where $M_{F, r_{i}}$ and $M_{\textit{CR}, r_{i}}$ are two memory cells selected randomly for each individual. Here the $F_{i}$ and $\textit{CR}_{i}$ like in JADE, i.e. are truncated or regenerated.
+
+In every generation after the selection is done, the successful $F_{i}$ and $\textit{CR}_{i}$ values recorded in temporary memories $S_{F}$ and $S_{\textit{CR}}$ with which the content of the memory is updated as follows:
+\begin{center}
+	\begin{equation}
+		M_{F,k,G+1} = \begin{cases}
+			\textrm{mean}_{\textit{WL}}(S_{F}),&\ \textrm{if}\ S_{F} \neq 0 \\
+			M_{F,k,G},&\ \textrm{otherwise} \\
+		\end{cases}
+	\end{equation}
+	\begin{equation}
+		M_{\textit{CR}, k, G + 1} = \begin{cases}
+			\textrm{mean}_{\textit{WA}}(S_{\textit{CR}}),&\ \textrm{if}\ S_{\textit{CR}} \neq 0 \\
+			M_{\textit{CR}},&\ \textrm{otherwise} \\
+		\end{cases}
+	\end{equation}
+\end{center}
+where $k \in [1, H]$ indicates the memory cell to update. At the search beginning is initialized to 1 and incremented by one at the end of each generation. So when $k > H$ is set already to one. Here $\textrm{mean}_{\textit{WL}}$ is the weighted Lehmer mean computed as follows:
+\begin{align}
+	\textrm{mean}_{\textit{WL}}(S_{F}) &= \frac{\sum_{k=1}^{|S_{F}|}w_{k} \cdot S_{F,k}^2}{\sum_{k=1}^{|S_{F}|}w_{k} \cdot S_{F,k}}
+\end{align}
+and $\textrm{mean}_{\textit{WA}}$ is the weighted arithmetic mean introduced by Peng et al in \cite{MSJADE:2009}, computed as follows:
+\begin{align}
+	\textrm{mean}_{\textit{WA}}(S_{\textit{CR}}) &= \sum\limits_{k=1}^{|S_{\textit{CR}}|}w_{k}\cdot S_{\textit{CR},k} \cr
+	w_k &= \frac{\Delta f_{k}}{\sum_{k=1}^{|S_{\textit{CR}}|}\Delta f_{k}} \cr
+	\Delta f_{k} &= |f(\textbf{u}_{k,G}) - f(\textbf{x}_{k,G})|
+\end{align}
 \subsubsection{L-SHADE}
 
 \subsection{Mutation strategies}
