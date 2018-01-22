@@ -182,14 +182,71 @@ Also the Best mutation strategy is introduced by Storn and Price in \cite{DESEHG
 where, as for rand, $r_1, r_2, r_3, r_4 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutually different and also from the related index $i$.
 
 \subsubsection{DEGL}
+Differently respect the previous two methods, DEGL, introduced by Das et al. in \cite{DEGL:2009}, make a topological neighborhood exploration, i.e. for each generation, DEGL, creates every individuals $\textbf{v}_{i, G + 1}$ belonging to the donors set through a convex combination between the local mutant $\textbf{L}_{i, G}$ and the global mutant $\textbf{g}_{i, G}$.  
+
+
+Formally, let the $\textit{NP}_G$ population at generation G, disposed with a ring topology. For each individual $\textbf{x}_{i, G}$ is defined a neighbors of $k \in [0, (\textit{NP} - 1) / 2]$ individuals, consisting in vectors $\textbf{x}_{i - k, G}, \dots, \textbf{x}_{i + k, G}$. 
+For each individual $\textbf{x}_{i, G}$ are created the local mutant $\textbf{L}_{i, G}$ and global mutant $\textbf{g}_{i, G}$ as follows:
+\begin{align}
+	\textbf{L}_{i, G} &= \textbf{x}_{i, G} + \alpha \cdot (\textbf{x}_{\textit{n\_best}_i, G} - \textbf{x}_{i, G}) + \beta \cdot (\textbf{x}_{p, G} - \textbf{x}_{q, G}) \\
+	\textbf{g}_{i, G} &= \textbf{x}_{i, G} + \alpha \cdot (\textbf{x}_{\textit{g\_best}, G} - \textbf{x}_{i, G}) + \beta \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})
+\end{align}
+where $\textit{n\_best}_i$ indicates the best individual in the neighbors of $\textbf{x}_{i, G}$ differently to $\textit{g\_best}$ which is the global best individual, $p, q \in [i - k, i + k]$,  with $p \neq q \neq i$, and $r_1, r_2 \in NP_{G}$, with $r_1 \neq r_2 \neq i$. The $\alpha$ and the $\beta$ are real-valued scalar used as scaling factors.
+
+After the creation of local and global donor vectors, each of them are combined through convex combination using a scalar weight $w \in (0, 1)$ in the following mode:
+\begin{equation}
+	\textbf{V}_{i, G} = w \cdot \textbf{g}_{i, G} + (1 - w) \cdot \textbf{L}_{i, G}
+\end{equation}
 
 \subsubsection{Current to pbest}\label{subsubsec:curr_p_best}
+Current to pbest is introduced by Zhang and Sanderson in \cite{JADE:2009} as an evolution of Best method, because this latter being a greedy strategy using prevalently the information of the best solution can leads the search to local minimum convergence. Instead in Current to pbest this is information can impact partially on the search, reducing in this way the possibility about search algorithm of stopping in a local minimum.
 
+This strategy exists in two version, which differentiate in the use of an auxiliary memory. The base version not use the auxiliary memory and creates each donor $\textbf{u}_{i, G}$ as follows:
+\begin{equation}
+	\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^p - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})
+\end{equation}\label{eqn:curr_p_best}
+where $\textbf{x}_{\textit{best}, G}$ is an individual chosen between the $100p\%$ of the current population $\textit{NP}_{G}$ with $p \in (0, 1]$ and $F_i$ is the mutation factor which is associated to every target individual and managed as stated previously in JADE and SHADE sections.
+
+Denote \textbf{A} the auxiliary memory where are stored the targets that fail the selection process (e.g. if $f(\textbf{x}_{i, G}) < f(\textbf{v}_{i, G})$, then $\textbf{x}_{i, G}$ is added to $\textbf{A}$), the alternative version of Current to pbest with memory works as follows:
+\begin{equation}
+	\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^{p} - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \tilde{\textbf{x}}_{r_2, G})
+\end{equation}
+where $\textbf{x}_{\textit{best}, G}$, $\textbf{x}_{r_1, G}$ and $\textbf{x}_{i, G}$ are selected as in \ref{eqn:curr_p_best} and $\tilde{\textbf{x}}_{r_2, G}$ is selected, instead, in $\textbf{P} \cup \textbf{A}$. To note that if $\textbf{A}$ size exceed a certain user defined threshold, then some solutions are randomly removed.
+
+The Current to pbest is further improved in association with SHADE. In fact, with this latter, the constant $p$ existing in JADE versions is substituted with a variable version, i.e. to each individuals is associated a $p_i$ who is set as follows:
+\begin{equation}
+p_i = rand[p_{\textit{min}}, 0.2]
+\end{equation}
+where $p_{\textit{min}} = 2 / \textit{NP}_G$, so that at least 2 individuals are selected, and 0.2 is the maximum value as suggest by Zhang and Sanderson in \cite{JADE:2009}.
 \subsection{Crossover strategies}
 
 \subsubsection{Bin}
-
+\begin{figure}[h]
+	%\includegraphics[width=0.5\textwidth]{figures/bin-crossover.png}
+	\caption{Bin crossover strategy}
+	\label{fig:bin-crossover}
+\end{figure}
+Bin is classic form of crossover and works as follows:
+\begin{equation}
+	u_{ij, G} = \begin{cases}
+		v_{ij, G}, &\textrm{if }\textit{randb}(j) \leq \textit{CR}\textrm{ or } j = \textit{rnbr}(i)\\
+		x_{ij, G}, &\textrm{otherwise}
+	\end{cases}
+\end{equation}
+where $\textit{randb}(i) \in [0, 1]$ is a uniform random generator and $\textit{rnbr}(j) \in [1, D]$ so that at least one parameter of mutant $\textbf{v}_{i, G}$. the figure \ref{fig:bin-crossover} gives a visual representation of the strategy.
 \subsubsection{Exp}
+\begin{figure}[h]
+	%\includegraphics[width=0.5\textwidth]{figures/bin-crossover.png}
+	\caption{Exp crossover strategy}
+	\label{fig:exp-crossover}
+\end{figure}
+Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1, D]$ ,used as a starting point in the target where the parameters substitution starts, and a integer $L \in [1, D]$ that represents the parameters to substitute. So after choosing this two value a trial vector is created as follows:
+
+\begin{align}
+	v_{ij, G} &= u_{ij, G}\textrm{,  for } j = \{<n>_{D}, \dots, <n + L - 1>_{D}\} \\
+	v_{ij, G} &= x_{ij, G}\textrm{,  otherwise}
+\end{align} 
+where $< \cdot >_{D}$ is the modulo function with modulus D. An visual example is showed in figure \ref{fig:exp-crossover}
 
 \begin{figure}[h!]
 
