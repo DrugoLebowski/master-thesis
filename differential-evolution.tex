@@ -152,14 +152,36 @@ and $\textrm{mean}_{\textit{WA}}$ is the weighted arithmetic mean introduced by 
 	\Delta f_{k} &= |f(\textbf{u}_{k,G}) - f(\textbf{x}_{k,G})|
 \end{align}
 \subsubsection{L-SHADE}
+The population used in a EA algorithm, in this case Differential Evolution, is very important. In fact, a small population result in a faster convergence, but this can also leads the algorithm to sake in a local minimum. Contrarily, a bigger population increments the algorithm chance to converging to a global minimum, but with a slower convergence due to the searching space increment. Hence, as for the $F$ and $\textit{CR}$ constants the population is another problem dependent parameter to which one is forced to optimize it.
 
+Hence to resolve this problem Tanabe et al in \cite{LSHADE:2014} have introduced L-SHADE, a variant of SHADE that in addition to $F$ and $\textit{CR}$ constants optimization make also a population optimization through the Linear Population Size Reduction (LSPR) method that make a deterministic linear reduction of population using a linear function. 
+
+Let $\textit{NP}^{\textit{init}}$ the initial population and $\textit{NP}^{\textit{min}}$ the minimum possible population to have constrained to the evolutionary operators (mutation and crossover methods). Hence, the population for the next generation $G + 1$ is calculated as follows:
+\begin{center}
+	\begin{equation}
+		\textit{NP}_{G + 1} = \textrm{round}\Bigg[\Bigg(\frac{\textit{NP}^{\textit{min}} - \textit{NP}^{\textit{init}}}{\textit{MAX\_NFE}} \Bigg) \cdot \textit{NFE} + \textit{NP}^{\textit{init}} \Bigg]
+	\end{equation}
+\end{center}
+where \textit{NFE} is the current number of fitness evaluations and \textit{MAX\_NFE} is the maximum number of fitness evaluations. The linear function at the time of population generation is not constrained to the previous population, so if $\textit{NP}_{G + 1} > \textit{NP}_{G}$ then the worst $(\textit{NP}_{G} - \textit{NP}_{G+1})$ individuals are pruned from the population having also in this case a linear population reduction.
 \subsection{Mutation strategies}
 
 \subsubsection{Rand}
+The Rand mutation strategy is introduced by Storn and Price in \cite{DESEHGOCS:1997} and works selecting randomly the individuals with which the donors/mutant is created. The procedure is as follows:
+\begin{align}
+	v_{i, G + 1} &= x_{r_{1}} + F \cdot (x_{r_2, G} - x_{r_3, G}) \\
+	v_{i, G + 1} &= x_{r_{1}} + F \cdot (x_{r_2, G} - x_{r_3, G}) + F \cdot (x_{r_4, G} - x_{r_5, G})
+\end{align}
+where $r_1, r_2, r_3, r_4, r_5 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutually different and also from the related index $i$.
 
 \subsubsection{Best}
+Also the Best mutation strategy is introduced by Storn and Price in \cite{DESEHGOCS:1997} and works selecting, as the name suggests, the current best individual and some others as follows:
+\begin{align}
+	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} - x_{r_2, G}) \\
+	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} + x_{r_2, G} - x_{r_3, G} - x_{r_4, G}) \\
+\end{align}
+where, as for rand, $r_1, r_2, r_3, r_4 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutually different and also from the related index $i$.
 
-\subsubsection{DEGL} % Rename with the true name
+\subsubsection{DEGL}
 
 \subsubsection{Current to pbest}\label{subsubsec:curr_p_best}
 
