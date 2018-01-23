@@ -40,6 +40,103 @@ Summing up, after the targets set initialization, the step executed in every DE 
 	\item{\textbf{Selection}: After the trials set is generated is made a comparison respect to the donors set for each vector, i.e. the donor $x_{i, G}$ is compared respect to the trial $u_{i,G+1}$ using the cost function. Hence, if the donor have a smaller cost respect to the trial, than it is retained for the next generation donors set and vice-versa.}
 \end{itemize}
 
+
+\begin{figure}[t!]
+	\centering
+	\begin{tikzpicture}[smooth, samples=100]
+	
+		\begin{axis}[
+  			xlabel={$x1$},
+  			ylabel={$x2$},
+  			xlabel style={below right},
+  			ylabel style={above left},
+			legend pos=north east,
+			ticks=none,
+			xmin=5, xmax=65,
+			ymin=5, ymax=75
+		]
+			\addplot[dashed, smooth cycle,ultra thin] coordinates {
+    				(30, 30)
+    				(32.5, 32.5)
+    				(35, 37.5)
+    				(40, 40)
+    				(35, 40)
+    				(32.5, 35)
+    				(30, 30)
+			};
+			
+			
+			\addplot[dashed, smooth cycle,ultra thin] coordinates {
+    				(25, 25)
+    				(32.5, 27.5)
+    				(35, 32.5)
+    				(45, 40)
+    				(35, 45)
+    				(30, 37.5)
+    				(25, 30)
+			};
+			
+			
+			\addplot[dashed, smooth cycle,ultra thin] coordinates {
+    				(20, 20)
+    				(32.5, 22.5)
+    				(35, 27.5)
+    				(50, 40)
+    				(35, 50)
+    				(27.5, 40)
+    				(20, 25)
+			};
+			
+			
+			\addplot[dashed, smooth cycle,ultra thin] coordinates {
+    				(15, 15)
+    				(32.5, 17.5)
+    				(35, 22.5)
+    				(55, 40)
+    				(35, 55)
+    				(25, 42.5)
+    				(15, 20)
+			};
+			
+			
+			\addplot[dashed, smooth cycle,ultra thin] coordinates {
+    				(10, 10)
+    				(32.5, 12.5)
+    				(35, 17.5)
+    				(60, 40)
+    				(35, 60)
+    				(22.5, 45)
+    				(10, 15)
+			};
+			
+			\addplot[only marks] coordinates {
+				(27.5, 40)
+				(35, 50)
+				(22.5, 20)
+				(30, 30)
+			};
+			
+			
+			\node at (25, 42){\scriptsize $\textbf{x}_{r_3}$};			
+			\node at (33, 52){\scriptsize $\textbf{x}_{r_2}$};
+			\node at (20.5, 22){\scriptsize $\textbf{x}_{r_1}$};
+			\node at (28, 32){\scriptsize $\textbf{v}_{i, G}$};
+			
+			\node at (axis cs: 15, 55){\small{$\textbf{x}_{r_3} - \textbf{x}_{r_2} $}};
+			\node at (axis cs: 52, 18){\small{$F \cdot (\textbf{x}_{r_3} - \textbf{x}_{r_2}) $}};
+
+			\draw[->,red, thick] (27.5, 40) to (34.5, 49.5);
+			\draw[->,red, thick] (22.4,20) to (29.5, 29.5);
+			\draw[->,dotted,black,thick] (30, 44.5) to (17.5, 51);
+			\draw[->,dotted,blue,thick] (26.5,24) to (43,19);
+			
+			 		
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Illustration of a simple Differential Evolution mutation. $\textbf{v}_{i, G}$ is the new donor vector, created with the scaled difference between $\textbf{x}_{r_2}$ and $\textbf{x}_{r_3}$ combined through summation with $\textbf{x}_{r_1}$.}
+	\label{fig:mutant-generation-plot}
+\end{figure}
+
 During the algorithm explanation is introduced one strategy both for the mutation and crossover step, but they are not the unique even regard the optimization algorithm. Hence, in order to classify all the variants it's used the notation $DE/x/y/z$ where:
 \begin{itemize}
 	\item{\textbf{DE}: indicates the used optimization algorithm;}
@@ -240,34 +337,10 @@ where $\textit{randb}(i) \in [0, 1]$ is a uniform random generator and $\textit{
 	\caption{Exp crossover strategy}
 	\label{fig:exp-crossover}
 \end{figure}
-Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1, D]$ ,used as a starting point in the target where the parameters substitution starts, and a integer $L \in [1, D]$ that represents the parameters to substitute. So after choosing this two value a trial vector is created as follows:
+Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1, D]$, used as a starting point in the target where the parameters substitution starts, and a integer $L \in [1, D]$ that represents the parameters to substitute. So after choosing this two value a trial vector is created as follows:
 
 \begin{align}
 	v_{ij, G} &= u_{ij, G}\textrm{,  for } j = \{<n>_{D}, \dots, <n + L - 1>_{D}\} \\
 	v_{ij, G} &= x_{ij, G}\textrm{,  otherwise}
 \end{align} 
-where $< \cdot >_{D}$ is the modulo function with modulus D. An visual example is showed in figure \ref{fig:exp-crossover}
-
-\begin{figure}[h!]
-
-	\begin{tikzpicture}[smooth]
-		\begin{axis}[
-  			axis x line=center,
-  			axis y line=center,
-  			xlabel={$x1$},
-  			ylabel={$x2$},
-  			xlabel style={below right},
-  			ylabel style={above left},	
-		    xmin=0, xmax=1,
-		    ymin=0, ymax=1,
-			legend pos=north east  			
-		]
-  			\addplot[mark=none, black] table{data/differential-evolution-space.txt};
- 		\end{axis}
-	\end{tikzpicture}
-	\caption{}
-	\label{fig:mutant-generation-plot}
-\end{figure}
-		
-
-\section{DENN}\label{sec:DENN}
+where $< \cdot >_{D}$ is the modulo function with modulus D. An example is showed in figure \ref{fig:exp-crossover}

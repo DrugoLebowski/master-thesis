@@ -322,20 +322,6 @@ These algorithm have as objective the research of cost function global minimum w
 
 %\pgfplotsset{every axis/.append style={tick label style={/pgf/number format/fixed},font=\scriptsize,ylabel near ticks,xlabel near ticks,grid=major}}
 
-\pgfdeclareradialshading{ring}{\pgfpoint{0cm}{0cm}}%
-{rgb(0cm)=(1,1,1);
-rgb(0.7cm)=(1,1,1);
-rgb(0.719cm)=(1,1,1);
-rgb(0.72cm)=(0.975,0,0);
-rgb(0.9cm)=(1,1,1)}
-
-\definecolor{GDFirst}{RGB}{203,62,63}
-\definecolor{GDSecond}{RGB}{238,138,112}
-\definecolor{GDThird}{RGB}{245,191,113}
-\definecolor{GDFourth}{RGB}{221,220,220}
-\definecolor{GDFiveth}{RGB}{179,205,249}
-\definecolor{GDSixth}{RGB}{129,165,247}
-\definecolor{GDSeventh}{RGB}{82,110,215}
 \begin{figure}[!ht]
      \subfloat[The Gradient Descent can be seen as the descent of a bowl by a ball. The end of each arrow is a descent step of an hypothetical ball. With the red and blue are represented respectively the zones of maximum and minimum. (Yes, this figure seems more similar to the planet Saturn.)\label{subfig-1:gradient-descent-1}]{%
 		\begin{tikzpicture}[samples=100,smooth, scale=.875]
