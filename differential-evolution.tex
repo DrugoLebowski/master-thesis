@@ -5,11 +5,9 @@ In the first part of the chapter we make an overview to Differential Evolution, 
 Differential Evolution (DE) is a metaheuristic\footnote{A metaheuristic is a procedure that has as objective the search, creation or selection of an heuristic that could be find a optimal solution of a problem.} introduced in \cite{DESEHGOCS:1997}, belonging to the family of Evolutionary Algorithm (EA), that has as objective the solution searching through the parallel evolution of a set of candidate solutions. 
 
 Differential Evolution is a parallel iterative direct search metaheuristic which utilizes NP D-dimensional numerical vectors 
-\begin{center}
-	\begin{equation}
-		x_{i, G},\ i=1,\ \dots,\ NP 
-	\end{equation}
-\end{center}
+\begin{align}
+	x_{i, G},\ i=1,\ \dots,\ NP 
+\end{align}
 called \textbf{population}, where each of them is called \textbf{individual}, that are manipulated for \textbf{G} generation, where the NP are not reduced nor incremented, in searching of an individual that can be considered as solution given an objective. This objective, as for the gradient based optimization algorithms, is represented by a function called in this case \textbf{fitness function} that represented the goodness of an individual and do. For a better exploration of a solution, the individuals must be randomly initialized covering the entire parameters space. 
 
 As stated previously, the algorithm go on for G generation where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individual which are selected for the creation of donors set, called also mutant. Once the mutants are generated, targets and donors sets are mixed up with some crossover strategy creating finally the trials set. Following the latter is used for the creation of next generation targets set. \\
@@ -23,11 +21,9 @@ As stated previously, the algorithm go on for G generation where in each of thes
 Summing up, after the targets set initialization, the step executed in every DE generation are:
 \begin{itemize}
 	\item{\textbf{Mutation}: Let target $x$ at the generation $G$, a mutant is generated combining $x$ through a summation with some others targets combined with some strategy and scaled through a global real valued user defined constant $F$. As example, with the strategy \textbf{rand/1} introduced in \cite{DESEHGOCS:1997} we have
-	\begin{center}
-		\begin{equation}
-			v_{i,G+1} = x_{r_{1},G} + F\cdot(x_{r_{2},G} - x_{x_{3},G})
-		\end{equation}
-	\end{center}
+	\begin{align}
+		v_{i,G+1} = x_{r_{1},G} + F\cdot(x_{r_{2},G} - x_{x_{3},G})
+	\end{align}
 	where $r_{1},r_{2},r_{3} \in \{1,2,\dots,NP\}$ and must be each other different.}
 	\item{\textbf{Crossover}: Because the mutation itself could leads to the creation of equal mutants, this step is introduced. As stated previously, the crossover does nothing else than mixing up the targets with the mutants (donors) with some strategy, generating the trials. For example, let the target vector $x_{i,G}$ and the mutant $v_{i,G+1}$ the \textbf{bin} strategy work as follows
 	\begin{equation}
@@ -144,7 +140,7 @@ During the algorithm explanation is introduced one strategy both for the mutatio
 	\item{\textbf{y}: indicates how many targets couple are selected in the mutation step;}
 	\item{\textbf{z}: indicates the crossover strategy;}
 \end{itemize}
-Hence, for example, a possible variant is \textit{DE/rand/1/bin}. For the thesis work have been used and tested DE's different configurations made available by the framework DENN (\ref{sec:DENN}). Hence, about this following are introduced some of the used algorithms and strategies.
+Hence, for example, a possible variant is \textit{DE/rand/1/bin}. For the thesis work have been used and tested DE's different configurations made available by the framework DENN (\ref{sec:DENN}). Hence, about this, following are introduced some of the used algorithms and strategies.
 \subsection{Differential Evolution variants}
 \subsubsection{Adaptive DE (JADE)}
 The base version of Differential Evolution is powerful, but one of its biggest drawback is that the constants $F$ and $CR$ are leave to the user decision. Though is suggest in \cite{RPODE:2005} to set the $F\in[0.4, 0.95]$ and $CR \in (0, 0.2)$ if the function is separable and $CR \in (0.9, 1.0)$ when the function's parameters are dependent, remain always the fact that are problem dependent. 
@@ -152,42 +148,32 @@ The base version of Differential Evolution is powerful, but one of its biggest d
 Hence trying to resolve this problem in \cite{JADE:2009} is introduced JADE. Briefly, this DE variant lift the user from the duty of selecting the best combination of $F$ and $CR$ constant. This is done with a parameter adaptation system that search the constants best values refining them for each generation. Moreover, these constants are generated for each individual and so they are, generally, different one from the another, e.g. $\textit{CR}_{1} \neq \textit{CR}_{i}$. Formally what is done is the following:
 \begin{itemize}
 	\item{\textbf{CR}: Let $\mu_{\textit{CR}}$ the \textit{CR}'s mean, initialized previous the first generation to $0.5$. For each generation the crossover probability $\textit{CR}_{i}$ associated to the $x_{i}$ individual, is generated according to a normal distribution with mean $\mu_{CR}$ and a standard deviation $0.1$
-	\begin{center}
-		\begin{equation}
-			\textit{CR}_{i} = \textrm{randn}_{i}(\mu_{\textit{CR}}, 0.1)
-		\end{equation}
-	\end{center}
+	\begin{align}
+		\textit{CR}_{i} = \textrm{randn}_{i}(\mu_{\textit{CR}}, 0.1)
+	\end{align}
 	truncated respect to the interval $[0, 1]$. 
 	
 	
 	After the generation ending the best $\textit{CR}_{i}$s, i.e. the \textit{CR}s associated to the trials $v$ better than the targets $x$, are added to the set $S_{\textit{CR}}$, i.e. the set containing the $\textit{CR}_{i}$ that is successful. After this, the mean $\mu_{\textit{CR}}$ is recalculated as follows:
-	\begin{center}
-		\begin{equation}
-			\mu_{\textit{CR}} = (1 - c)\cdot\mu_{\textit{CR}} + c\cdot\textrm{mean}_{A}(S_{\textit{CR}})
-		\end{equation}
-	\end{center}
+	\begin{align}
+		\mu_{\textit{CR}} = (1 - c)\cdot\mu_{\textit{CR}} + c\cdot\textrm{mean}_{A}(S_{\textit{CR}})
+	\end{align}
 	where the $c$ is a positive constant between 0 and 1 and $mean_{A}(\cdot)$ is the arithmetic mean.	
 	}
 	\item{\textbf{F}: similarly to CR, \textit{F} is generated for each target with a system similar to that used for CR. Let $\mu_{F}$ the F's mean, initialized previous the first generation to $0.5$. Hence, for each generation and for each target individual, is generated a $F_{i}$ using the mean $\mu_{F}$ and a standard deviation $0.1$ as follows:
-		\begin{center}
-			\begin{equation}
-				F_{i} = \textrm{randc}_{i}(\mu_{F}, 0.1)
-			\end{equation}
-		\end{center}
+		\begin{align}
+			F_{i} = \textrm{randc}_{i}(\mu_{F}, 0.1)
+		\end{align}
 		that is truncated if $F_{i} > 1$ and regenerated if $F_{i} \leq 0$, so that a $F_{i} \in (0, 1]$ and $\textrm{randc}_{i}$ is a Cauchy random generator associated to each target individual.
 		
 		As for the CR case, denoting $S_{\textit{F}}$ the set of successful mutation factors, to which are added the successful Fs at the end of a generation. Then for each generation the mean $\mu_{F}$ is generated as follows:
-		\begin{center}
-			\begin{equation}
-				\mu_{F} = (1 - c)\cdot\mu_{F} + c\cdot\textrm{mean}_{L}(S_{F})
-			\end{equation}
-		\end{center}
+		\begin{align}
+			\mu_{F} = (1 - c)\cdot\mu_{F} + c\cdot\textrm{mean}_{L}(S_{F})
+		\end{align}
 		where the $c$ is also here a positive constant in $[0, 1]$ and $\textit{mean}_{L}$ is the Lehmer mean defined as:
-		\begin{center}
-			\begin{equation}
-				\textrm{mean}_{L}(S_{F}) = \frac{\sum_{F \in S_{F}}F^{2}}{\sum\limits{F \in S_{F}}F} 
-			\end{equation}
-		\end{center}
+		\begin{align}
+			\textrm{mean}_{L}(S_{F}) = \frac{\sum_{F \in S_{F}}F^{2}}{\sum\limits{F \in S_{F}}F} 
+		\end{align}
 		}
 \end{itemize}
 
@@ -213,39 +199,31 @@ SHADE introduced in \cite{SHADE:2013} aims to toughen JADE introducing a crossov
 \end{table}
 
 Formally, let $M_{F}$ and $M_{\textit{CR}}$ two memories with $H$ cells, where the content of each of the latter is initialized to $0.5$. Similarly to JADE, the constants are generated in each generation for all the individuals like follows:
-\begin{center}
-	\begin{equation}
-		F_i = \textrm{randc}_{i}(M_{F, r_{i}}, 0.1)
-	\end{equation}
-	\begin{equation}
-		\textit{CR}_i = \textrm{randn}_{i}(M_{\textit{CR},r_{i}}, 0.1)
-	\end{equation}
-\end{center}
+\begin{align}
+	F_i &= \textrm{randc}_{i}(M_{F, r_{i}}, 0.1) \\
+	\textit{CR}_i &= \textrm{randn}_{i}(M_{\textit{CR},r_{i}}, 0.1)
+\end{align}
 where $M_{F, r_{i}}$ and $M_{\textit{CR}, r_{i}}$ are two memory cells selected randomly for each individual. Here the $F_{i}$ and $\textit{CR}_{i}$ like in JADE, i.e. are truncated or regenerated.
 
 In every generation after the selection is done, the successful $F_{i}$ and $\textit{CR}_{i}$ values recorded in temporary memories $S_{F}$ and $S_{\textit{CR}}$ with which the content of the memory is updated as follows:
-\begin{center}
-	\begin{equation}
-		M_{F,k,G+1} = \begin{cases}
-			\textrm{mean}_{\textit{WL}}(S_{F}),&\ \textrm{if}\ S_{F} \neq 0 \\
-			M_{F,k,G},&\ \textrm{otherwise} \\
-		\end{cases}
-	\end{equation}
-	\begin{equation}
-		M_{\textit{CR}, k, G + 1} = \begin{cases}
-			\textrm{mean}_{\textit{WA}}(S_{\textit{CR}}),&\ \textrm{if}\ S_{\textit{CR}} \neq 0 \\
-			M_{\textit{CR}},&\ \textrm{otherwise} \\
-		\end{cases}
-	\end{equation}
-\end{center}
+\begin{align}
+	M_{F,k,G+1} &= \begin{cases}
+		\textrm{mean}_{\textit{WL}}(S_{F}),&\ \textrm{if}\ S_{F} \neq 0 \\
+		M_{F,k,G},&\ \textrm{otherwise} \\
+	\end{cases}\\
+	M_{\textit{CR}, k, G + 1} &= \begin{cases}
+		\textrm{mean}_{\textit{WA}}(S_{\textit{CR}}),&\ \textrm{if}\ S_{\textit{CR}} \neq 0 \\
+		M_{\textit{CR}},&\ \textrm{otherwise} \\
+	\end{cases}
+\end{align}
 where $k \in [1, H]$ indicates the memory cell to update. At the search beginning is initialized to 1 and incremented by one at the end of each generation. So when $k > H$ is set already to one. Here $\textrm{mean}_{\textit{WL}}$ is the weighted Lehmer mean computed as follows:
 \begin{align}
 	\textrm{mean}_{\textit{WL}}(S_{F}) &= \frac{\sum_{k=1}^{|S_{F}|}w_{k} \cdot S_{F,k}^2}{\sum_{k=1}^{|S_{F}|}w_{k} \cdot S_{F,k}}
 \end{align}
 and $\textrm{mean}_{\textit{WA}}$ is the weighted arithmetic mean introduced by Peng et al in \cite{MSJADE:2009}, computed as follows:
 \begin{align}
-	\textrm{mean}_{\textit{WA}}(S_{\textit{CR}}) &= \sum\limits_{k=1}^{|S_{\textit{CR}}|}w_{k}\cdot S_{\textit{CR},k} \cr
-	w_k &= \frac{\Delta f_{k}}{\sum_{k=1}^{|S_{\textit{CR}}|}\Delta f_{k}} \cr
+	\textrm{mean}_{\textit{WA}}(S_{\textit{CR}}) &= \sum\limits_{k=1}^{|S_{\textit{CR}}|}w_{k}\cdot S_{\textit{CR},k} \\
+	w_k &= \frac{\Delta f_{k}}{\sum_{k=1}^{|S_{\textit{CR}}|}\Delta f_{k}} \\
 	\Delta f_{k} &= |f(\textbf{u}_{k,G}) - f(\textbf{x}_{k,G})|
 \end{align}
 \subsubsection{L-SHADE}
@@ -254,11 +232,9 @@ The population used in a EA algorithm, in this case Differential Evolution, is v
 Hence to resolve this problem Tanabe et al in \cite{LSHADE:2014} have introduced L-SHADE, a variant of SHADE that in addition to $F$ and $\textit{CR}$ constants optimization make also a population optimization through the Linear Population Size Reduction (LSPR) method that make a deterministic linear reduction of population using a linear function. 
 
 Let $\textit{NP}^{\textit{init}}$ the initial population and $\textit{NP}^{\textit{min}}$ the minimum possible population to have constrained to the evolutionary operators (mutation and crossover methods). Hence, the population for the next generation $G + 1$ is calculated as follows:
-\begin{center}
-	\begin{equation}
-		\textit{NP}_{G + 1} = \textrm{round}\Bigg[\Bigg(\frac{\textit{NP}^{\textit{min}} - \textit{NP}^{\textit{init}}}{\textit{MAX\_NFE}} \Bigg) \cdot \textit{NFE} + \textit{NP}^{\textit{init}} \Bigg]
-	\end{equation}
-\end{center}
+\begin{equation}
+	\textit{NP}_{G + 1} = \textrm{round}\Bigg[\Bigg(\frac{\textit{NP}^{\textit{min}} - \textit{NP}^{\textit{init}}}{\textit{MAX\_NFE}} \Bigg) \cdot \textit{NFE} + \textit{NP}^{\textit{init}} \Bigg]
+\end{equation}
 where \textit{NFE} is the current number of fitness evaluations and \textit{MAX\_NFE} is the maximum number of fitness evaluations. The linear function at the time of population generation is not constrained to the previous population, so if $\textit{NP}_{G + 1} > \textit{NP}_{G}$ then the worst $(\textit{NP}_{G} - \textit{NP}_{G+1})$ individuals are pruned from the population having also in this case a linear population reduction.
 \subsection{Mutation strategies}
 
@@ -274,7 +250,7 @@ where $r_1, r_2, r_3, r_4, r_5 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutua
 Also the Best mutation strategy is introduced by Storn and Price in \cite{DESEHGOCS:1997} and works selecting, as the name suggests, the current best individual and some others as follows:
 \begin{align}
 	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} - x_{r_2, G}) \\
-	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} + x_{r_2, G} - x_{r_3, G} - x_{r_4, G}) \\
+	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} + x_{r_2, G} - x_{r_3, G} - x_{r_4, G})
 \end{align}
 where, as for rand, $r_1, r_2, r_3, r_4 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutually different and also from the related index $i$.
 
