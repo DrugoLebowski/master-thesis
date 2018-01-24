@@ -10,6 +10,13 @@ Differential Evolution is a parallel iterative direct search metaheuristic which
 \end{align}
 called \textbf{population}, where each of them is called \textbf{individual}, that are manipulated for \textbf{G} generation, where the NP are not reduced nor incremented, in searching of an individual that can be considered as solution given an objective. This objective, as for the gradient based optimization algorithms, is represented by a function called in this case \textbf{fitness function} that represented the goodness of an individual and do. For a better exploration of a solution, the individuals must be randomly initialized covering the entire parameters space. 
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{figures/de-flow-complete.png}
+	\caption{Complete execution flow of Differential Evolution in a generation.}
+	\label{fig:bin-crossover}
+\end{figure}
+
 As stated previously, the algorithm go on for G generation where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individual which are selected for the creation of donors set, called also mutant. Once the mutants are generated, targets and donors sets are mixed up with some crossover strategy creating finally the trials set. Following the latter is used for the creation of next generation targets set. \\
 
 \begin{figure}[t]
@@ -295,10 +302,12 @@ where $p_{\textit{min}} = 2 / \textit{NP}_G$, so that at least 2 individuals are
 
 \subsubsection{Bin}
 \begin{figure}[h]
-	%\includegraphics[width=0.5\textwidth]{figures/bin-crossover.png}
-	\caption{Bin crossover strategy}
+	\centering
+	\includegraphics[width=0.4\textwidth]{figures/de-rand.png}
+	\caption{Bin crossover strategy illustration with $D = 5$.}
 	\label{fig:bin-crossover}
 \end{figure}
+
 Bin is classic form of crossover and works as follows:
 \begin{equation}
 	u_{ij, G} = \begin{cases}
@@ -307,10 +316,12 @@ Bin is classic form of crossover and works as follows:
 	\end{cases}
 \end{equation}
 where $\textit{randb}(i) \in [0, 1]$ is a uniform random generator and $\textit{rnbr}(j) \in [1, D]$ so that at least one parameter of mutant $\textbf{v}_{i, G}$. the figure \ref{fig:bin-crossover} gives a visual representation of the strategy.
+
 \subsubsection{Exp}
-\begin{figure}[h]
-	%\includegraphics[width=0.5\textwidth]{figures/bin-crossover.png}
-	\caption{Exp crossover strategy}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.5\textwidth]{figures/de-exp.png}
+	\caption{Exp crossover strategy illustration with a $N = 4$ as starting point and $L = 3$ parameters to substitute.}
 	\label{fig:exp-crossover}
 \end{figure}
 Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1, D]$, used as a starting point in the target where the parameters substitution starts, and a integer $L \in [1, D]$ that represents the parameters to substitute. So after choosing this two value a trial vector is created as follows:
