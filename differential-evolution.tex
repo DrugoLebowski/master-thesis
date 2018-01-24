@@ -325,7 +325,6 @@ where $\textit{randb}(i) \in [0, 1]$ is a uniform random generator and $\textit{
 	\label{fig:exp-crossover}
 \end{figure}
 Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1, D]$, used as a starting point in the target where the parameters substitution starts, and a integer $L \in [1, D]$ that represents the parameters to substitute. So after choosing this two value a trial vector is created as follows:
-
 \begin{align}
 	v_{ij, G} &= u_{ij, G}\textrm{,  for } j = \{<n>_{D}, \dots, <n + L - 1>_{D}\} \\
 	v_{ij, G} &= x_{ij, G}\textrm{,  otherwise}
