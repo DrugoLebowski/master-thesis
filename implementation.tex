@@ -1,7 +1,105 @@
 In this chapter we initially introduce shortly the used framework DENN (Differential Evolution Neural Network), passing then to speak about the implementations with Gradient Descent and Differential Evolutions. Finally we show the experiments, comparing the efficiency of solutions.
 
 \section{DENN}\label{sec:DENN}
+DENN is a framework written in C++ by Gabriele Di Bari and Mirco Tracolli, based on their thesis work. It aims to apply the Differential Evolution concepts on the ANN training as an alternative to Gradient-based algorithms. 
+
+It is initially created as a TensorFlow extension due to the performance and simplicity offered by this latter, but now is completely based on the C++ library Eigen due to its implementation based on the high performance library LAPACK written in Fortran 77.
+
+\subsection{How does it work}
+DENN is a framework that aims to help the developer to construct a system for instructs Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which can be decided how the NN should be trained. For example with the DE configuration JADE/Rand/1/Bin, Jade, Rand and Bin are three modules that can be selected and used. The plug-in that could be used are not only for the DE things, but also regard the dataset (i.e. where is it, how to manage it, etc.), how the neural network should be structured (i.e. how many levels and the activation functions) and, more important, what kind of neural network you want instruct.
+
+However, what really changes in DENN respect to the standard Differential Evolution is how the population evolves. As stated previously in \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the vectors population existence, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors has not a particular form, i.e. they are mono-dimensional vectors. 
+
+Hence in DENN, since the population is composed by NNs it cannot be used as is, i.e. as a mono-dimensional vectors set, but instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual corresponds to a NN and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents. 
+
+For a better explanation of this concept, let's examine the mutation phase through an example. Hence, let the Neural Networks population \textit{NP}, the mutation strategy Rand/1, $r_1, r_2$ and $r_3$ three mutually exclusive indexes and suppose we are creating the donor $\textbf{u}_{1}$. Hence, this donor is created as follows:
+\begin{align}
+	\textbf{u}_{1}^{w_1} &= \textbf{x}_{r_1}^{w_1} + F \cdot (\textbf{x}_{r_2}^{w_1} - \textbf{x}_{r_3}^{w_1}) \\
+	\textbf{u}_{1}^{b_1} &= \textbf{x}_{r_1}^{b_1} + F \cdot (\textbf{x}_{r_2}^{b_1} - \textbf{x}_{r_3}^{b_1}) \\
+	\cdots \cr
+	\textbf{u}_{1}^{w_{|\textbf{HL}|}} &= \textbf{x}_{r_1}^{w_{|\textbf{HL}|}} + F \cdot (\textbf{x}_{r_2}^{w_{|\textbf{HL}|}} - \textbf{x}_{r_3}^{w_{|\textbf{HL}|}}) \\
+	\textbf{u}_{1}^{b_{|\textbf{HL}|}} &= \textbf{x}_{r_1}^{b_{|\textbf{HL}|}} + F \cdot (\textbf{x}_{r_2}^{b_{|\textbf{HL}|}} - \textbf{x}_{r_3}^{b_{|\textbf{HL}|}})
+\end{align}
+where $w_i$ and $b_i$ represent the weights and bias vectors of the $\textrm{i}^{\textrm{th}}$ level and \textbf{HL} is the hidden layers set. The same work is made also for the crossover phase, so we do not explain it with an example which is leaved to the reader.
+
+Moreover, 
+
+\begin{verbatim}
+// Initialization
+args 
+{
+	threads_pop 4
+	seed 02122017
+}
+
+// Batch info
+args
+{
+	batch_size 5
+	batch_offset 1000
+	use_validation false 
+	-ctps false
+}
+
+//DE Params
+args 
+{
+	
+    generations 200
+	sub_gens 1
+    number_parents 160
+	
+	clamp_max  100.0
+	clamp_min -100.0
+	random_max  1.0
+	random_min  0.0
+	
+	-f 0.9
+	-cr 0.9
+	
+    evolution_method SHADE {
+		-as 0
+        shade_h 420
+    }
+	
+    mutation DEGL {
+        -glw 0.5
+        -glnn 10
+    }
+	
+    crossover bin
+}
+
+//Network
+args 
+{
+	hidden_layers 130 130
+	active_functions relu relu
+}
+
+// NRam  arguments
+args 
+{
+    instance nram
+    task copy
+    max_int 10
+    n_registers 4
+    time_steps 9
+    gates read one inc add min max write
+	output copy_test.json
+}
+
+\end{verbatim}
+\section{Theano}
+
 
 \section{Implementations}
+Our thesis work are sub-divided in two parallel projects: a refactoring of the already existing project of Andrew Gibiansky, written in pure Python and based on Theano, to which some parts of NRAM are missing and an implementation from zero of NRAM based on what is offered by DENN.
+
+\subsection{Python \&{} Theano}
+
+\subsection{C++ \&{} DENN}
 
 \section{Experiments}
+
+\subsection{Circuits}
