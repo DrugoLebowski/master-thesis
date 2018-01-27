@@ -6,7 +6,7 @@ DENN is a framework written in C++ by Gabriele Di Bari and Mirco Tracolli, based
 It is initially created as a TensorFlow extension due to the performance and simplicity offered by this latter, but now is completely based on the C++ library Eigen due to its implementation based on the high performance library LAPACK written in Fortran 77.
 
 \subsection{How does it work}
-DENN is a framework that aims to help the developer to construct a system for instructs Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which can be decided how the NN should be trained. For example with the DE configuration JADE/Rand/1/Bin, Jade, Rand and Bin are three modules that can be selected and used. The plug-in that could be used are not only for the DE things, but also regard the dataset (i.e. where is it, how to manage it, etc.), how the neural network should be structured (i.e. how many levels and the activation functions) and, more important, what kind of neural network you want instruct.
+DENN is a framework that aims to help the developer to construct a system for instructs Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which can be decided how the neural network should be trained. For example with the DE configuration JADE/Rand/1/Bin, Jade, Rand and Bin are three modules that can be selected and used. The plug-in that could be used are not only for the DE things, but also regard the dataset (i.e. where is it, how to manage it, etc.), how the neural network should be structured (i.e. how many levels and the activation functions) and, more important, what kind of neural network you want instruct.
 
 However, what really changes in DENN respect to the standard Differential Evolution is how the population evolves. As stated previously in \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the vectors population existence, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors has not a particular form, i.e. they are mono-dimensional vectors. 
 
@@ -21,8 +21,6 @@ For a better explanation of this concept, let's examine the mutation phase throu
 	\textbf{u}_{1}^{b_{|\textbf{HL}|}} &= \textbf{x}_{r_1}^{b_{|\textbf{HL}|}} + F \cdot (\textbf{x}_{r_2}^{b_{|\textbf{HL}|}} - \textbf{x}_{r_3}^{b_{|\textbf{HL}|}})
 \end{align}
 where $w_i$ and $b_i$ represent the weights and bias vectors of the $\textrm{i}^{\textrm{th}}$ level and \textbf{HL} is the hidden layers set. The same work is made also for the crossover phase, so we do not explain it with an example which is leaved to the reader.
-
-Moreover, 
 
 \begin{verbatim}
 // Initialization
@@ -91,7 +89,8 @@ args
 
 \end{verbatim}
 \section{Theano}
-
+Theano is a Python library that lets to define easily complex mathematical expressions, execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. Theano is created at LISA labs of University of Montreal. However, how we see later, the performance on CPU is quite slower respect to DENN.
+\section{Motivations}
 
 \section{Implementations}
 Our thesis work are sub-divided in two parallel projects: a refactoring of the already existing project of Andrew Gibiansky, written in pure Python and based on Theano, to which some parts of NRAM are missing and an implementation from zero of NRAM based on what is offered by DENN.
