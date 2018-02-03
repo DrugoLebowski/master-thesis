@@ -53,16 +53,16 @@ The Perceptron model is the basic and simplest type of Neural Network, proposed 
 
 
 This model calculate the output $\hat{y}$ as a weighted sum of the input respect to the connections weight, to which is summed the bias (a value used to rectify, in this case, the neural network output). So recalling some math, the output of the Perceptron model can be expressed in the following way:
-\begin{center}
-	$\hat{y} = \textbf{g}(w_{0}x_{0} + w_{1}x_{1} + \dots + w_{i-1}x_{i-1}  + w_{i}x_{i} + b  ) = \textbf{g}(\textbf{w} \bullet \textbf{x})$
-\end{center}
-where $i = 1, \dots, N$ and $N$ is the cardinality of the vector $\textbf{x}$ and the $\textbf{g}$ acts as the activation function\ref{fig:activation-functions}.
-The training of a Perceptron neural network consist in recalculate (the key passage at the step 7 of algorithm \ref{alg:perceptron-learning}), or more precisely adapting, in an iterative manner the weight of the connections until they are able to fit the input data, i.e. the examples $(x, y) \in D$, minimizing or maximizing an objective function.
-At the step 7 of the algorithm \ref{alg:perceptron-learning}
+\begin{equation}
+	\hat{y} = \textbf{g}(w_{0}x_{0} + w_{1}x_{1} + \dots + w_{N}x_{N} + b  ) = \textbf{g}(\textbf{w} \bullet \textbf{x} + \textbf{b})
+\end{equation}
+where $i = 1, \dots, N$ and $N$ is the cardinality of the vector $\textbf{x}$ and the $\textbf{g}$ acts as the activation function.
+The training of the Perceptron consists in recompute (the key passage at the step 7 of Algorithm \ref{alg:perceptron-learning}), or more precisely update, in an iterative manner the connections weight until they are able to fit the input data, i.e. the examples $(x, y) \in D$, optimizing the objective function.
+At the step 7 of the Algorithm \ref{alg:perceptron-learning}
 \begin{center}
 	$w_{j}^{(k + 1)} = w_{j}^{(k)} + \lambda(y_{i} + \hat{y}_{i}^{(k)})x_{ij}$	
 \end{center}
-we can recognize the $w_{j}^{(k)}$ that is the connection weight of this step, $\lambda$ is the learning rate which is a parameter that instruct the learning algorithm how much quickly the neural network must abandons the old beliefs to substitute them with the new ones and $x_{ij}$ that is the $j^{th}$ value of the $i^{th}$ example.
+where $w_{j}^{(k)}$ is the connection weight at the step $k$, $\lambda$ is the learning rate\footnote{Learning rate is a parameter that indicates to the optimization algorithm how much quickly the neural network must abandons the "old beliefs" substituting them with the new ones, or in other words, how much the connections weight are updated.} and $x_{ij}$ is the $j^{th}$ feature of the $i^{th}$ example.
 
 \begin{algorithm}
 	\begin{algorithmic}[1]
@@ -81,7 +81,7 @@ we can recognize the $w_{j}^{(k)}$ that is the connection weight of this step, $
 \end{algorithm}
 
 \section{Multi-Layer Perceptron (MLP)}
-The multilayer perceptron, known as feedforward neural networks, can be seen as an evolution of the perceptron, principally created to resolve the problem that this latter has because:
+The multilayer perceptron, known as feedforward neural networks, can be seen as an evolution of the perceptron, and it has been principally created to resolve the problem that this latter has because:
 \begin{itemize}
 	\item{It can not handles a domain $(\textbf{x}, y) \in D$ with more than two classes, because it divides the input data in only two boundaries, as it can be seen in the figure \ref{fig:perceptron-boundaries}, so more dimensions can not be handled}
 	\item{It can not converge if the data is not linearly separable and this leads to reduce the use of Perceptron in many few case (trivially when the data is linearly separable)}
@@ -119,9 +119,9 @@ The multilayer perceptron, known as feedforward neural networks, can be seen as 
 
 As the Perceptron the goal of MLP is to approximate a function $f^{*}$ that should represents the underlying data with which the neural network is trained, e.g. a classifier where $y=f^{*}(\textbf{x})$ associates an example record $\textbf{x}$ to class $y$.\\
 
-These models, that includes also single layered perceptron, are called feedforward because the informations flow through the input layer, that contains the data from the example \textbf{x}, through all the intermediate layers called \textbf{hidden layers} and finally to the output layer $\textbf{y}$. So all these levels are connected only with next  and what is missing are feedback connections that fed back the network with the output of neural network, exclusive characteristic of others neural networks called \textbf{recurrent neural networks}. \\
+These models set, that include also single layered perceptron, are called \textit{feedforward} because the information flows through the input layer, that contains the data from the example \textbf{x}, through all the intermediate layers called \textbf{hidden layers} and finally to the output layer $\textbf{y}$. So all these levels are connected only with the ones next and feedback connections that fed back the network are missing. Neural networks having this exclusive characteristic are called \textbf{recurrent neural networks}. \\
 
-To all of these layer are associated different functions, called \textbf{activation functions}, that permits to the layers to produce output values that are nonlinear respect the input parameters. Thus, in an other perspective, a feedforward neural networks can be seen as a chain of activation functions.
+To all of these layer are associated different functions, called \textbf{activation functions}, that allow the layers to produce non-linear output values. Thus, in an other perspective, a feedforward can be seen as a chain of activation functions.
 
 \begin{figure}[t]
 	\centering
@@ -192,16 +192,16 @@ To all of these layer are associated different functions, called \textbf{activat
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (5.5,4) -- (6.75,4) node [black,midway,yshift=+0.6cm]{$2^{\text{nd}}$ hidden layer};
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (8.5,3.125) -- (9.75,3.125) node [black,midway,yshift=+0.6cm]{output layer};
 	\end{tikzpicture}
-	\caption[Graph representation of feedforward neural network.]{Graph representation of feedforward neural network with $(2)$-layer, with $D$ input units and $2$ output units. For simplicity of representation all the labels $w_{ij}$ associated to the edges, that represent the weights/parameters of the neural networks, are omitted.}
+	\caption[Graph representation of feedforward neural network.]{Graph representation of feedforward neural network with $(2)$-layer, with $D$ input units and $2$ output units (class). For simplicity of representation all the labels $w_{ij}$ associated to the edges, that represent the weights/parameters of the neural networks, are omitted.}
 	\label{fig:multilayer-perceptron}
 \end{figure}
 
 From this description we can see that the major difference between single-layered perceptron and feedforward neural networks is the training strategy. In fact the design of the FFN prevents to approach the training with the same strategy used with the perceptron because we does not have \textit{a priori} the informations regard the desired output of all the hidden layers, so we can not update the weights as we have seen in the perceptron.
 
 \section{Artificial Neural Network training} 
-The training of a ANN generally follow two main steps: the initialization of the weights and the recalculation of these latter with an algorithm that is guided by the objective to minimize or maximize an objective function in an iterative manner\footnote{In specific we speak of \textbf{cost} or \textbf{loss} function if the objective is to minimize this latter.}, searching for a global minimum\footnote{Obviously the global minimum is not guaranteed and this depend by the problem, the ANN adopted design and the optimization algorithm. Often what is found is a local minimum, which not guarantee that the ANN represents the underlying data.}.
+The ANN train generally follows two main steps: the initialization of the connections weight and the recompute of these with an iterative algorithm that is guided by the optimization of an objective function\footnote{In specific we speak of \textbf{cost} or \textbf{loss} function if the objective is to minimize this latter.}, searching for a global minimum\footnote{Obviously the global minimum is not guaranteed and this depend by the problem, the ANN adopted design and the optimization algorithm. Often what is found is a local minimum, which not guarantee that the ANN represents the underlying data.}.
 
-The specific operations in the second step are variable and depend by the used algorithm, but generally can be subdivided in two more sub-steps: firstly is calculated the objective function with which, in the second steps, all the weights are recalculated with some strategy/algorithm. The most famous technique to do this is the backpropagation, that we present in the subsection \ref{subsec:backpropagation}, coupled to some gradient based optimization algorithm such as Stochastic Gradient Descent or ADAM. However is not the only that exists, as we show in the section \ref{chap:differential-evolution}.
+The specific operations in the second step can be further split in two sub-steps: firstly  the objective function is computed then, in the second step, all the connections weight are updated with some strategy/algorithm according to the objective function value. The most famous technique to do this is the backpropagation, that we present in the subsection \ref{subsec:backpropagation}. Most famouses optimization algorithms that are combined with it are Stochastic Gradient Descent \cite{DeepLearning:2016} or ADAM \cite{Kingma2014AdamAM}. However is not the only that exists, as we show in the section \ref{chap:differential-evolution}.
 
 \begin{algorithm}
 	\begin{algorithmic}[1]
@@ -222,7 +222,7 @@ The specific operations in the second step are variable and depend by the used a
 \end{algorithm}
 
 \subsection{Backpropagation}\label{subsec:backpropagation}
-Backpropagation is an algorithm introduced in \cite{RUM:1986} used to calculate the contribution in error of each neuron for a batch of data computed with respect to an objective function. This latter must be a function that can be capture the difference between the expected output, i.e. the $y$ associated to each example, and the generated output, i.e. the $\hat{y}$ associated to each example, transforming that in a real value.
+Backpropagation is an algorithm introduced in \cite{RUM:1986} used to optimize the weights in a neural network. It computes the contribution in error of each neuron for a batch of data, computed with respect to an objective function. This latter must be a function that can be capture the differences between the expected output, i.e. the $y$, and the generated output, i.e. the $\hat{y}$, transforming that in a real value.
 An example of objective function is the Total Sum of Squared errors:
 \begin{center}
 	\begin{equation}
