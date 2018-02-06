@@ -1,3 +1,5 @@
+% TODO: rinominare il capitolo
+
 In this chapter we initially introduce shortly the used framework DENN (Differential Evolution Neural Network), passing then to speak about the implementations with Gradient Descent and Differential Evolutions. Finally we show the experiments, comparing the efficiency of solutions.
 
 \section{DENN}\label{sec:DENN}
@@ -8,9 +10,9 @@ It is initially created as a TensorFlow extension due to the performance and sim
 \subsection{How does it work}
 DENN is a framework that aims to help the developer to construct a system for instructs Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which can be decided how the neural network should be trained. For example with the DE configuration JADE/Rand/1/Bin, Jade, Rand and Bin are three modules that can be selected and used. The plug-in that could be used are not only for the DE things, but also regard the dataset (i.e. where is it, how to manage it, etc.), how the neural network should be structured (i.e. how many levels and the activation functions) and, more important, what kind of neural network you want instruct.
 
-However, what really changes in DENN respect to the standard Differential Evolution is how the population evolves. As stated previously in \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the vectors population existence, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors has not a particular form, i.e. they are mono-dimensional vectors. 
+However, what really changes in DENN respect to the standard Differential Evolution is how the population evolves. As stated previously in \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the vectors population existence, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors has not a particular form, i.e. they are bi-dimensional vectors. 
 
-Hence in DENN, since the population is composed by NNs it cannot be used as is, i.e. as a mono-dimensional vectors set, but instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual corresponds to a NN and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents. 
+Hence in DENN, since the population is composed by NNs it cannot be used as is, i.e. as a bi-dimensional vectors set, but instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual corresponds to a NN and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents. 
 
 For a better explanation of this concept, let's examine the mutation phase through an example. Hence, let the Neural Networks population \textit{NP}, the mutation strategy Rand/1, $r_1, r_2$ and $r_3$ three mutually exclusive indexes and suppose we are creating the donor $\textbf{u}_{1}$. Hence, this donor is created as follows:
 \begin{align}
@@ -22,83 +24,83 @@ For a better explanation of this concept, let's examine the mutation phase throu
 \end{align}
 where $w_i$ and $b_i$ represent the weights and bias vectors of the $\textrm{i}^{\textrm{th}}$ level and \textbf{HL} is the hidden layers set. The same work is made also for the crossover phase, so we do not explain it with an example which is leaved to the reader.
 
-\begin{verbatim}
-// Initialization
-args 
-{
-	threads_pop 4
-	seed 02122017
-}
+\begin{table}[]
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+Argument     & Description \\ \hline \hline
 
-// Batch info
-args
-{
-	batch_size 5
-	batch_offset 1000
-	use_validation false 
-	-ctps false
-}
+\multicolumn{2}{|c|}{\textbf{Execution args}} \\ \hline
+threads\_pop & Executed threads of DENN \\ \hline
+seed     	 & Distribution seed \\ \hline
+instance		 & Type of model (nram/default) \\ \hline \hline
 
-//DE Params
-args 
-{
-	
-    generations 200
-	sub_gens 1
-    number_parents 160
-	
-	clamp_max  100.0
-	clamp_min -100.0
-	random_max  1.0
-	random_min  0.0
-	
-	-f 0.9
-	-cr 0.9
-	
-    evolution_method SHADE {
-		-as 0
-        shade_h 420
-    }
-	
-    mutation DEGL {
-        -glw 0.5
-        -glnn 10
-    }
-	
-    crossover bin
-}
+\multicolumn{2}{|c|}{\textbf{Batch info}} \\ \hline
+batch\_size  	 & Number of training examples \\ \hline
+batch\_offset	 & Examples per batch \\ \hline
+use\_validation & Activate pop validation at the end of a sub-geneneration \\ \hline
+cumpter\_test\_per\_pass     	 & Compute the test accuracy for each pass \\ \hline \hline
 
-//Network
-args 
-{
-	hidden_layers 130 130
-	active_functions relu relu
-}
+\multicolumn{2}{|c|}{\textbf{DE}} \\ \hline
+generations  	 & Total number of generations \\ \hline
+sub\_gens  	 	& Number of sub-generations \\ \hline
+number\_parents  	 	& DE population size \\ \hline
+f						& DE F coefficient \\ \hline
+cr						& DE CR coefficient \\ \hline
+evolution\_method 		& Evolution method (JADE/SHADE/L-SHADE) \\ \hline
+mutation 				& Mutation method (degl/curr\_p\_best) \\ \hline
+crossover				& Crossover method (bin/exp/interm) \\ \hline
 
-// NRam  arguments
-args 
-{
-    instance nram
-    task copy
-    max_int 10
-    n_registers 4
-    time_steps 9
-    gates read one inc add min max write
-	output copy_test.json
-}
+\multicolumn{2}{|c|}{\textbf{Network}} \\ \hline
+hidden\_layers  	 		& Levels size \\ \hline
+activation\_functions  	& Activation functions of levels \\ \hline
 
-\end{verbatim}
+\multicolumn{2}{|c|}{\textbf{NRAM}} \\ \hline
+task  	 		& Task to execute \\ \hline
+max\_int  		& Max int in the set \\ \hline
+n\_registers  	& Registers to use \\ \hline
+time\_steps  	& Execution timesteps \\ \hline
+gates  			& Gates to use \\ \hline
+step\_gen\_change\_difficulty & Number of gen where the same difficulty is used  \\ \hline
+
+\end{tabular}
+\caption{Some arguments used in a DENN's configuration file.}
+\end{table}
+
 \section{Theano}
-Theano is a Python library that lets to define easily complex mathematical expressions, execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. Theano is created at LISA labs of University of Montreal. However, how we see later, the performance on CPU is quite slower respect to DENN.
-\section{Motivations}
+Theano is a Python library created at LISA labs of University of Montreal, that lets to define easily complex mathematical expressions and execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. However, how we see later, the performance on CPU is quite slower respect to DENN.
 
 \section{Implementations}
 Our thesis work are sub-divided in two parallel projects: a refactoring of the already existing project of Andrew Gibiansky, written in pure Python and based on Theano, to which some parts of NRAM are missing and an implementation from zero of NRAM based on what is offered by DENN.
 
+\subsection{Preface}
+Because some problems are too complex to be learn by NRAM, we have also used some of the technique that have been used in the original paper \cite{NRAM:2016}.
+
+\paragraph{Gradient clipping}
+The size of the model can be extremely huge and moreover extremely depth, due to the execution in various timesteps. In this types of networks the gradient can often explodes, as noticed in \cite{Bengio1994LearningLD}. So to resolve this problem, in Theano implementation all the gradients are clipped in the range $[-C_1, C_1]$ and successively rescaled, such that its $L_2$ norm is not bigger than some constant $C_2$.
+
+\paragraph{Noise}
+As noticed in \cite{Neelakantan2015AddingGN}, in Theano implementation after that the gradients are computed, clipped and rescaled is added Gaussian noise, whose variance decays over time.
+
+\paragraph{Entropy}
+As for \cite{NRAM:2016}, we also noticed that the network can fix the pointer in some value. Also  could an advantage in some cases. However, if this happen too early in the training, it could force the net to stay fixed on some pointer with a very small chances of change. Hence, to alleviate this condition, we give to the network a sort of a ``entropy bonus'' which decreases over time. This entropy is computed for each emitted distribution by the neural network with the Shannon entropy and is multiplied for the following coefficient that decreases over timestep
+\begin{equation}
+	E = e * d^{t}
+\end{equation}
+where $e$ is the entropy coefficient, $d$ is the entropy coefficient decay and $t$ is the timestep. After that, the computer value is subtracted from cost function value.
+
+\paragraph{Curriculum training}
+As noticed by \cite{Bengio2009CurriculumL} and \cite{Zaremba2014LearningTE}, curriculum learning is crucial for train very deep neural networks. Hence, as in the original paper we used the curriculum learning from \cite{Zaremba2014LearningTE} with small modifications.
+
+For each task we have defined manually a set of increasing difficulties, where a difficulty $d$ is defined as a tuple containing the length of working sequence and the number of timesteps of running. During the training a difficulty is selected according to the current difficulty $D$ as follows:
+\begin{itemize}
+	\item{with probability 10\%: pick $d$ randomly from the set of all difficulties according to a uniform distribution.}
+	\item{with probability 25\%: pick $d$ randomly from the set $[1, D + e]$ according to a uniform distribution, with $e$ generated from a geometric distribution with a success probability of 0.5.}
+	\item{with probability 65\%: set $d = D + e$ where $e$ is sampled as above.}
+\end{itemize}
+How frequently the difficulty is changed is decided by the user from command line.
+
 \subsection{Python \&{} Theano}
 
 \subsection{C++ \&{} DENN}
-
-\section{Experiments}
-
-\subsection{Circuits}

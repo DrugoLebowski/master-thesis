@@ -127,4 +127,4 @@
 % Bibliografia in ordine alfabetico
 \let \OldBib \bibliography
 \renewcommand{\bibliography}[1]{\newpage \markboth{Bibliography}{Bibliography} \OldBib{#1}}
-\bibliographystyle{alpha}
+\bibliographystyle{apalike}
