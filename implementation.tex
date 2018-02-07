@@ -1,5 +1,3 @@
-% TODO: rinominare il capitolo
-
 In this chapter we initially introduce shortly the used framework DENN (Differential Evolution Neural Network), passing then to speak about the implementations with Gradient Descent and Differential Evolutions. Finally we show the experiments, comparing the efficiency of solutions.
 
 \section{DENN}\label{sec:DENN}
@@ -69,9 +67,9 @@ step\_gen\_change\_difficulty & Number of gen where the same difficulty is used 
 \end{table}
 
 \section{Theano}
-Theano is a Python library created at LISA labs of University of Montreal, that lets to define easily complex mathematical expressions and execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. However, how we see later, the performance on CPU is quite slower respect to DENN.
+Theano is a Python library created at LISA labs of University of Montreal, which lets to define easily complex mathematical expressions and execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. However, how we see later, the performance on CPU is quite slower respect to DENN.
 
-\section{Implementations}
+\section{Implementation}
 Our thesis work are sub-divided in two parallel projects: a refactoring of the already existing project of Andrew Gibiansky, written in pure Python and based on Theano, to which some parts of NRAM are missing and an implementation from zero of NRAM based on what is offered by DENN.
 
 \subsection{Preface}
@@ -101,6 +99,63 @@ For each task we have defined manually a set of increasing difficulties, where a
 \end{itemize}
 How frequently the difficulty is changed is decided by the user from command line.
 
-\subsection{Python \&{} Theano}
+\subsection{How we did it}
+The implementation of NRAM core is similar between the two solutions. What is different between them is how the optimal neural network is searched. As stated previously, in DENN is searched through a parallel evolution of a population of neural networks, differently to Theano implementation where the neural network is trained applying the ADAM algorithm. Hence, leaving out this framework specific algorithm we speak only about the NRAM implementation. Moreover, we present only our work and not what did by Andrew Gibiansky.
 
-\subsection{C++ \&{} DENN}
+The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}. 
+
+\begin{algorithm}
+	\begin{algorithmic}[1]
+		\Function{NRAM}{NeuralNetwork, BatchSize, IMem, OMem, CostMask, MaxInt, T, Gates}
+			\State{Cost = 0.0}			
+            \State{ProbIncomplete = 1.0}
+            \State{CumProbComplete = 0.0};
+            \State{$p_T = 1.0$}
+            \State{EntropyCoeff = 0.1}
+            \State{EntropyDecay = 0.999}
+			\For{$t\in[1, \dots, T]$}
+				\State{Conf = \Call{NeuralNetwork.predict()}{}}
+				\State{($f_i$, Distributions) = \Call{RunCircuit}{Conf, Gates, MaxInt, IMem, Regs}}			
+				\If{t == T}
+					\State{$p_T$ = 1 - CumProbComplete}
+				\Else
+					\State{$p_T$ = $f_i$ * ProbIncomplete}
+				\EndIf
+				
+                \State{CumProbComplete = CumProbComplete + $p_t$}
+                \State{ProbIncomplete = ProbIncomplete * ($1 - f_i$)}
+                
+                \State{EntropyWeight = $\textrm{EntropyCoeff}*\textrm{EntropyDecay}^t$}
+                \State{EntropyCost = 0.0}
+                \For{$d\in\textrm{Distributions}$}
+                		\State{EntropyCost = EntropyCost \Call{Entropy}{$d$}}
+                \EndFor
+ 	            \State{EntropyCost = EntropyCost * EntropyWeight}
+                
+                \State{Cost += \Call{CalculateCost}{InMem, OutMem, CostMask} - EntropyCost}
+			\EndFor{}
+			\State{\Return Cost}
+		\EndFunction
+	\end{algorithmic}
+	\caption{Main block's pseudocode of NRAM.}\label{alg:nram-main-block}
+\end{algorithm}
+
+\begin{algorithm}
+	\begin{algorithmic}[1]
+		\Function{RunCircuit}{Conf, Gates, MaxInt, IMem, Regs}
+			
+		\EndFunction
+	\end{algorithmic}
+	\caption{Run circuit function pseudocode.}\label{alg:nram-run-circuit}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\begin{algorithmic}[1]
+		\Function{Avg}{RegsOut, Coefficient} 
+		
+		\EndFunction
+	\end{algorithmic}
+	\caption{Avg function pseudocode}\label{alg:nram-average}
+\end{algorithm}
+
