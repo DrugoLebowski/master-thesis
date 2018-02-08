@@ -102,20 +102,20 @@ How frequently the difficulty is changed is decided by the user from command lin
 \subsection{How we did it}
 The implementation of NRAM core is similar between the two solutions. What is different between them is how the optimal neural network is searched. As stated previously, in DENN is searched through a parallel evolution of a population of neural networks, differently to Theano implementation where the neural network is trained applying the ADAM algorithm. Hence, leaving out this framework specific algorithm we speak only about the NRAM implementation. Moreover, we present only our work and not what did by Andrew Gibiansky.
 
-The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, where for simplicity we have leave out specific language details, such the types.
+The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, where for simplicity we have leaving out specific language details, such the types. The execution starts with the setting of some variables, such as cost variable and the constants used for entropy computing. The main cycle is at Line \ref{lst:nram-timesteps} - in every timestep the network releases all the coefficients, i.e. the circuit connections, precisely at Line \ref{lst:nram-nn-predict}. At Line \ref{lst:nram-run-circuit} is executed the circuit, with the Algorithm \ref{alg:nram-run-circuit} - it produces a tuple containing the willingness of terminate the execution and the distributions set with which is computed from Line \ref{} to \ref{} the timestep cost.
 
 \begin{algorithm}
 	\begin{algorithmic}[1]
 		\Function{NRAM}{NeuralNetwork, BatchSize, IMem, OMem, CostMask, MaxInt, T, Gates}
 			\State{Cost = 0.0}			
-            \State{ProbIncomplete = 1.0}
-            \State{CumProbComplete = 0.0};
-            \State{$p_T = 1.0$}
-            \State{EntropyCoeff = 0.1}
-            \State{EntropyDecay = 0.999}
-			\For{$t\in[1, \dots, T]$}
-				\State{Conf = \Call{NeuralNetwork.predict()}{}}
-				\State{($f_i$, Distributions) = \Call{RunCircuit}{Conf, Gates, MaxInt, IMem, Regs}}			
+            	\State{ProbIncomplete = 1.0}
+            	\State{CumProbComplete = 0.0};
+            	\State{$p_T = 1.0$}
+            	\State{EntropyCoeff = 0.1}
+            	\State{EntropyDecay = 0.999}
+			\For{$t\in[1, \dots, T]$}\label{lst:nram-timesteps}
+				\State{Conf = \Call{NeuralNetwork.predict()}{}}\label{lst:nram-nn-predict}
+				\State{($f_i$, Distributions) = \Call{RunCircuit}{Conf, Gates, MaxInt, IMem, Regs}}\label{lst:nram-run-circuit}
 				\newline
 				\If{t == T}
 					\State{$p_T$ = 1 - CumProbComplete}
@@ -123,17 +123,17 @@ The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, 
 					\State{$p_T$ = $f_i$ * ProbIncomplete}
 				\EndIf
 				\newline
-                \State{CumProbComplete = CumProbComplete + $p_t$}
-                \State{ProbIncomplete = ProbIncomplete * ($1 - f_i$)}
-                \newline
-                \State{EntropyWeight = $\textrm{EntropyCoeff}*\textrm{EntropyDecay}^t$}
-                \State{EntropyCost = 0.0}
-                \For{$d\in\textrm{Distributions}$}
-                		\State{EntropyCost = EntropyCost \Call{Entropy}{$d$}}
-                \EndFor
- 	            \State{EntropyCost = EntropyCost * EntropyWeight}
-                \newline
-                \State{Cost += \Call{CalculateCost}{InMem, OutMem, CostMask} - EntropyCost}
+               	\State{CumProbComplete = CumProbComplete + $p_t$}
+                	\State{ProbIncomplete = ProbIncomplete * ($1 - f_i$)}
+                	\newline
+                	\State{EntropyWeight = $\textrm{EntropyCoeff}*\textrm{EntropyDecay}^t$}
+                	\State{EntropyCost = 0.0}
+                	\For{$d\in\textrm{Distributions}$}
+                		\State{EntropyCost = EntropyCost+\Call{Entropy}{$d$}}
+                	\EndFor
+ 	            	\State{EntropyCost = EntropyCost * EntropyWeight}
+                	\newline
+                	\State{Cost += \Call{CalculateCost}{InMem, OutMem, CostMask} - EntropyCost}
 			\EndFor{}
 			\newline
 			\State{\Return Cost}
