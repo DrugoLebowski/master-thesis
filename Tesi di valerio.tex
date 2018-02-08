@@ -107,17 +107,17 @@
 
 
 \makeatletter
+
+% Algorithmic Function new command
 \renewcommand{\Function}[2]{%
   \csname ALG@cmd@\ALG@L @Function\endcsname{#1}{#2}%
   \def\jayden@currentfunction{#1}%
 }
-\newcommand{\funclabel}[1]{%
-  \@bsphack
-  \protected@write\@auxout{}{%
-    \string\newlabel{#1}{{\jayden@currentfunction}{\thepage}}%
-  }%
-  \@esphack
-}
+
+% Algorithmic ForEach new command
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
 \makeatother
 
 

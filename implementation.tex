@@ -102,7 +102,7 @@ How frequently the difficulty is changed is decided by the user from command lin
 \subsection{How we did it}
 The implementation of NRAM core is similar between the two solutions. What is different between them is how the optimal neural network is searched. As stated previously, in DENN is searched through a parallel evolution of a population of neural networks, differently to Theano implementation where the neural network is trained applying the ADAM algorithm. Hence, leaving out this framework specific algorithm we speak only about the NRAM implementation. Moreover, we present only our work and not what did by Andrew Gibiansky.
 
-The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}. 
+The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, where for simplicity we have leave out specific language details, such the types.
 
 \begin{algorithm}
 	\begin{algorithmic}[1]
@@ -116,24 +116,26 @@ The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}.
 			\For{$t\in[1, \dots, T]$}
 				\State{Conf = \Call{NeuralNetwork.predict()}{}}
 				\State{($f_i$, Distributions) = \Call{RunCircuit}{Conf, Gates, MaxInt, IMem, Regs}}			
+				\newline
 				\If{t == T}
 					\State{$p_T$ = 1 - CumProbComplete}
 				\Else
 					\State{$p_T$ = $f_i$ * ProbIncomplete}
 				\EndIf
-				
+				\newline
                 \State{CumProbComplete = CumProbComplete + $p_t$}
                 \State{ProbIncomplete = ProbIncomplete * ($1 - f_i$)}
-                
+                \newline
                 \State{EntropyWeight = $\textrm{EntropyCoeff}*\textrm{EntropyDecay}^t$}
                 \State{EntropyCost = 0.0}
                 \For{$d\in\textrm{Distributions}$}
                 		\State{EntropyCost = EntropyCost \Call{Entropy}{$d$}}
                 \EndFor
  	            \State{EntropyCost = EntropyCost * EntropyWeight}
-                
+                \newline
                 \State{Cost += \Call{CalculateCost}{InMem, OutMem, CostMask} - EntropyCost}
 			\EndFor{}
+			\newline
 			\State{\Return Cost}
 		\EndFunction
 	\end{algorithmic}
@@ -143,7 +145,35 @@ The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}.
 \begin{algorithm}
 	\begin{algorithmic}[1]
 		\Function{RunCircuit}{Conf, Gates, MaxInt, IMem, Regs}
-			
+			\State{RegsAndOutput = \Call{Copy}{Regs}}
+			\State{Distributions = []}
+			\newline
+			\ForEach{$g\in \textrm{Gates}$}\Comment{Run of the circuit}
+				\If{\Call{g.isConstant}}
+					\State{GateResult = g.\Call{Value}{}}
+				\ElsIf{\Call{g.isUnary}}
+					\State{Coeff = \Call{GetGateCoefficient}{Conf, g}}
+					\State{Distributions.\Call{Push}{Coeff}}
+					\State{InputValue = \Call{Avg}{RegsAndOutput, Coeff}}
+					\State{GateResult = g.\Call{execute}{InputValue, IMem, MaxInt}}	
+				\Else
+					\State{(CoeffA, CoeffB) = \Call{GetGateCoefficient}{Conf, g}}			
+					\State{Distributions.\Call{Push}{CoeffA}}	
+					\State{Distributions.\Call{Push}{CoeffB}}
+					\State{InputValueA = \Call{Avg}{RegsAndOutput, CoeffA}}
+					\State{InputValueB = \Call{Avg}{RegsAndOutput, CoeffB}}
+					\State{GateResult = g.\Call{execute}{GateValueA, GateValueB, IMem, MaxInt}}	
+				\EndIf
+				\State{RegsAndOutput = \Call{Concatenate}{Regs, GateValue}}
+			\EndFor
+			\newline
+			\For{$i\in[1, \dots, |Regs|]$}\Comment{Update of the registers}
+				\State{Coeff = \Call{GetGateCoefficient}{Conf, i}}
+				\State{NewValue = \Call{Avg}{RegsAndOutput, Coeff}}
+				\State{Regs[i] = NewValue}
+			\EndFor
+			\newline
+			\State{\Return{(Conf[|Conf| - 1], Distributions)}}
 		\EndFunction
 	\end{algorithmic}
 	\caption{Run circuit function pseudocode.}\label{alg:nram-run-circuit}
@@ -153,7 +183,7 @@ The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}.
 \begin{algorithm}
 	\begin{algorithmic}[1]
 		\Function{Avg}{RegsOut, Coefficient} 
-		
+			\State{\Return{RegsOut * Coefficient}}
 		\EndFunction
 	\end{algorithmic}
 	\caption{Avg function pseudocode}\label{alg:nram-average}
