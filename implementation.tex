@@ -100,9 +100,13 @@ For each task we have defined manually a set of increasing difficulties, where a
 How frequently the difficulty is changed is decided by the user from command line.
 
 \subsection{How we did it}
-The implementation of NRAM core is similar between the two solutions. What is different between them is how the optimal neural network is searched. As stated previously, in DENN is searched through a parallel evolution of a population of neural networks, differently to Theano implementation where the neural network is trained applying the ADAM algorithm. Hence, leaving out this framework specific algorithm we speak only about the NRAM implementation. Moreover, we present only our work and not what did by Andrew Gibiansky.
+The implementation of NRAM is similar between the two solutions. What is different between them is how the optimal neural network is searched. As stated previously, in DENN is searched through a parallel evolution of a population of neural networks, differently to Theano implementation where the neural network is trained applying the ADAM algorithm. Hence, leaving out this framework specific algorithm we speak only about the NRAM implementation. Moreover, we present only our work and not what did by Andrew Gibiansky.
 
-The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, where for simplicity we have leaving out specific language details, such the types. The execution starts with the setting of some variables, such as cost variable and the constants used for entropy computing. The main cycle is at Line \ref{lst:nram-timesteps} - in every timestep the network releases all the coefficients, i.e. the circuit connections, precisely at Line \ref{lst:nram-nn-predict}. At Line \ref{lst:nram-run-circuit} is executed the circuit, with the Algorithm \ref{alg:nram-run-circuit} - it produces a tuple containing the willingness of terminate the execution and the distributions set with which is computed from Line \ref{} to \ref{} the timestep cost.
+The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, where for simplicity we have leaving out specific language details, such the types. The execution starts with the setting of some variables, such as cost variable and the constants used for entropy computing. The main cycle is at Line \ref{lst:nram-timesteps} - in every timestep the network releases all the coefficients, i.e. the circuit connections, precisely at Line \ref{lst:nram-nn-predict}. At Line \ref{lst:nram-run-circuit} is executed the circuit, with the Algorithm \ref{alg:nram-run-circuit} - it produces a tuple containing the willingness of terminate the execution and the distributions set with which is computed from Line \ref{lst:nram-cost-1} to \ref{lst:nram-cost-2} the timestep cost.
+\newline\newline
+The magic of NRAM happens in Algorithm \ref{alg:nram-run-circuit}, where the circuit is run. From Line \ref{lst:nram-exec-circuit-1} to \ref{lst:nram-exec-circuit-2}, each gate in the list \textbf{Gates} is executed, getting an input\footnote{Depending by the type - Costant gate produce a constant output without getting an input, unary and binary gate gate get, respectively, one and two input.} and producing an output, which might be accessed later by another gate. From Line \ref{lst:nram-up-reg-1} to \ref{lst:nram-up-reg-2}, the registers are updated with the previous register content at timestep $t-1$ or the output produced by gates.
+\newline\newline
+As it can be seen in the Lines \ref{lst:nram-avg-1}, \ref{lst:nram-avg-2}, \ref{lst:nram-avg-3} and \ref{lst:nram-avg-4}, the selection of gates's input and registers's new content is made through the function in Algorithm \ref{alg:nram-average} which do a weighted average. Finally, the functions \textsc{GetGateCoefficient} and \textsc{GetRegisterCoefficient} are purely conceptual functions which indicates a method with which the coefficients are get.
 
 \begin{algorithm}
 	\begin{algorithmic}[1]
@@ -117,7 +121,7 @@ The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, 
 				\State{Conf = \Call{NeuralNetwork.predict()}{}}\label{lst:nram-nn-predict}
 				\State{($f_i$, Distributions) = \Call{RunCircuit}{Conf, Gates, MaxInt, IMem, Regs}}\label{lst:nram-run-circuit}
 				\newline
-				\If{t == T}
+				\If{t == T}\label{lst:nram-cost-1}
 					\State{$p_T$ = 1 - CumProbComplete}
 				\Else
 					\State{$p_T$ = $f_i$ * ProbIncomplete}
@@ -128,12 +132,12 @@ The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, 
                 	\newline
                 	\State{EntropyWeight = $\textrm{EntropyCoeff}*\textrm{EntropyDecay}^t$}
                 	\State{EntropyCost = 0.0}
-                	\For{$d\in\textrm{Distributions}$}
+                	\ForEach{$d\in\textrm{Distributions}$}
                 		\State{EntropyCost = EntropyCost+\Call{Entropy}{$d$}}
                 	\EndFor
  	            	\State{EntropyCost = EntropyCost * EntropyWeight}
                 	\newline
-                	\State{Cost += \Call{CalculateCost}{InMem, OutMem, CostMask} - EntropyCost}
+                	\State{Cost += \Call{CalculateCost}{InMem, OutMem, CostMask} - EntropyCost}\label{lst:nram-cost-2}
 			\EndFor{}
 			\newline
 			\State{\Return Cost}
@@ -148,30 +152,30 @@ The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, 
 			\State{RegsAndOutput = \Call{Copy}{Regs}}
 			\State{Distributions = []}
 			\newline
-			\ForEach{$g\in \textrm{Gates}$}\Comment{Run of the circuit}
+			\ForEach{$g\in \textrm{Gates}$}\Comment{Run of the circuit}\label{lst:nram-exec-circuit-1}
 				\If{\Call{g.isConstant}}
 					\State{GateResult = g.\Call{Value}{}}
 				\ElsIf{\Call{g.isUnary}}
 					\State{Coeff = \Call{GetGateCoefficient}{Conf, g}}
 					\State{Distributions.\Call{Push}{Coeff}}
-					\State{InputValue = \Call{Avg}{RegsAndOutput, Coeff}}
+					\State{InputValue = \Call{Avg}{RegsAndOutput, Coeff}}\label{lst:nram-avg-1}
 					\State{GateResult = g.\Call{execute}{InputValue, IMem, MaxInt}}	
 				\Else
 					\State{(CoeffA, CoeffB) = \Call{GetGateCoefficient}{Conf, g}}			
 					\State{Distributions.\Call{Push}{CoeffA}}	
 					\State{Distributions.\Call{Push}{CoeffB}}
-					\State{InputValueA = \Call{Avg}{RegsAndOutput, CoeffA}}
-					\State{InputValueB = \Call{Avg}{RegsAndOutput, CoeffB}}
+					\State{InputValueA = \Call{Avg}{RegsAndOutput, CoeffA}}\label{lst:nram-avg-2}
+					\State{InputValueB = \Call{Avg}{RegsAndOutput, CoeffB}}\label{lst:nram-avg-3}
 					\State{GateResult = g.\Call{execute}{GateValueA, GateValueB, IMem, MaxInt}}	
 				\EndIf
 				\State{RegsAndOutput = \Call{Concatenate}{Regs, GateValue}}
-			\EndFor
+			\EndFor{}\label{lst:nram-exec-circuit-2}
 			\newline
-			\For{$i\in[1, \dots, |Regs|]$}\Comment{Update of the registers}
+			\For{$i\in[1, \dots, |\textrm{Regs}|]$}\Comment{Update of the registers}\label{lst:nram-up-reg-1}
 				\State{Coeff = \Call{GetGateCoefficient}{Conf, i}}
-				\State{NewValue = \Call{Avg}{RegsAndOutput, Coeff}}
+				\State{NewValue = \Call{Avg}{RegsAndOutput, Coeff}}\label{lst:nram-avg-4}
 				\State{Regs[i] = NewValue}
-			\EndFor
+			\EndFor{}\label{lst:nram-up-reg-2}
 			\newline
 			\State{\Return{(Conf[|Conf| - 1], Distributions)}}
 		\EndFunction
