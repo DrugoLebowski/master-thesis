@@ -30,8 +30,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 \addtolength{\headheight}{14pt}
-\fancyhead[R]{\textbf{\thepage}}
-\fancyhead[L]{\textbf{\leftmark}}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\leftmark}
 
 % AnnoAccademico (Anno/Anno+1)
 \newcommand{\@annoAccademico}{2016/2017}

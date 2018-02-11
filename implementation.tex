@@ -1,4 +1,4 @@
-In this chapter we initially introduce shortly the used framework DENN (Differential Evolution Neural Network), passing then to speak about the implementations with Gradient Descent and Differential Evolutions. Finally we show the experiments, comparing the efficiency of solutions.
+In this chapter we initially introduce shortly the used frameworks DENN (Differential Evolution Neural Network) and Theano, passing then to speak about the implementations.
 
 \section{DENN}\label{sec:DENN}
 DENN is a framework written in C++ by Gabriele Di Bari and Mirco Tracolli, based on their thesis work. It aims to apply the Differential Evolution concepts on the ANN training as an alternative to Gradient-based algorithms. 
@@ -6,13 +6,13 @@ DENN is a framework written in C++ by Gabriele Di Bari and Mirco Tracolli, based
 It is initially created as a TensorFlow extension due to the performance and simplicity offered by this latter, but now is completely based on the C++ library Eigen due to its implementation based on the high performance library LAPACK written in Fortran 77.
 
 \subsection{How does it work}
-DENN is a framework that aims to help the developer to construct a system for instructs Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which can be decided how the neural network should be trained. For example with the DE configuration JADE/Rand/1/Bin, Jade, Rand and Bin are three modules that can be selected and used. The plug-in that could be used are not only for the DE things, but also regard the dataset (i.e. where is it, how to manage it, etc.), how the neural network should be structured (i.e. how many levels and the activation functions) and, more important, what kind of neural network you want instruct.
+DENN is a framework that aims to help the developer to construct a system for train Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which is decided how the neural network should be trained. For example, let the Differential Evolution configuration JADE/Rand/1/Bin - in DENN JADE, Rand/1 and Bin are three modules that can be selected for the training at the time of configuration. The plug-in that could be used are not only for the DE things, but also regard the dataset\footnote{ where is it, how to manage it, etc.}, how the neural network should be structured\footnote{how many levels and the activation functions} and, more important, what kind of neural network you want instruct\footnote{At this time, DENN can trains only feed-forward networks.}. Some of the configuration parameters can be found in the Table \ref{tbl:denn-parameters}.
 
-However, what really changes in DENN respect to the standard Differential Evolution is how the population evolves. As stated previously in \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the vectors population existence, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors has not a particular form, i.e. they are bi-dimensional vectors. 
+However, what really changes in DENN respect to the standard Differential Evolution is how the population evolves. As stated previously in \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the existence of a population of vectors, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors has not a particular form, i.e. they are bi-dimensional vectors. 
 
-Hence in DENN, since the population is composed by NNs it cannot be used as is, i.e. as a bi-dimensional vectors set, but instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual corresponds to a NN and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents. 
+Hence in DENN, since the population is composed by neural networks it cannot be used as is, i.e. as a bi-dimensional vectors set, but instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual is a neural network and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents. 
 
-For a better explanation of this concept, let's examine the mutation phase through an example. Hence, let the Neural Networks population \textit{NP}, the mutation strategy Rand/1, $r_1, r_2$ and $r_3$ three mutually exclusive indexes and suppose we are creating the donor $\textbf{u}_{1}$. Hence, this donor is created as follows:
+For a better explanation of this concept, let's examine the mutation phase through an example. Hence, let the Neural Networks population \textit{NP}, the mutation strategy Rand/1, $r_1, r_2$ and $r_3$ three mutually exclusive indexes, the donor $\textbf{u}_{1}$ is created as follows:
 \begin{align}
 	\textbf{u}_{1}^{w_1} &= \textbf{x}_{r_1}^{w_1} + F \cdot (\textbf{x}_{r_2}^{w_1} - \textbf{x}_{r_3}^{w_1}) \\
 	\textbf{u}_{1}^{b_1} &= \textbf{x}_{r_1}^{b_1} + F \cdot (\textbf{x}_{r_2}^{b_1} - \textbf{x}_{r_3}^{b_1}) \\
@@ -64,13 +64,14 @@ step\_gen\_change\_difficulty & Number of gen where the same difficulty is used 
 
 \end{tabular}
 \caption{Some arguments used in a DENN's configuration file.}
+\label{tbl:denn-parameters}
 \end{table}
 
 \section{Theano}
-Theano is a Python library created at LISA labs of University of Montreal, which lets to define easily complex mathematical expressions and execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. However, how we see later, the performance on CPU is quite slower respect to DENN.
+Theano is a Python library created at LISA labs of University of Montreal, which lets to define easily complex mathematical expressions and execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. However, how we see later, the performance on CPU is quite slower respect to DENN. %TODO
 
 \section{Implementation}
-Our thesis work are sub-divided in two parallel projects: a refactoring of the already existing project of Andrew Gibiansky, written in pure Python and based on Theano, to which some parts of NRAM are missing and an implementation from zero of NRAM based on what is offered by DENN.
+Our thesis work are sub-divided in two parallel projects: a refactoring of the already existing project of Andrew Gibiansky, written in pure Python and based on Theano, to which some parts of NRAM and a parametrization system are missing and an implementation from zero of NRAM based on what is offered by DENN.
 
 \subsection{Preface}
 Because some problems are too complex to be learn by NRAM, we have also used some of the technique that have been used in the original paper \cite{NRAM:2016}.
@@ -82,11 +83,11 @@ The size of the model can be extremely huge and moreover extremely depth, due to
 As noticed in \cite{Neelakantan2015AddingGN}, in Theano implementation after that the gradients are computed, clipped and rescaled is added Gaussian noise, whose variance decays over time.
 
 \paragraph{Entropy}
-As for \cite{NRAM:2016}, we also noticed that the network can fix the pointer in some value. Also  could an advantage in some cases. However, if this happen too early in the training, it could force the net to stay fixed on some pointer with a very small chances of change. Hence, to alleviate this condition, we give to the network a sort of a ``entropy bonus'' which decreases over time. This entropy is computed for each emitted distribution by the neural network with the Shannon entropy and is multiplied for the following coefficient that decreases over timestep
+As for \cite{NRAM:2016}, we also noticed that the network can fix the pointer in some value. Although it could be an advantage in some cases, however, if this happens too early in the training, it could force the net to stay fixed on some pointer with a very small chances of change. Hence, to alleviate this condition, we give to the network a sort of a ``entropy bonus'' which decreases over time. This entropy is computed for each generated distribution\footnote{We have identified these distributions be those in the memory.} by the neural network with the Shannon entropy and is multiplied for the following coefficient that decreases over time
 \begin{equation}
 	E = e * d^{t}
 \end{equation}
-where $e$ is the entropy coefficient, $d$ is the entropy coefficient decay and $t$ is the timestep. After that, the computer value is subtracted from cost function value.
+where $e$ is the entropy coefficient, $d$ is the entropy coefficient's decay and $t$ is the timestep. After that, the computed value is subtracted from timestep cost.
 
 \paragraph{Curriculum training}
 As noticed by \cite{Bengio2009CurriculumL} and \cite{Zaremba2014LearningTE}, curriculum learning is crucial for train very deep neural networks. Hence, as in the original paper we used the curriculum learning from \cite{Zaremba2014LearningTE} with small modifications.
@@ -97,14 +98,14 @@ For each task we have defined manually a set of increasing difficulties, where a
 	\item{with probability 25\%: pick $d$ randomly from the set $[1, D + e]$ according to a uniform distribution, with $e$ generated from a geometric distribution with a success probability of 0.5.}
 	\item{with probability 65\%: set $d = D + e$ where $e$ is sampled as above.}
 \end{itemize}
-How frequently the difficulty is changed is decided by the user from command line.
+How frequently the difficulty is changed is decided by the user from command line, indicating the number of generations in which the difficulty (thus also the dataset) is hold for the training.
 
 \subsection{How we did it}
-The implementation of NRAM is similar between the two solutions. What is different between them is how the optimal neural network is searched. As stated previously, in DENN is searched through a parallel evolution of a population of neural networks, differently to Theano implementation where the neural network is trained applying the ADAM algorithm. Hence, leaving out this framework specific algorithm we speak only about the NRAM implementation. Moreover, we present only our work and not what did by Andrew Gibiansky.
+The implementation of NRAM is similar between the two solutions. What is different between them is how the optimal neural network is searched. As stated previously, in DENN is searched through a parallel evolution of a population of neural networks, differently to Theano implementation where the neural network is trained applying the ADAM algorithm. Hence, leaving out this framework specific algorithm we speak only about the NRAM implementation which is presented for simplicity as pseudocode\footnote{The entire code is available at \href{https://github.com/Gabriele91/DENN-LITE/tree/nram}{https://github.com/Gabriele91/DENN-LITE/tree/nram}}.
 
-The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}, where for simplicity we have leaving out specific language details, such the types. The execution starts with the setting of some variables, such as cost variable and the constants used for entropy computing. The main cycle is at Line \ref{lst:nram-timesteps} - in every timestep the network releases all the coefficients, i.e. the circuit connections, precisely at Line \ref{lst:nram-nn-predict}. At Line \ref{lst:nram-run-circuit} is executed the circuit, with the Algorithm \ref{alg:nram-run-circuit} - it produces a tuple containing the willingness of terminate the execution with which is computed from Line \ref{lst:nram-cost-1} to \ref{lst:nram-cost-2} the timestep cost, added to the total cost.
+The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}. The execution starts with the setting of some variables, such as cost variable and the constants used for entropy computing. The main cycle is at Line \ref{lst:nram-timesteps} - in every timestep the network releases all the coefficients, i.e. the circuit connections, at Line \ref{lst:nram-nn-predict}. At Line \ref{lst:nram-run-circuit} is executed the circuit, with the Algorithm \ref{alg:nram-run-circuit} - it returns the willingness of terminate the execution with which is computed from Line \ref{lst:nram-cost-1} to \ref{lst:nram-cost-2} the timestep cost, added later to the total cost.
 \newline\newline
-The magic of NRAM happens in Algorithm \ref{alg:nram-run-circuit}, where the circuit is run. From Line \ref{lst:nram-exec-circuit-1} to \ref{lst:nram-exec-circuit-2}, each gate in the list \textbf{Gates} is executed, getting an input\footnote{Depending by the type - Costant gate produce a constant output without getting an input, unary and binary gate gate get, respectively, one and two input.} and producing an output, which might be accessed later by another gate. From Line \ref{lst:nram-up-reg-1} to \ref{lst:nram-up-reg-2}, the registers are updated.
+The ``magic'' of NRAM happens in Algorithm \ref{alg:nram-run-circuit}, where the circuit is run. From Line \ref{lst:nram-exec-circuit-1} to \ref{lst:nram-exec-circuit-2}, each gate in the list \textbf{Gates} is executed, getting an input\footnote{Depending by the type - Costant gate produce a constant output without getting an input, unary and binary gate gate get, respectively, one and two input.} and producing an output, which might be accessed later by another gate. From Line \ref{lst:nram-up-reg-1} to \ref{lst:nram-up-reg-2}, the registers are updated.
 \newline\newline
 As it can be seen in the Lines \ref{lst:nram-avg-1}, \ref{lst:nram-avg-2}, \ref{lst:nram-avg-3} and \ref{lst:nram-avg-4}, the selection of gates's input and registers's new content is made through the function in Algorithm \ref{alg:nram-average} which do a weighted average. An example of gate is visible in Algorithm \ref{alg:nram-gate-add} - the \textbf{add} gate compute the summation of two number represented as two probability distributions.
 
@@ -122,7 +123,7 @@ Finally, the functions \textsc{GetGateCoefficient} and \textsc{GetRegisterCoeffi
 			\State{\Return{C}}
 		\EndFunction
 	\end{algorithmic}
-	\caption{Example of gate of the NRAM.}
+	\caption{Example of NRAM gate.}
 	\label{alg:nram-gate-add}
 \end{algorithm}
 
@@ -138,22 +139,22 @@ Finally, the functions \textsc{GetGateCoefficient} and \textsc{GetRegisterCoeffi
 			\For{$t\in[1, \dots, T]$}\label{lst:nram-timesteps}
 				\State{Conf = \Call{NeuralNetwork.predict()}{}}\label{lst:nram-nn-predict}
 				\State{$f_i$ = \Call{RunCircuit}{Gates, Conf, Regs, IMem, MaxInt}}\label{lst:nram-run-circuit}
-				\newline
+				\State{}
 				\If{t == T}\label{lst:nram-cost-1}
 					\State{$p_T$ = 1 - CumProbComplete}
 				\Else
 					\State{$p_T$ = $f_i$ * ProbIncomplete}
 				\EndIf
-				\newline
+				\State{}
                	\State{CumProbComplete = CumProbComplete + $p_t$}
                 	\State{ProbIncomplete = ProbIncomplete * ($1 - f_i$)}
-                	\newline
+				\State{}
                 	\State{EntropyWeight = $\textrm{EntropyCoeff}*\textrm{EntropyDecay}^t$}
                 	\State{EntropyCost = EntropyCost+\Call{Entropy}{IMem} * EntropyWeight}
-                	\newline
+				\State{}
                 	\State{Cost += \Call{CalculateCost}{InMem, OutMem, CostMask} - EntropyCost}\label{lst:nram-cost-2}
 			\EndFor{}
-			\newline
+			\State{}
 			\State{\Return Cost}
 		\EndFunction
 	\end{algorithmic}
@@ -164,7 +165,7 @@ Finally, the functions \textsc{GetGateCoefficient} and \textsc{GetRegisterCoeffi
 	\begin{algorithmic}[1]
 		\Function{RunCircuit}{Gates, Conf, Regs, IMem, MaxInt}
 			\State{RegsAndOutput = \Call{Copy}{Regs}}
-			\newline
+			\State{}
 			\ForEach{$g\in \textrm{Gates}$}\Comment{Run of the circuit}\label{lst:nram-exec-circuit-1}
 				\If{\Call{g.isConstant}}
 					\State{GateResult = g.\Call{Value}{}}
@@ -186,7 +187,7 @@ Finally, the functions \textsc{GetGateCoefficient} and \textsc{GetRegisterCoeffi
 				\State{NewValue = \Call{Avg}{RegsAndOutput, Coeff}}\label{lst:nram-avg-4}
 				\State{Regs[i] = NewValue}
 			\EndFor{}\label{lst:nram-up-reg-2}
-			\newline
+			\State{}
 			\State{\Return{(Conf[|Conf| - 1], Distributions)}}
 		\EndFunction
 	\end{algorithmic}
