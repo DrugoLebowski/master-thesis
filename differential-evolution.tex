@@ -1,5 +1,5 @@
 \label{chap:differential-evolution}
-In the first part of the chapter we make an overview to Differential Evolution, moving later to the mutation and crossover strategies that we have used to evolve the NRAM controller and finishing with the Differential Evolution for Neural Network (DENN) overview.
+In the first part of the Chapter we make an overview to Differential Evolution, moving later to the mutation and crossover strategies that we have used to evolve the NRAM controller.
 
 \section{Differential Evolution}
 Differential Evolution (DE) is a metaheuristic\footnote{A metaheuristic is a procedure that has as objective the search, creation or selection of an heuristic that could be find a optimal solution of a problem.} introduced in \cite{DESEHGOCS:1997}, belonging to the family of Evolutionary Algorithm (EA), that has as objective the solution searching through the parallel evolution of a set of candidate solutions. 
@@ -8,16 +8,16 @@ Differential Evolution is a parallel iterative direct search metaheuristic which
 \begin{align}
 	x_{i, G},\ i=1,\ \dots,\ NP 
 \end{align}
-called \textbf{population}, where each of them is called \textbf{individual}, that are manipulated for \textbf{G} generation, where the NP are not reduced nor incremented, in searching of an individual that can be considered as solution given an objective. This objective, as for the gradient based optimization algorithms, is represented by a function called in this case \textbf{fitness function} that represented the goodness of an individual and do. For a better exploration of a solution, the individuals must be randomly initialized covering the entire parameters space. 
+called \textbf{population} formed by \textbf{individuals}. Every individual is manipulated for \textbf{G} generations, where the population is not reduced nor incremented, looking for one individual that can be considered as a solution. The search is guided by an objective represented by a function called \textbf{fitness function}, which represents the goodness of an individual. For a better research, the individuals must be randomly initialized covering most possible the search space.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{figures/de-flow-complete.png}
-	\caption{Complete execution flow of Differential Evolution in a generation.}
+	\caption{Execution flow of the Differential Evolution referred to a generation.}
 	\label{fig:bin-crossover}
 \end{figure}
 
-As stated previously, the algorithm go on for G generation where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individual which are selected for the creation of donors set, called also mutant. Once the mutants are generated, targets and donors sets are mixed up with some crossover strategy creating finally the trials set. Following the latter is used for the creation of next generation targets set. \\
+As stated previously, the algorithm goes on for G generations where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individual which are selected for the creation of donors set, called also mutant. Once the mutants are generated, targets and donors sets are mixed up with some crossover strategy which creates the trials set. After this, the trials is compared respect to the targets with the fitness function. The better are selected creating the next generation targets set. \\
 
 \begin{figure}[t]
 	\centering
@@ -40,7 +40,7 @@ Summing up, after the targets set initialization, the step executed in every DE 
 		\end{cases}
 	\end{equation}
 	for $i=1,2,\dots,D$. The function $\textit{randb}(j)$ generate a real valued number for the $j^{th}$ parameter according to binomial distribution, $\textrm{CR}\in[0,1]$ is the global user defined crossover constant used as a threshold and $\textit{rnbr}(i)$ is a function that generate randomly an index which ensures that is selected at least one parameter of the mutant $v_{i}$.}
-	\item{\textbf{Selection}: After the trials set is generated is made a comparison respect to the donors set for each vector, i.e. the donor $x_{i, G}$ is compared respect to the trial $u_{i,G+1}$ using the cost function. Hence, if the donor have a smaller cost respect to the trial, than it is retained for the next generation donors set and vice-versa.}
+	\item{\textbf{Selection}: After the trials set is generated is made a comparison respect to the targets set for each vector, i.e. the target $x_{i, G}$ is compared respect to the trial $u_{i,G+1}$ using the fitness function. Hence, if the target have a smaller cost respect to the trial, than it is retained for the next generation targets set and vice-versa.}
 \end{itemize}
 
 
@@ -142,7 +142,7 @@ Summing up, after the targets set initialization, the step executed in every DE 
 
 During the algorithm explanation is introduced one strategy both for the mutation and crossover step, but they are not the unique even regard the optimization algorithm. Hence, in order to classify all the variants it's used the notation $DE/x/y/z$ where:
 \begin{itemize}
-	\item{\textbf{DE}: indicates the used optimization algorithm;}
+	\item{\textbf{DE}: indicates the optimization algorithm;}
 	\item{\textbf{x}: indicates the mutation strategy;}
 	\item{\textbf{y}: indicates how many targets couple are selected in the mutation step;}
 	\item{\textbf{z}: indicates the crossover strategy;}
@@ -150,17 +150,14 @@ During the algorithm explanation is introduced one strategy both for the mutatio
 Hence, for example, a possible variant is \textit{DE/rand/1/bin}. For the thesis work have been used and tested DE's different configurations made available by the framework DENN (\ref{sec:DENN}). Hence, about this, following are introduced some of the used algorithms and strategies.
 \subsection{Differential Evolution variants}
 \subsubsection{Adaptive DE (JADE)}
-The base version of Differential Evolution is powerful, but one of its biggest drawback is that the constants $F$ and $CR$ are leave to the user decision. Though is suggest in \cite{RPODE:2005} to set the $F\in[0.4, 0.95]$ and $CR \in (0, 0.2)$ if the function is separable and $CR \in (0.9, 1.0)$ when the function's parameters are dependent, remain always the fact that are problem dependent. 
-
-Hence trying to resolve this problem in \cite{JADE:2009} is introduced JADE. Briefly, this DE variant lift the user from the duty of selecting the best combination of $F$ and $CR$ constant. This is done with a parameter adaptation system that search the constants best values refining them for each generation. Moreover, these constants are generated for each individual and so they are, generally, different one from the another, e.g. $\textit{CR}_{1} \neq \textit{CR}_{i}$. Formally what is done is the following:
+The base version of Differential Evolution is powerful, but one of its biggest drawback is that the constants $F$ and $CR$ must be selected by the user. Though is suggest in \cite{RPODE:2005} to set the $F\in[0.4, 0.95]$ and $CR \in (0, 0.2)$ if the function is separable and $CR \in (0.9, 1.0)$ when the function's parameters are dependent, remains always the fact that is a problem dependent decision.\newline\newline
+Hence, trying to resolve this problem in \cite{JADE:2009} is introduced JADE. Briefly, this DE variant lift the user from the duty of selecting the best combination of $F$ and $CR$ constants. This is done with a parameter adaptation system which research the constants best values refining them at each generation. Moreover, these constants are generated for each individual and so they are, generally, different one from the another, e.g. $\textit{CR}_{1} \neq \textit{CR}_{i}$. Formally what is done is the following:
 \begin{itemize}
 	\item{\textbf{CR}: Let $\mu_{\textit{CR}}$ the \textit{CR}'s mean, initialized previous the first generation to $0.5$. For each generation the crossover probability $\textit{CR}_{i}$ associated to the $x_{i}$ individual, is generated according to a normal distribution with mean $\mu_{CR}$ and a standard deviation $0.1$
 	\begin{align}
 		\textit{CR}_{i} = \textrm{randn}_{i}(\mu_{\textit{CR}}, 0.1)
 	\end{align}
-	truncated respect to the interval $[0, 1]$. 
-	
-	
+	truncated respect to the interval $[0, 1]$. \newline\newline
 	After the generation ending the best $\textit{CR}_{i}$s, i.e. the \textit{CR}s associated to the trials $v$ better than the targets $x$, are added to the set $S_{\textit{CR}}$, i.e. the set containing the $\textit{CR}_{i}$ that is successful. After this, the mean $\mu_{\textit{CR}}$ is recalculated as follows:
 	\begin{align}
 		\mu_{\textit{CR}} = (1 - c)\cdot\mu_{\textit{CR}} + c\cdot\textrm{mean}_{A}(S_{\textit{CR}})
@@ -171,24 +168,22 @@ Hence trying to resolve this problem in \cite{JADE:2009} is introduced JADE. Bri
 		\begin{align}
 			F_{i} = \textrm{randc}_{i}(\mu_{F}, 0.1)
 		\end{align}
-		that is truncated if $F_{i} > 1$ and regenerated if $F_{i} \leq 0$, so that a $F_{i} \in (0, 1]$ and $\textrm{randc}_{i}$ is a Cauchy random generator associated to each target individual.
-		
-		As for the CR case, denoting $S_{\textit{F}}$ the set of successful mutation factors, to which are added the successful Fs at the end of a generation. Then for each generation the mean $\mu_{F}$ is generated as follows:
+		that is truncated if $F_{i} > 1$ and regenerated if $F_{i} \leq 0$, so that a $F_{i} \in (0, 1]$ and $\textrm{randc}_{i}$ is a Cauchy random generator associated to each target individual.\newline\newline
+As for the CR case, let $S_{\textit{F}}$ the set of successful mutation factors to which are added the successful Fs at the end of a generation. Then for each generation the mean $\mu_{F}$ is generated as follows:
 		\begin{align}
 			\mu_{F} = (1 - c)\cdot\mu_{F} + c\cdot\textrm{mean}_{L}(S_{F})
 		\end{align}
-		where the $c$ is also here a positive constant in $[0, 1]$ and $\textit{mean}_{L}$ is the Lehmer mean defined as:
+		where the $c$ is a positive constant in $[0, 1]$ and $\textit{mean}_{L}$ is the Lehmer mean defined as:
 		\begin{align}
 			\textrm{mean}_{L}(S_{F}) = \frac{\sum_{F \in S_{F}}F^{2}}{\sum\limits{F \in S_{F}}F} 
 		\end{align}
 		}
 \end{itemize}
 
-Moreover, JADE has introduced an optional external memory denoted as \textbf{A} with size equal than \textit{NP}, where is stored all the targets that have failed the selection process. Once the memory is full and is necessary adding a new one, an individual is randomly deleted.
+Moreover, JADE has introduced an optional external memory denoted as \textbf{A} with a size equal than \textit{NP}, where is stored all the targets that have failed the selection process. Once the memory is full and is necessary to add a new failing individual, a randomly one is deleted.
 
 \subsubsection{Success-History based Adaptive DE (SHADE)}
-The JADE's main problem is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performance. 
-
+The JADE's main problem is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performances.\newline\newline
 SHADE introduced in \cite{SHADE:2013} aims to toughen JADE introducing a crossover and mutation constants generation alternative system. This is done leaving out the $S_{\textit{CR}}$ and $S_{F}$ memories and adding two new memories, named \textit{historical memories}, $M_{\textit{CR}}$ and $M_{F}$ where are stored the constants that have well performed in the past.\\
 
 \begin{table}[h]
@@ -205,14 +200,14 @@ SHADE introduced in \cite{SHADE:2013} aims to toughen JADE introducing a crossov
 	\caption{Historical memories $M_{\textit{CR}}$ and $M_{F}$}
 \end{table}
 
-Formally, let $M_{F}$ and $M_{\textit{CR}}$ two memories with $H$ cells, where the content of each of the latter is initialized to $0.5$. Similarly to JADE, the constants are generated in each generation for all the individuals like follows:
+Formally, let $M_{F}$ and $M_{\textit{CR}}$ two memories with $H$ cells initialized to $0.5$. Similarly to JADE, the constants are generated in each generation for all the individuals like follows:
 \begin{align}
 	F_i &= \textrm{randc}_{i}(M_{F, r_{i}}, 0.1) \\
 	\textit{CR}_i &= \textrm{randn}_{i}(M_{\textit{CR},r_{i}}, 0.1)
 \end{align}
-where $M_{F, r_{i}}$ and $M_{\textit{CR}, r_{i}}$ are two memory cells selected randomly for each individual. Here the $F_{i}$ and $\textit{CR}_{i}$ like in JADE, i.e. are truncated or regenerated.
+where $M_{F, r_{i}}$ and $M_{\textit{CR}, r_{i}}$ are two memory cells randomly selected for each individual. Here the $F_{i}$ and $\textit{CR}_{i}$ are managed like in JADE, i.e. are truncated or regenerated.
 
-In every generation after the selection is done, the successful $F_{i}$ and $\textit{CR}_{i}$ values recorded in temporary memories $S_{F}$ and $S_{\textit{CR}}$ with which the content of the memory is updated as follows:
+In every generation, after the selection is done, the successful $F_{i}$ and $\textit{CR}_{i}$ values are recorded in temporary memories $S_{F}$ and $S_{\textit{CR}}$ with which the content of the memory is updated as follows:
 \begin{align}
 	M_{F,k,G+1} &= \begin{cases}
 		\textrm{mean}_{\textit{WL}}(S_{F}),&\ \textrm{if}\ S_{F} \neq 0 \\
@@ -223,7 +218,7 @@ In every generation after the selection is done, the successful $F_{i}$ and $\te
 		M_{\textit{CR}},&\ \textrm{otherwise} \\
 	\end{cases}
 \end{align}
-where $k \in [1, H]$ indicates the memory cell to update. At the search beginning is initialized to 1 and incremented by one at the end of each generation. So when $k > H$ is set already to one. Here $\textrm{mean}_{\textit{WL}}$ is the weighted Lehmer mean computed as follows:
+where $k \in [1, H]$ indicates the memory cell to update, is initialized to 1 and incremented by one at the end of each generation. When $k > H$ is set already to one. Here $\textrm{mean}_{\textit{WL}}$ is the weighted Lehmer mean computed as follows:
 \begin{align}
 	\textrm{mean}_{\textit{WL}}(S_{F}) &= \frac{\sum_{k=1}^{|S_{F}|}w_{k} \cdot S_{F,k}^2}{\sum_{k=1}^{|S_{F}|}w_{k} \cdot S_{F,k}}
 \end{align}
@@ -234,11 +229,9 @@ and $\textrm{mean}_{\textit{WA}}$ is the weighted arithmetic mean introduced by 
 	\Delta f_{k} &= |f(\textbf{u}_{k,G}) - f(\textbf{x}_{k,G})|
 \end{align}
 \subsubsection{L-SHADE}
-The population used in a EA algorithm, in this case Differential Evolution, is very important. In fact, a small population result in a faster convergence, but this can also leads the algorithm to sake in a local minimum. Contrarily, a bigger population increments the algorithm chance to converging to a global minimum, but with a slower convergence due to the searching space increment. Hence, as for the $F$ and $\textit{CR}$ constants the population is another problem dependent parameter to which one is forced to optimize it.
-
-Hence to resolve this problem Tanabe et al in \cite{LSHADE:2014} have introduced L-SHADE, a variant of SHADE that in addition to $F$ and $\textit{CR}$ constants optimization make also a population optimization through the Linear Population Size Reduction (LSPR) method that make a deterministic linear reduction of population using a linear function. 
-
-Let $\textit{NP}^{\textit{init}}$ the initial population and $\textit{NP}^{\textit{min}}$ the minimum possible population to have constrained to the evolutionary operators (mutation and crossover methods). Hence, the population for the next generation $G + 1$ is calculated as follows:
+The population used in a EA algorithm, in this case Differential Evolution, is very important. In fact, a small population result in a faster convergence, but this can also leads the algorithm to sake in a local minimum. Contrarily, a bigger population increments the algorithm chance to converge to a global minimum, but more slowly due to the searching space increment. Hence, the population is another problem dependent parameter to be optimize.\newline\newline
+Hence, to resolve this problem in \cite{LSHADE:2014} is introduced L-SHADE, a variant of SHADE that has in addition to $F$ and $\textit{CR}$ constants optimization also a population optimization. This is do through the LSPR (Linear Population Size Reduction), a deterministic linear method that make a population reduction using a linear function.\newline\newline
+Let $\textit{NP}^{\textit{init}}$ the initial population and $\textit{NP}^{\textit{min}}$ the minimum possible population to use. Hence, the population for the next generation $G + 1$ is calculated as follows:
 \begin{equation}
 	\textit{NP}_{G + 1} = \textrm{round}\Bigg[\Bigg(\frac{\textit{NP}^{\textit{min}} - \textit{NP}^{\textit{init}}}{\textit{MAX\_NFE}} \Bigg) \cdot \textit{NFE} + \textit{NP}^{\textit{init}} \Bigg]
 \end{equation}
@@ -246,7 +239,7 @@ where \textit{NFE} is the current number of fitness evaluations and \textit{MAX\
 \subsection{Mutation strategies}
 
 \subsubsection{Rand}
-The Rand mutation strategy is introduced by Storn and Price in \cite{DESEHGOCS:1997} and works selecting randomly the individuals with which the donors/mutant is created. The procedure is as follows:
+The Rand mutation strategy is introduced in \cite{DESEHGOCS:1997} and works selecting randomly the individuals with which the donors/mutant is created. The procedure is as follows:
 \begin{align}
 	v_{i, G + 1} &= x_{r_{1}} + F \cdot (x_{r_2, G} - x_{r_3, G}) \\
 	v_{i, G + 1} &= x_{r_{1}} + F \cdot (x_{r_2, G} - x_{r_3, G}) + F \cdot (x_{r_4, G} - x_{r_5, G})
@@ -254,7 +247,7 @@ The Rand mutation strategy is introduced by Storn and Price in \cite{DESEHGOCS:1
 where $r_1, r_2, r_3, r_4, r_5 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutually different and also from the related index $i$.
 
 \subsubsection{Best}
-Also the Best mutation strategy is introduced by Storn and Price in \cite{DESEHGOCS:1997} and works selecting, as the name suggests, the current best individual and some others as follows:
+The Best mutation strategy is introduced in \cite{DESEHGOCS:1997} and works selecting, as the name suggests, the current best individual and some others as follows:
 \begin{align}
 	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} - x_{r_2, G}) \\
 	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} + x_{r_2, G} - x_{r_3, G} - x_{r_4, G})
@@ -262,38 +255,32 @@ Also the Best mutation strategy is introduced by Storn and Price in \cite{DESEHG
 where, as for rand, $r_1, r_2, r_3, r_4 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutually different and also from the related index $i$.
 
 \subsubsection{DEGL}
-Differently respect the previous two methods, DEGL, introduced by Das et al. in \cite{DEGL:2009}, make a topological neighborhood exploration, i.e. for each generation, DEGL, creates every individuals $\textbf{v}_{i, G + 1}$ belonging to the donors set through a convex combination between the local mutant $\textbf{L}_{i, G}$ and the global mutant $\textbf{g}_{i, G}$.  
-
-
+Differently respect the previous two methods, DEGL, introduced in \cite{DEGL:2009}, make a topological neighborhood exploration, i.e. for each generation, DEGL, creates every individuals $\textbf{v}_{i, G + 1}$ belonging to the donors set through a convex combination between the local mutant $\textbf{L}_{i, G}$ and the global mutant $\textbf{g}_{i, G}$.\newline\newline
 Formally, let the $\textit{NP}_G$ population at generation G, disposed with a ring topology. For each individual $\textbf{x}_{i, G}$ is defined a neighbors of $k \in [0, (\textit{NP} - 1) / 2]$ individuals, consisting in vectors $\textbf{x}_{i - k, G}, \dots, \textbf{x}_{i + k, G}$. 
-For each individual $\textbf{x}_{i, G}$ are created the local mutant $\textbf{L}_{i, G}$ and global mutant $\textbf{g}_{i, G}$ as follows:
+For each individual $\textbf{x}_{i, G}$ a local mutant $\textbf{L}_{i, G}$ and a global mutant $\textbf{g}_{i, G}$ are created as follows:
 \begin{align}
 	\textbf{L}_{i, G} &= \textbf{x}_{i, G} + \alpha \cdot (\textbf{x}_{\textit{n\_best}_i, G} - \textbf{x}_{i, G}) + \beta \cdot (\textbf{x}_{p, G} - \textbf{x}_{q, G}) \\
 	\textbf{g}_{i, G} &= \textbf{x}_{i, G} + \alpha \cdot (\textbf{x}_{\textit{g\_best}, G} - \textbf{x}_{i, G}) + \beta \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})
 \end{align}
-where $\textit{n\_best}_i$ indicates the best individual in the neighbors of $\textbf{x}_{i, G}$ differently to $\textit{g\_best}$ which is the global best individual, $p, q \in [i - k, i + k]$,  with $p \neq q \neq i$, and $r_1, r_2 \in NP_{G}$, with $r_1 \neq r_2 \neq i$. The $\alpha$ and the $\beta$ are real-valued scalar used as scaling factors.
-
+where $\textit{n\_best}_i$ indicates the best individual in the neighbors of $\textbf{x}_{i, G}$ differently to $\textit{g\_best}$ which is the global best individual, $p, q \in [i - k, i + k]$, with $p \neq q \neq i$, and $r_1, r_2 \in NP_{G}$, with $r_1 \neq r_2 \neq i$. The $\alpha$ and the $\beta$ are real-valued scalar used as scaling factors.\newline\newline
 After the creation of local and global donor vectors, each of them are combined through convex combination using a scalar weight $w \in (0, 1)$ in the following mode:
 \begin{equation}
 	\textbf{V}_{i, G} = w \cdot \textbf{g}_{i, G} + (1 - w) \cdot \textbf{L}_{i, G}
 \end{equation}
 
 \subsubsection{Current to pbest}\label{subsubsec:curr_p_best}
-Current to pbest is introduced by Zhang and Sanderson in \cite{JADE:2009} as an evolution of Best method, because this latter being a greedy strategy using prevalently the information of the best solution can leads the search to local minimum convergence. Instead in Current to pbest this is information can impact partially on the search, reducing in this way the possibility about search algorithm of stopping in a local minimum.
-
-This strategy exists in two version, which differentiate in the use of an auxiliary memory. The base version not use the auxiliary memory and creates each donor $\textbf{u}_{i, G}$ as follows:
+Current to pbest is introduced in \cite{JADE:2009} as an evolution of Best method, since being a greedy strategy which use prevalently the information of the best solution could leads the search to converge to local minimum. Instead in Current to pbest this is information can impacts partially on the search, reducing in this way the possibility about search algorithm to stop in a local minimum.\newline\newline
+This strategy exists in two version which differentiate in the use of an auxiliary memory. The base version not use the auxiliary memory and creates each donor $\textbf{u}_{i, G}$ as follows:
 \begin{equation}
 	\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^p - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})
 \end{equation}\label{eqn:curr_p_best}
-where $\textbf{x}_{\textit{best}, G}$ is an individual chosen between the $100p\%$ of the current population $\textit{NP}_{G}$ with $p \in (0, 1]$ and $F_i$ is the mutation factor which is associated to every target individual and managed as stated previously in JADE and SHADE sections.
-
+where $\textbf{x}_{\textit{best}, G}$ is an individual chosen between the $100p\%$ of the current population $\textit{NP}_{G}$ with $p \in (0, 1]$ and $F_i$ is the mutation factor which is associated to every target individual and managed as in JADE and SHADE.\newline\newline
 Denote \textbf{A} the auxiliary memory where are stored the targets that fail the selection process (e.g. if $f(\textbf{x}_{i, G}) < f(\textbf{v}_{i, G})$, then $\textbf{x}_{i, G}$ is added to $\textbf{A}$), the alternative version of Current to pbest with memory works as follows:
 \begin{equation}
 	\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^{p} - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \tilde{\textbf{x}}_{r_2, G})
 \end{equation}
-where $\textbf{x}_{\textit{best}, G}$, $\textbf{x}_{r_1, G}$ and $\textbf{x}_{i, G}$ are selected as in \ref{eqn:curr_p_best} and $\tilde{\textbf{x}}_{r_2, G}$ is selected, instead, in $\textbf{P} \cup \textbf{A}$. To note that if $\textbf{A}$ size exceed a certain user defined threshold, then some solutions are randomly removed.
-
-The Current to pbest is further improved in association with SHADE. In fact, with this latter, the constant $p$ existing in JADE versions is substituted with a variable version, i.e. to each individuals is associated a $p_i$ who is set as follows:
+where $\textbf{x}_{\textit{best}, G}$, $\textbf{x}_{r_1, G}$ and $\textbf{x}_{i, G}$ are selected as in \ref{eqn:curr_p_best} and $\tilde{\textbf{x}}_{r_2, G}$ is selected, instead, in $\textbf{P} \cup \textbf{A}$. To note that if $\textbf{A}$ size exceed a certain user defined threshold, then some solutions are randomly removed.\newline\newline
+The Current to pbest is further improved in association with SHADE. Here, the constant $p$ existing in JADE versions is substituted with a variable version, i.e. to each individuals is associated a $p_i$ who is set as follows:
 \begin{equation}
 p_i = rand[p_{\textit{min}}, 0.2]
 \end{equation}
@@ -324,7 +311,7 @@ where $\textit{randb}(i) \in [0, 1]$ is a uniform random generator and $\textit{
 	\caption{Exp crossover strategy illustration with a $N = 4$ as starting point and $L = 3$ parameters to substitute.}
 	\label{fig:exp-crossover}
 \end{figure}
-Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1, D]$, used as a starting point in the target where the parameters substitution starts, and a integer $L \in [1, D]$ that represents the parameters to substitute. So after choosing this two value a trial vector is created as follows:
+Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1, D]$, used as an initial point in the target value where the parameters substitution starts, and a integer $L \in [1, D]$ that represents the parameters to substitute. So after choosing this two values, a trial vector is created as follows:
 \begin{align}
 	v_{ij, G} &= u_{ij, G}\textrm{,  for } j = \{<n>_{D}, \dots, <n + L - 1>_{D}\} \\
 	v_{ij, G} &= x_{ij, G}\textrm{,  otherwise}
