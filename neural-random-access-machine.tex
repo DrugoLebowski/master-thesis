@@ -1,4 +1,4 @@
-In this chapter we will make an overview about the aspects of Neural Random-Access Machines \cite{NRAM:2016} that has as scope the learning of algorithms. The overview starts with the simplified version containing only the registers. It is explained how the pointers manipulation works and later it is explained how the memory-augmented version works.
+In this chapter we will make an overview about the aspects of Neural Random-Access Machines \cite{NRAM:2016} that has as objective the algorithms learning. The overview starts with the simplified version containing only the registers. It is explained how the pointers manipulation works and later it is explained how the memory-augmented version works.
 
 \section{Registers only model}
 The simplified NRAM model can be divided in three main pieces: the controller, the registers and the gates (modules). The central part is the controller which can be a feedforward or a Long-Short Term Memory neural network, the registers and the gates (named also \textbf{modules}). The neural network is the only trainable part. \newline \newline 
@@ -45,10 +45,7 @@ For a better comprehension of the NRAM execution, can be read the pseudocode in 
 	\caption{Execution of the NRAM without the memory}\label{alg:nram}
 \end{algorithm}
 
-The execution of the NRAM starts at the Line \ref{lst:nram:line-5} and continue for all the timesteps. At the Line \ref{lst:nram:line-8}, after the controller gets the input from the registers, this latter is executed generating a new configuration that is used at the Lines \ref{lst:nram:line-9} and \ref{lst:nram:line-10}. 
-The configuration indicates how the circuit is structured, i.e. for each gate indicates the input sources.
-
-In other words, the inputs for a gates $m_i$ is chosen by the controller from the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ where:
+The execution of the NRAM starts at the Line \ref{lst:nram:line-5} and continue for all the timesteps. At the Line \ref{lst:nram:line-8}, after the controller gets the input from the registers, this latter is executed generating a new configuration that is used at the Lines \ref{lst:nram:line-9} and \ref{lst:nram:line-10}. The configuration indicates how the circuit is structured, i.e. for each gate indicates the input sources. Hence, in other words, the controller learns how to connect the gates for resolve the problem on which it is trained. In other words, the inputs for a gates $m_i$ is chosen by the controller from the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ where:
 \begin{itemize}
 	\item $r_j$ is the content of the $j^{th}$ register
 	\item $o_j$ is the content of the output of the $j^{th}$ previous gate respect to the current $m_i$
@@ -124,7 +121,7 @@ Recalling the learning process of the registers-only model, in this case the mem
 	\label{fig:perceptron-boundaries}
 \end{figure}
 
-Moreover, the NRAM use a system with which can decide if the execution can be terminated. Recalling that the execution is divided $T$ timesteps, in each of them the controller emits along the various $a, b, c$ vectors a scalar $f_{t} \in [0, 1]$\footnote{The controller emits a scalar $x_{i}$, with which is produced the $f_i = \textbf{sigmoid}(x_{i})$.}, defined in other words as the willingness of finish the execution in the current timestep $t$. Thus, starting from this we have that the probability that the execution is not finished in the previous timestep is $\prod\limits_{i=1}^{t-1}(1 - f_{i})$ and the probability that the output is produced in the current timestep is $p_{t} = f_{t} \cdot \prod\limits_{i=1}^{t-1}(1 - f_{i})$. 
+Moreover, the NRAM use a system with which can decide if the execution can be terminated. Recalling that the execution is divided $T$ timesteps, in each of them the controller emits along the various $a,\ b,\ c$ vectors a scalar $f_{t} \in [0, 1]$\footnote{The controller emits a scalar $x_{i}$, with which is produced the $f_i = \textbf{sigmoid}(x_{i})$.}, defined in other words as the willingness of finish the execution in the current timestep $t$. Thus, starting from this we have that the probability that the execution is not finished in the previous timestep is $\prod\limits_{i=1}^{t-1}(1 - f_{i})$ and the probability that the output is produced in the current timestep is $p_{t} = f_{t} \cdot \prod\limits_{i=1}^{t-1}(1 - f_{i})$. 
 
 As stated previously, the execution is continued for a maximum of timestep $T$, except for the previous cases, where the NRAM is forced to emits an output and, due to this, the probability to terminate is $p_{T} = 1 - \sum\limits_{i=1}^{T-1}p_{i}$ regardless of the $f_{T}$ of the last timestep.
 
