@@ -8,7 +8,7 @@ Differential Evolution is a parallel iterative direct search metaheuristic which
 \begin{align}
 	x_{i, G},\ i=1,\ \dots,\ NP 
 \end{align}
-called \textbf{population} formed by \textbf{individuals}. Every individual is manipulated for \textbf{G} generations, where the population is not reduced nor incremented, looking for one individual that can be considered as a solution. The search is guided by an objective represented by a function called \textbf{fitness function}, which represents the goodness of an individual. For a better research, the individuals must be randomly initialized covering most possible the search space.
+called \textbf{population} formed by \textbf{individuals}. Every individual is manipulated for \textbf{G} generations, where the population is not reduced nor incremented, looking for one individual that can be considered as solution. The search is guided by an objective function called \textbf{fitness function}, which represents the goodness of an individual. For a better research, the individuals should be randomly initialized covering most possible the search space.
 
 \begin{figure}[h]
 	\centering
@@ -17,7 +17,7 @@ called \textbf{population} formed by \textbf{individuals}. Every individual is m
 	\label{fig:bin-crossover}
 \end{figure}
 
-As stated previously, the algorithm goes on for G generations where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individual which are selected for the creation of donors set, called also mutant. Once the mutants are generated, targets and donors sets are mixed up with some crossover strategy which creates the trials set. After this, the trials is compared respect to the targets with the fitness function. The better are selected creating the next generation targets set. \\
+As stated previously, the algorithm goes on for G generations where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individuals which represent the candidate solutions and from which is created the donors (mutants) set mixing the targets. The targets and donors sets are mixed with some crossover strategy which creates the trials set. After this, the trials is compared respect to the targets with the fitness function - the better are selected creating the next generation targets set. \\
 
 \begin{figure}[t]
 	\centering
