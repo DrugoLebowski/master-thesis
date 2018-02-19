@@ -15,5 +15,8 @@ The following are the description of the executed task used in our experiments. 
 \end{itemize}
 
 \section{Results}
+Overall, we have found executing the experiments a good set of training hyperparameters only for tasks \textbf{Access}, \textbf{Copy}, \textbf{Increment} and \textbf{Reverse} as it can be seen in Table \ref{tbl:training-parameters}. Unfortunately, for the other tasks, the performed tests have not produced any good results. For completeness, the cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}. The training results are showed in Table \ref{tbl:training-results}.\newline\newline
+With the problems for which the hyperparameters were found, we had achieved cost 0 with both solutions, i.e. DE and Theano, with much less effort in the first one respect to the second. All the found parameters generalize perfectly with sequences much longer respect to that with the training was did. The generalization tests have been performed with sequences of maximum 100 values.\newline\newline
+For the other problems, the experiments have not produced any good results. During the training both solutions have not reached never cost 0.
 
 \subsection{Circuits}

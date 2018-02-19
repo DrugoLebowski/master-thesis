@@ -27,7 +27,7 @@ As stated previously, the algorithm goes on for G generations where in each of t
 
 Summing up, after the targets set initialization, the step executed in every DE generation are:
 \begin{itemize}
-	\item{\textbf{Mutation}: Let target $x$ at the generation $G$, a mutant is generated combining $x$ through a summation with some others targets combined with some strategy and scaled through a global real valued user defined constant $F$. As example, with the strategy \textbf{rand/1} introduced in \cite{DESEHGOCS:1997} we have
+	\item{\textbf{Mutation}: Let target $x$ at the generation $G$, a mutant is generated combining $x$ through a summation with some other targets combined with some strategy and scaled through a global real valued user defined constant $F$. As example, with the strategy \textbf{rand/1} introduced in \cite{DESEHGOCS:1997} we have
 	\begin{align}
 		v_{i,G+1} = x_{r_{1},G} + F\cdot(x_{r_{2},G} - x_{x_{3},G})
 	\end{align}
@@ -247,7 +247,7 @@ The Rand mutation strategy is introduced in \cite{DESEHGOCS:1997} and works sele
 where $r_1, r_2, r_3, r_4, r_5 \in \{1, 2, \dots, \textit{NP}\ \}$ must be mutually different and also from the related index $i$.
 
 \subsubsection{Best}
-The Best mutation strategy is introduced in \cite{DESEHGOCS:1997} and works selecting, as the name suggests, the current best individual and some others as follows:
+The Best mutation strategy is introduced in \cite{DESEHGOCS:1997} and works selecting, as the name suggests, the current best individual and some other as follows:
 \begin{align}
 	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} - x_{r_2, G}) \\
 	v_{i, G + 1} &= x_{\textit{best}, G} + F \cdot (x_{r_1, G} + x_{r_2, G} - x_{r_3, G} - x_{r_4, G})

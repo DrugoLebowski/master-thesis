@@ -125,7 +125,7 @@ Moreover, the NRAM use a system with which can decide if the execution can be te
 
 As stated previously, the execution is continued for a maximum of timestep $T$, except for the previous cases, where the NRAM is forced to emits an output and, due to this, the probability to terminate is $p_{T} = 1 - \sum\limits_{i=1}^{T-1}p_{i}$ regardless of the $f_{T}$ of the last timestep.
 
-\subsection{Cost function}
+\subsection{Cost function}\label{subsec:cost-function}
 Let $\mathcal{M}^{(t)} \in \textrm{I\!R}^{|N|}_{|N|}$ the memory matrix at the end of the execution of the timestep $t$ and $(x, y) \in N^{|N|}$ a couple which contains the starting input sequence and the expected output sequence, the cost function is defined, only for the memory augmented version, as the expected negative log-likelihood of producing the correct output, i.e.
 \begin{equation}
 	-\sum\limits_{i=1}^{T}\Bigg(p_{t}\cdot\sum\limits_{i=1}^{|N|}log\Big(\mathcal{M}_{i, y_{i}}^{(t)}\Big)\Bigg)

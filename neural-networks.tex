@@ -234,7 +234,7 @@ Intuitively, in the forward propagation pass the network is "forward executed", 
 	a^{(1)} = \alpha^{(1)}(\sum\limits_{i=1}^{|\textbf{x}|}x_{i}l_{h}^{(1)} + b^{(1)})
 \end{equation}
 where $\alpha^{(1)}$ is the activation function of the first layer.\\
-Then, as state previously, the computation continue forward for all the others hidden layers as follows
+Then, as state previously, the computation continue forward for all the other hidden layers as follows
 \begin{equation}
 	a^{(j)} = \alpha^{(j)}(\sum\limits_{n \in a^{(j - 1)}}a^{(j - 1)}_{n}h^{(j)}_{h} + b^{(j)})
 \end{equation}
