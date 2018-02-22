@@ -15,8 +15,119 @@ The following are the description of the executed task used in our experiments. 
 \end{itemize}
 
 \section{Results}
-Overall, we have found executing the experiments a good set of training hyperparameters only for tasks \textbf{Access}, \textbf{Copy}, \textbf{Increment} and \textbf{Reverse} as it can be seen in Table \ref{tbl:training-parameters}. Unfortunately, for the other tasks, the performed tests have not produced any good results. For completeness, the cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}. The training results are showed in Table \ref{tbl:training-results}.\newline\newline
-With the problems for which the hyperparameters were found, we had achieved cost 0 with both solutions, i.e. DE and Theano, with much less effort in the first one respect to the second. All the found parameters generalize perfectly with sequences much longer respect to that with the training was did. The generalization tests have been performed with sequences of maximum 100 values.\newline\newline
-For the other problems, the experiments have not produced any good results. During the training both solutions have not reached never cost 0.
+In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, trying to test the same tasks. We have do that combining the algorithms \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE} with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}. We show the best configurations in the results Tables \ref{tbl:tests-configurations-access}-\ref{tbl:tests-configurations-reverse} - in them are showed only the configurations that are converged. So it is clear that \textbf{L-SHADE} not have never converged. Moreover, we have used always the same configurations of NRAM, like number of registers and maximum integer, among the tests. Hence, to not overload the tables they are showed in the Section \ref{subsec:circuits} associated to the generated circuits. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}, that evaluates the manipulated input memory respect to the desired memory, according to the cost mask.\newline\newline
+Overall, we have found a good set of training hyperparameters only for tasks \textbf{Access}, \textbf{Copy}, \textbf{Increment} and \textbf{Reverse} - Differential Evolution has always achieved cost zero without particular efforts, differently to ADAM as can be seen in Figures \ref{fig:access-plot}-\ref{fig:reverse-plot}. Unfortunately, for the other tasks, the performed tests have not produced any good results.\newline
 
-\subsection{Circuits}
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\multicolumn{5}{|c|}{\textbf{Access}} \\ \hline
+		DE type & JADE & JADE & SHADE & SHADE \\ \hline
+		Mutation & DEGL & Curr to p best & DEGL & Curr to p best  \\ \hline
+		Crossover & bin & bin & bin & bin \\ \hline
+		Population & 60 & 60 & 60 & 60 \\ \hline
+		Training gen. & 1000 & 1000 & 1000 & \\ \hline
+		Convergence gen. & & & & \\ \hline
+		F & & & & \\ \hline
+		CR & & & & \\ \hline
+		Archive size & & & & \\ \hline
+		Memory \textbf{M} Size & $\times$ & $\times$ & & \\ \hline
+		DEGL neighbors & 5 & $\times$ & 5 & $\times$ \\ \hline
+		Hidden Layer & $2 \times 260$ & $2 \times 260$ & $2 \times 260$ &  $2 \times 260$\\ \hline
+		Activation function & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu \\ \hline
+	\end{tabular}
+	\caption{Best configurations used in the tests of \textbf{Access}}
+	\label{tbl:tests-configurations-access}
+\end{table}
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\multicolumn{5}{|c|}{\textbf{Increment}} \\ \hline
+		DE type & JADE & JADE & SHADE & SHADE \\ \hline
+		Mutation & DEGL & Curr to p best & DEGL & Curr to p best  \\ \hline
+		Crossover & bin & bin & bin & bin \\ \hline
+		Population & 60 & 60 & 60 & 60 \\ \hline
+		Training gen. & 1000 & 1000 & 1000 & \\ \hline
+		Convergence gen. & & & & \\ \hline
+		F & & & & \\ \hline
+		CR & & & & \\ \hline
+		Archive size & & & & \\ \hline
+		Memory \textbf{M} Size & $\times$ & $\times$ & & \\ \hline
+		DEGL neighbors & 5 & $\times$ & 5 & $\times$ \\ \hline
+		Hidden Layer & $2 \times 260$ & $2 \times 260$ & $2 \times 260$ &  $2 \times 260$\\ \hline
+		Activation function & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu \\ \hline
+	\end{tabular}
+	\caption{Best configurations used in the tests of \textbf{Increment}}
+	\label{tbl:tests-configurations-increment}
+\end{table}
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\multicolumn{5}{|c|}{\textbf{Copy}} \\ \hline
+		DE type & JADE & JADE & SHADE & SHADE \\ \hline
+		Mutation & DEGL & Curr to p best & DEGL & Curr to p best  \\ \hline
+		Crossover & bin & bin & bin & bin \\ \hline
+		Population & 60 & 60 & 60 & 60 \\ \hline
+		Training gen. & 1000 & 1000 & 1000 & \\ \hline
+		Convergence gen. & & & & \\ \hline
+		F & & & & \\ \hline
+		CR & & & & \\ \hline
+		Archive size & & & & \\ \hline
+		Memory \textbf{M} Size & $\times$ & $\times$ & & \\ \hline
+		DEGL neighbors & 5 & $\times$ & 5 & $\times$ \\ \hline
+		Hidden Layer & $2 \times 260$ & $2 \times 260$ & $2 \times 260$ &  $2 \times 260$\\ \hline
+		Activation function & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu \\ \hline
+	\end{tabular}
+	\caption{Best configurations used in the tests of \textbf{Copy}}
+	\label{tbl:tests-configurations-copy}
+\end{table}
+
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\multicolumn{5}{|c|}{\textbf{Reverse}} \\ \hline
+		DE type & JADE & JADE & SHADE & SHADE \\ \hline
+		Mutation & DEGL & Curr to p best & DEGL & Curr to p best  \\ \hline
+		Crossover & bin & bin & bin & bin \\ \hline
+		Population & 60 & 60 & 60 & 60 \\ \hline
+		Training gen. & 1000 & 1000 & 1000 & \\ \hline
+		Convergence gen. & & & & \\ \hline
+		F & & & & \\ \hline
+		CR & & & & \\ \hline
+		Archive size & & & & \\ \hline
+		Memory \textbf{M} Size & $\times$ & $\times$ & & \\ \hline
+		DEGL neighbors & 5 & $\times$ & 5 & $\times$ \\ \hline
+		Hidden Layer & $2 \times 260$ & $2 \times 260$ & $2 \times 260$ &  $2 \times 260$\\ \hline
+		Activation function & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu & 2 $\times$ ReLu \\ \hline
+	\end{tabular}
+	\caption{Best configurations used in the tests of \textbf{Reverse}}
+	\label{tbl:tests-configurations-reverse}
+\end{table}
+
+\begin{table}[]
+\centering
+\label{my-label} 
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Task} & \textbf{Train complexity} & \textbf{Train error} & \textbf{Generalization} \\ \hline
+
+Access & $\textrm{len}(A) \leq 20$ & 0 & Perfect \\ \hline
+Increment & $\textrm{len}(A) \leq 10$ & 0 & Perfect \\ \hline
+Copy & $\textrm{len}(A) \leq 6$ & 0 & Perfect \\ \hline
+Reverse & $\textrm{len}(A) \leq 6$ & 0 & Perfect \\ \hline
+
+\end{tabular}
+\caption{Configurations used in tests}
+\label{tbl:tests-configuration}
+\end{table}
+
+All the found parameters generalize perfectly with sequences much longer respect to those used in the training. The generalization tests have been performed with sequences of maximum 100 values. For the other problems, including \textbf{Swap} which in the original paper is considered as a ``Simple'' task, the experiments have not produced any good results. During the training both solutions never reached cost zero, indicating that the controller does not learns the algorithm. The error of each task, associated to the complexity, is visible in the Figure \ref{fig:error-hard-tasks}. As a hypothesis, we impute this to the incapacity of the Differential Evolution to find a controller which uses all the pointers in the memories.
+
+\subsection{Circuits}\label{subsec:circuits}

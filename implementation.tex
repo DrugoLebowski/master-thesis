@@ -64,20 +64,17 @@ step\_gen\_change\_difficulty & Number of gen where the same difficulty is used 
 \end{table}
 
 \section{Theano}
-Theano is a Python library created at LISA labs of University of Montreal, which lets to define easily complex mathematical expressions and execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. However, how we see later, the performance on CPU is quite slower respect to DENN. %TODO
+Theano is a Python library created at LISA labs of University of Montreal, which lets to define easily complex mathematical expressions and execute them efficiently in the CPU and GPU specially with those which involves multi-dimensional arrays. The expressions definition is made through the creation of computational graph which is then executed and, if requested, automatic differentiated with an automatic differentiator, e.g. when one would calculate the gradient. However, how we see later, the performance on CPU is quite slower respect to DENN.
 
 \section{Implementation}
 Our thesis work are sub-divided in two parallel projects: a refactoring of the already existing project\footnote{\hyperref[https://github.com/gibiansky/experiments/tree/master/nram]{https://github.com/gibiansky/experiments/tree/master/nram}} of Andrew Gibiansky, written in Python and based on Theano, to which some parts of NRAM and a parametrization system are missing and an implementation from zero of NRAM based on what is offered by DENN.
 
 \subsection{Preface}
 Because some problems are too complex to be learn by NRAM, we have also used some of the technique that have been used in the original paper \cite{NRAM:2016}.
-
 \paragraph{Gradient clipping}
 The size of the model can be extremely huge and moreover extremely depth, due to the execution in various timesteps. In this types of networks the gradient can often explodes, as noticed in \cite{Bengio1994LearningLD}. Hence, to resolve this problem, in Theano implementation all the gradients are clipped in the range $[-C_1, C_1]$ and successively rescaled, such that its $L_2$\footnote{Let $\textbf{x} = [x_1, x_2, \dots, x_n]$, the norm $L_2$ is defined as $|\textbf{x}| = \sqrt{\sum\limits_{k=1}^{n}|x_i|^2}$.} norm is not bigger than some constant $C_2$.
-
 \paragraph{Noise}
 As noticed in \cite{Neelakantan2015AddingGN}, in Theano implementation after that the gradients are computed, clipped and rescaled is added Gaussian noise, whose variance decays over time.
-
 \paragraph{Entropy}
 As for \cite{NRAM:2016}, we also noticed that the network can fix the pointer in some value. Although it could be an advantage in some cases, however, if this happens too early in the training, it could forces the network to stay fixed on some pointer with a very small chances of change. Hence, to alleviate this condition, we give to the network a sort of a ``entropy bonus'' which decreases over time. This entropy is computed for each generated distribution\footnote{We have identified these distributions be those in the memory.} by the neural network with the Shannon entropy and is multiplied for the following coefficient that decreases over time
 \begin{equation}
@@ -101,6 +98,8 @@ The implementation of NRAM is similar between the two solutions. What is differe
 The principal block of NRAM can be seen in Algorithm \ref{alg:nram-main-block}. The execution starts with the setting of some variables, such as cost variable and the constants used for the computing of the entropy. The main cycle is at Line \ref{lst:nram-timesteps} - in every timestep the network releases all the coefficients, i.e. the circuit connections, at Line \ref{lst:nram-nn-predict}. At Line \ref{lst:nram-run-circuit} is executed the circuit, with the Algorithm \ref{alg:nram-run-circuit} - it returns the willingness of terminate the execution with which is computed from Line \ref{lst:nram-cost-1} to \ref{lst:nram-cost-2} the timestep cost, added later to the total cost. The ``magic'' of NRAM happens in Algorithm \ref{alg:nram-run-circuit}, where the circuit is executed. From Line \ref{lst:nram-exec-circuit-1} to \ref{lst:nram-exec-circuit-2}, each gate in the list \textbf{Gates} is executed, getting an input\footnote{Depending by the type - Costant gate produce a constant output without getting an input, unary and binary gate gate get, respectively, one and two input.} and producing an output, which might be accessed later by another gate or register. From Line \ref{lst:nram-up-reg-1} to \ref{lst:nram-up-reg-2}, the registers are updated.
 \newline\newline
 As it can be seen in the Lines \ref{lst:nram-avg-1}, \ref{lst:nram-avg-2}, \ref{lst:nram-avg-3} and \ref{lst:nram-avg-4}, the selection of the input of a gate and the new content of the register is made through the function in the Algorithm \ref{alg:nram-average} which do a weighted average. An example of gate is visible in Algorithm \ref{alg:nram-gate-add} - the \textbf{add} gate compute the summation of two number represented as two probability distributions. Finally, the functions \textsc{GetGateCoefficient} and \textsc{GetRegisterCoefficient} are purely conceptual functions which indicates a method with which the coefficients are acquired.
+\subsubsection{Datasets}
+The datasets used during the training are generated programmatically with a procedure for each tasks. In each procedure are generated the input datataset, i.e. the initial memory that the NRAM manipulate during the training, the expected dataset, i.e. the desired memory when the NRAM stops the execution, and the cost mask, i.e. a vector which has the value one in the positions of the memory of interest and zero in the others. When the datasets are generated depends by the Curriculum Learning activation - if it is active, the datasets are re-generated every change of difficulty, otherwise only at the start of the training.
 
 \begin{algorithm}
 	\begin{algorithmic}[1]
@@ -151,41 +150,6 @@ As it can be seen in the Lines \ref{lst:nram-avg-1}, \ref{lst:nram-avg-2}, \ref{
 	\end{algorithmic}
 	\caption{Pseudocode of the main block of NRAM.}\label{alg:nram-main-block}
 \end{algorithm}
-
-\begin{algorithm}
-	\begin{algorithmic}[1]
-		\Function{RunCircuit}{Gates, Conf, Regs, IMem, MaxInt}
-			\State{RegsAndOutput = \Call{Copy}{Regs}}
-			\State{}
-			\ForEach{$g\in \textrm{Gates}$}\Comment{Run of the circuit}\label{lst:nram-exec-circuit-1}
-				\If{\Call{g.isConstant}}
-					\State{GateResult = g.\Call{Value}{}}
-				\ElsIf{\Call{g.isUnary}}
-					\State{Coeff = \Call{GetGateCoefficient}{Conf, g}}
-					\State{InputValue = \Call{Avg}{RegsAndOutput, Coeff}}\label{lst:nram-avg-1}
-					\State{GateResult = g.\Call{execute}{InputValue, IMem, MaxInt}}	
-				\Else
-					\State{(CoeffA, CoeffB) = \Call{GetGateCoefficient}{Conf, g}}
-					\State{InputValueA = \Call{Avg}{RegsAndOutput, CoeffA}}\label{lst:nram-avg-2}
-					\State{InputValueB = \Call{Avg}{RegsAndOutput, CoeffB}}\label{lst:nram-avg-3}
-					\State{GateResult = g.\Call{execute}{GateValueA, GateValueB, IMem, MaxInt}}	
-				\EndIf
-				\State{RegsAndOutput = \Call{Concatenate}{Regs, GateValue}}
-			\EndFor{}\label{lst:nram-exec-circuit-2}
-			\newline
-			\For{$i\in[1, \dots, |\textrm{Regs}|]$}\Comment{Update of the registers}\label{lst:nram-up-reg-1}
-				\State{Coeff = \Call{GetGateCoefficient}{Conf, i}}
-				\State{NewValue = \Call{Avg}{RegsAndOutput, Coeff}}\label{lst:nram-avg-4}
-				\State{Regs[i] = NewValue}
-			\EndFor{}\label{lst:nram-up-reg-2}
-			\State{}
-			\State{\Return{(Conf[|Conf| - 1], Distributions)}}
-		\EndFunction
-	\end{algorithmic}
-	\caption{Pseudocode of the run circuit function.}\label{alg:nram-run-circuit}
-\end{algorithm}
-
-
 \begin{algorithm}
 	\begin{algorithmic}[1]
 		\Function{Avg}{RegsOut, Coefficient} 

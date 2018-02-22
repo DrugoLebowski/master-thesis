@@ -374,6 +374,8 @@ Let $\beta_1$ and $\beta_2$ exponential decay rates used for the momentum estima
 	\hat{v}_{ij}^{(t)} &= \frac{v_{ij}^{(t)}}{1 - \beta_{2}} \\
 	w_{ij}^{(t)} &= w_{ij}^{(t)} - \lambda\frac{\hat{m}_{ij}^{(t)}}{\sqrt{\hat{v}_{ij}^{(t)}} + \epsilon}
 \end{align}
+\paragraph{Momentum}
+The technique of momentum \cite{POLYAK19641} takes inspiration to physical environment. It is used  to accelerate learning\footnote{In Stochastic Gradient, so also in ADAM, it is used to resolve the variance of the gradient.}, specially in case of high curvature, small and noisy gradients. Formally, the momentum is represented by a vector \textbf{v} that plays the role of velocity, i.e. the direction and speed of parameters moving through the parameters space. It is used in learning as a force to avoid that the gradients move too freely\footnote{In this case, with a physical similitude, we can see the gradients as a hockey puck sliding on a frictionless icy surface.}, conditioning too much the descent. In other words, the momentum helps the descent to move in the direction of most weight gradients push. In ADAM there are two momentum vectors, respectively the mean and the uncentered variance of the gradients. 
 
 \section{Activation functions}\label{sec:activation-functions}
 The activation functions are special functions that can be, in particular, differentiable. This last characteristic is mandatory if the used optimization algorithm is gradient based. These functions are used in every neurons of an ANN and define how the neurons emit their values when stimulated. The following are some activation functions with their plots:
