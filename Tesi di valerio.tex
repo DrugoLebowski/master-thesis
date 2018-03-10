@@ -133,16 +133,15 @@
 %\generaDedica
 \introduzione{introduction}		% inserisce l'introduzione e la prende in questo caso da introduzione.tex
 \generaIndice
-\generaIndiceFigure
 
 % ----- Pagine di tesi, numerate in arabo (1,2,3,4,...) (obbligatorio)
 \mainmatter
 % il comando ``capitolo'' ha come parametri:
 % 1) il titolo del capitolo\include{neural-networks}
 % 2) il nome del file tex (senza estensione) che contiene il capitolo. Tale nome \`e usato anche come label del capitolo
-\capitolo{Artificial Neural networks}{neural-networks}
 \capitolo{Neural Random-Access Machines}{neural-random-access-machine}
-\capitolo{Differential evolution}{differential-evolution}
+\capitolo{Artificial Neural networks}{neural-networks}
+\capitolo{Differential evolution and DENN}{differential-evolution}
 \capitolo{Implementation}{implementation}
 \capitolo{Experiments}{experiments}
 
@@ -154,6 +153,7 @@
 % Bibliografia con BibTeX (obbligatoria)
 % Non si deve specificare lo stile della bibliografia
 \bibliography{bibliografia} % inserisce la bibliografia e la prende in questo caso da bibliografia.bib
+\generaIndiceFigure
 \ringraziamenti{ringraziamenti}	% inserisce i ringraziamenti e li prende in questo caso da ringraziamenti.tex
 \end{document}
 

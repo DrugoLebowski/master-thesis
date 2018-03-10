@@ -1,23 +1,22 @@
 \label{chap:differential-evolution}
-In the first part of the Chapter we make an overview to Differential Evolution, moving later to the mutation and crossover strategies that we have used to evolve the NRAM controller.
+In the first part of the Chapter we make an overview to the iterative algorithm Differential Evolution, moving later to the mutation and crossover strategies that we have used in the experiments. Finally, we speak about DENN (Differential Evolution for Neural Network) - a framework that implements and applies many of the variants, like JADE, SHADE and L-SHADE, of the algorithm Differential Evolution for the training of ANNs.
+
+% TODO: accenna a DENN e alla sua capacità di allenamento di reti neurali
 
 \section{Differential Evolution}
-Differential Evolution (DE) is a metaheuristic\footnote{A metaheuristic is a procedure that has as objective the search, creation or selection of an heuristic that could be find a optimal solution of a problem.} introduced in \cite{DESEHGOCS:1997}, belonging to the family of Evolutionary Algorithm (EA), that has as objective the solution searching through the parallel evolution of a set of candidate solutions. 
-
+Differential Evolution (DE) is a metaheuristic\footnote{A metaheuristic is a procedure that has as objective the search, creation or selection of an heuristic that could be find a optimal solution of a problem.} introduced in \cite{DESEHGOCS:1997}, belonging to the family of Evolutionary Algorithms (EAs), that has as objective the searching of a solution through the parallel evolution of a set of candidate solutions.\newline\newline
 Differential Evolution is a parallel iterative direct search metaheuristic which utilizes NP D-dimensional numerical vectors 
 \begin{align}
 	x_{i, G},\ i=1,\ \dots,\ NP 
 \end{align}
-called \textbf{population} formed by \textbf{individuals}. Every individual is manipulated for \textbf{G} generations, where the population is not reduced nor incremented, looking for one individual that can be considered as solution. The search is guided by an objective function called \textbf{fitness function}, which represents the goodness of an individual. For a better research, the individuals should be randomly initialized covering most possible the search space.
-
+called \textbf{population} formed by \textbf{individuals}. Every individual is manipulated for \textbf{G} generations, where the population is not reduced nor incremented, looking for one individual that can be considered as solution. The search is guided by an objective function called \textbf{fitness function}, which represents the goodness of an individual. For a better research, the individuals should be randomly initialized covering most possible the search space.\newline
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{figures/de-flow-complete.png}
 	\caption{Execution flow of the Differential Evolution referred to a generation.}
 	\label{fig:bin-crossover}
 \end{figure}
-
-As stated previously, the algorithm goes on for G generations where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individuals which represent the candidate solutions and from which is created the donors (mutants) set mixing the targets. The targets and donors sets are mixed with some crossover strategy which creates the trials set. After this, the trials is compared respect to the targets with the fitness function - the better are selected creating the next generation targets set. \\
+As stated previously, the algorithm goes on for G generations where in each of these are generated three set of individuals called, respectively, \textbf{targets}, \textbf{donors} and \textbf{trials}. The targets set is formed by individuals which represent the candidate solutions and from which is created the donors (mutants) set mixing the targets. The targets and donors sets are mixed with some crossover method which creates the trials set. After this, the trials is compared one-by-one to the targets with the fitness function - the better are selected creating the targets set of the next generation. \\
 
 \begin{figure}[t]
 	\centering
@@ -40,7 +39,7 @@ Summing up, after the targets set initialization, the step executed in every DE 
 		\end{cases}
 	\end{equation}
 	for $i=1,2,\dots,D$. The function $\textit{randb}(j)$ generate a real valued number for the $j^{th}$ parameter according to binomial distribution, $\textrm{CR}\in[0,1]$ is the global user defined crossover constant used as a threshold and $\textit{rnbr}(i)$ is a function that generate randomly an index which ensures that is selected at least one parameter of the mutant $v_{i}$.}
-	\item{\textbf{Selection}: After the trials set is generated is made a comparison respect to the targets set for each vector, i.e. the target $x_{i, G}$ is compared respect to the trial $u_{i,G+1}$ using the fitness function. Hence, if the target have a smaller cost respect to the trial, than it is retained for the next generation targets set and vice-versa.}
+	\item{\textbf{Selection}: After the trials set is generated is made a comparison with respect to the targets set for each vector, i.e. the target $x_{i, G}$ is compared with respect to the trial $u_{i,G+1}$ using the fitness function. Hence, if the target have a smaller cost with respect to the trial, than it is retained for the next generation targets set and vice-versa.}
 \end{itemize}
 
 
@@ -157,7 +156,7 @@ Hence, trying to resolve this problem in \cite{JADE:2009} is introduced JADE. Br
 	\begin{align}
 		\textit{CR}_{i} = \textrm{randn}_{i}(\mu_{\textit{CR}}, 0.1)
 	\end{align}
-	truncated respect to the interval $[0, 1]$. \newline\newline
+	truncated with respect to the interval $[0, 1]$. \newline\newline
 	After the generation ending the best $\textit{CR}_{i}$s, i.e. the \textit{CR}s associated to the trials $v$ better than the targets $x$, are added to the set $S_{\textit{CR}}$, i.e. the set containing the $\textit{CR}_{i}$ that is successful. After this, the mean $\mu_{\textit{CR}}$ is recalculated as follows:
 	\begin{align}
 		\mu_{\textit{CR}} = (1 - c)\cdot\mu_{\textit{CR}} + c\cdot\textrm{mean}_{A}(S_{\textit{CR}})
@@ -184,8 +183,7 @@ Moreover, JADE has introduced an optional external memory denoted as \textbf{A} 
 
 \subsubsection{Success-History based Adaptive DE (SHADE)}
 The JADE's main problem is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performances.\newline\newline
-SHADE introduced in \cite{SHADE:2013} aims to toughen JADE introducing a crossover and mutation constants generation alternative system. This is done leaving out the $S_{\textit{CR}}$ and $S_{F}$ memories and adding two new memories, named \textit{historical memories}, $M_{\textit{CR}}$ and $M_{F}$ where are stored the constants that have well performed in the past.\\
-
+SHADE introduced in \cite{SHADE:2013} aims to toughen JADE introducing a crossover and mutation constants generation alternative system. This is done leaving out the $S_{\textit{CR}}$ and $S_{F}$ memories and adding two new memories, named \textit{historical memories}, $M_{\textit{CR}}$ and $M_{F}$ where are stored the constants that have well performed in the past.
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|l|}
@@ -199,14 +197,12 @@ SHADE introduced in \cite{SHADE:2013} aims to toughen JADE introducing a crossov
 	\end{tabular}
 	\caption{Historical memories $M_{\textit{CR}}$ and $M_{F}$}
 \end{table}
-
 Formally, let $M_{F}$ and $M_{\textit{CR}}$ two memories with $H$ cells initialized to $0.5$. Similarly to JADE, the constants are generated in each generation for all the individuals like follows:
 \begin{align}
 	F_i &= \textrm{randc}_{i}(M_{F, r_{i}}, 0.1) \\
 	\textit{CR}_i &= \textrm{randn}_{i}(M_{\textit{CR},r_{i}}, 0.1)
 \end{align}
-where $M_{F, r_{i}}$ and $M_{\textit{CR}, r_{i}}$ are two memory cells randomly selected for each individual. Here the $F_{i}$ and $\textit{CR}_{i}$ are managed like in JADE, i.e. are truncated or regenerated.
-
+where $M_{F, r_{i}}$ and $M_{\textit{CR}, r_{i}}$ are two memory cells randomly selected for each individual. Here the $F_{i}$ and $\textit{CR}_{i}$ are managed like in JADE, i.e. are truncated or regenerated.\newline\newline
 In every generation, after the selection is done, the successful $F_{i}$ and $\textit{CR}_{i}$ values are recorded in temporary memories $S_{F}$ and $S_{\textit{CR}}$ with which the content of the memory is updated as follows:
 \begin{align}
 	M_{F,k,G+1} &= \begin{cases}
@@ -317,3 +313,63 @@ Exp is an alternative of the classic Bin. It starts choosing a random $n \in [1,
 	v_{ij, G} &= x_{ij, G}\textrm{,  otherwise}
 \end{align} 
 where $< \cdot >_{D}$ is the modulo function with modulus D. An example is showed in figure \ref{fig:exp-crossover}
+
+\section{DENN}\label{sec:DENN}
+DENN is a framework written in C++ by Gabriele Di Bari and Mirco Tracolli, based on their thesis work. It aims to apply the Differential Evolution concepts on the ANN training as an alternative to Gradient-based algorithms. It is initially created as a TensorFlow extension due to the performance and simplicity offered by this latter, but now is completely based on the C++ library Eigen due to its implementation based on the high performance library LAPACK written in Fortran 77.
+
+\subsection{How does it work}
+DENN is a framework that aims to help the developer to construct a system for train Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which is decided how the neural network should be trained. For example, let the Differential Evolution configuration JADE/\\Rand/1/Bin - JADE, Rand/1 and Bin are three modules that can be selected for the training process at the time of configuration of DENN. The plug-in that could be used are not only for the DE things, but also regard the dataset\footnote{Where is it, how to manage it, etc.}, how the neural network should be structured\footnote{How many levels and the activation functions} and, more important, what kind of neural network you want instruct\footnote{At this time, DENN can trains only feed-forward networks.}. Some of the configuration parameters can be found in the Table \ref{tbl:denn-parameters}.\newline\newline
+However, what really changes in DENN with respect to the standard Differential Evolution is how the population evolves. As stated in the Chapter \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the existence of a population of vectors, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors are bi-dimensional, i.e. a list of features to optimize. Hence in DENN, since the population is composed by neural networks it cannot be used as is, instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual is a neural network and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents.\newline\newline
+For a better explanation, let's examine the mutation phase through an example. Let \textit{NP} the Neural Networks population, Rand/1 the mutation strategy, $r_1, r_2$ and $r_3$ three mutually exclusive indexes, the donor $\textbf{u}_{1}$ is created as follows:
+\begin{align}
+	\textbf{u}_{1}^{w_1} &= \textbf{x}_{r_1}^{w_1} + F \cdot (\textbf{x}_{r_2}^{w_1} - \textbf{x}_{r_3}^{w_1}) \\
+	\textbf{u}_{1}^{b_1} &= \textbf{x}_{r_1}^{b_1} + F \cdot (\textbf{x}_{r_2}^{b_1} - \textbf{x}_{r_3}^{b_1}) \\
+	\cdots \cr
+	\textbf{u}_{1}^{w_{|\textbf{HL}|}} &= \textbf{x}_{r_1}^{w_{|\textbf{HL}|}} + F \cdot (\textbf{x}_{r_2}^{w_{|\textbf{HL}|}} - \textbf{x}_{r_3}^{w_{|\textbf{HL}|}}) \\
+	\textbf{u}_{1}^{b_{|\textbf{HL}|}} &= \textbf{x}_{r_1}^{b_{|\textbf{HL}|}} + F \cdot (\textbf{x}_{r_2}^{b_{|\textbf{HL}|}} - \textbf{x}_{r_3}^{b_{|\textbf{HL}|}})
+\end{align}
+where $w_i$ and $b_i$ represent the weights and bias vectors of the $\textrm{i}^{\textrm{th}}$ level and \textbf{HL} is the hidden layers set. The same work is made also for the crossover phase, so we do not explain it with an example which is leaved to the reader.
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{|l|l|}
+		\hline
+		Argument     & Description \\ \hline \hline
+
+		\multicolumn{2}{|c|}{\textbf{Execution args}} \\ \hline
+		threads\_pop & Executed threads of DENN \\ \hline
+		seed     	 & Distribution seed \\ \hline
+		instance		 & Type of model (nram/default) \\ \hline \hline
+
+		\multicolumn{2}{|c|}{\textbf{Batch info}} \\ \hline
+		batch\_size  	 & Number of training examples \\ \hline
+		batch\_offset	 & Examples per batch \\ \hline
+		use\_validation & Activate pop validation at the end of a sub-		geneneration \\ \hline
+		cumpter\_test\_per\_pass     	 & Compute the test accuracy for each pass \\ \hline \hline
+
+		\multicolumn{2}{|c|}{\textbf{DE}} \\ \hline
+		generations  	 & Total number of generations \\ \hline
+		sub\_gens  	 	& Number of sub-generations \\ \hline
+		number\_parents  	 	& DE population size \\ \hline
+		f						& DE F coefficient \\ \hline
+		cr						& DE CR coefficient \\ \hline
+		evolution\_method 		& Evolution method (JADE/SHADE/L-SHADE) \\ 	\hline
+		mutation 				& Mutation method (degl/curr\_p\_best) \\ \hline
+		crossover				& Crossover method (bin/exp/interm) \\ \hline
+
+		\multicolumn{2}{|c|}{\textbf{Network}} \\ \hline
+		hidden\_layers  	 		& Levels size \\ \hline
+		activation\_functions  	& Activation functions of levels \\ \hline
+
+		\multicolumn{2}{|c|}{\textbf{NRAM}} \\ \hline
+		task  	 		& Task to execute \\ \hline
+		max\_int  		& Max int in the set \\ \hline
+		n\_registers  	& Registers to use \\ \hline
+		time\_steps  	& Execution timesteps \\ \hline
+		gates  			& Gates to use \\ \hline
+		step\_gen\_change\_difficulty & Number of gen where the same difficulty is used  \\ \hline
+
+	\end{tabular}
+	\caption{Some arguments used in a DENN's configuration file.}
+	\label{tbl:denn-parameters}
+\end{table}
