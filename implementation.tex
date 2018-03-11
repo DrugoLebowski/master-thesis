@@ -18,7 +18,7 @@ As for \cite{NRAM:2016}, we also noticed that the network can fix the pointer in
 \end{equation}
 where $e$ is the entropy coefficient, $d$ is the entropy coefficient's decay and $t$ is the timestep. After that, the computed value is subtracted from timestep cost.
 
-\subparagraph{Curriculum learning}
+\subparagraph{Curriculum learning}\label{subpar:curriculum-learning}
 As noticed by \cite{Bengio2009CurriculumL} and \cite{Zaremba2014LearningTE}, curriculum learning is crucial for train very deep neural networks. Hence, as in the original paper we used the curriculum learning from \cite{Zaremba2014LearningTE}.
 
 For each task we have defined manually a set of increasing difficulties, where a difficulty $d$ is defined as a tuple containing the length of working sequence and the number of timesteps of running. During the training, a difficulty is selected according to the current difficulty $D$ as follows:

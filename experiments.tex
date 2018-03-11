@@ -1,21 +1,114 @@
 \label{experiments}
-In this chapter we present the problems with which the two solutions of NRAM have been trained, finishing by comparing the results and by presenting the circuits learned by the neural networks.
+In this chapter we present in the first part the problems on which the NRAM is trained, finishing by comparing the results and by presenting the circuits learned by the neural networks.
 
 \section{Tasks}
-The following are the description of the executed task used in our experiments. All except the last are the same of \cite{NRAM:2016}. In the description, big and small letters represents respectively arrays and pointers, \textit{NULL} denotes the value 0 and is used as an ending character or in the lists, as a placeholder for missing next element.
+The following are the description of the executed task used in our experiments. In the description, big and small letters represents respectively arrays and pointers, \textit{NULL} denotes the value 0 and is used as an ending character or in the lists, as a placeholder for missing next element. In the experiments, along the initial and desired memories, are also generated the cost masks used during the cost calculation as attention mechanisms.
 
-\begin{itemize}
-	\item[1]{\textbf{Access} Given a value $k$ and an array \textbf{A}, return $\textbf{A}[k]$. Input is given as $k,\ A[0],\ \dots,\ $\\$\textbf{A}[n-1],\ \textit{NULL}$ and the network should replace the first memory cell with $\textbf{A}[k]$.}
-	\item[2]{\textbf{Increment} Given an array $\textbf{A}$, increment all its elements by 1. Input is given as $\textbf{A}[0],\ \dots,\ \textbf{A}[n-1],\ \textit{NULL}$ and the expected output is $\textbf{A}[0] + 1,\ \dots,\ A[n-1] + 1$.}
-	\item[3]{\textbf{Copy} Given an array and a pointer to the destination, copy all elements from the array to the given location. Input is given as $p,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1]$ where $p$ points to one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[0],\ \dots,\ \textbf{A}[n-1]$ at positions $p,\ \dots,\ p+n-1$ respectively.}
-	\item[4]{\textbf{Reverse} Given an array and a pointer to the destination, copy all elements from the array in reversed order. Input is given as $p,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1]$ where $p$ points one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[n-1],\ \dots,\ \textbf{A}[0]$ at positions $p,\ \dots,\ p+n-1$ respectively.}
-	\item[5]{\textbf{Swap} Given two pointers $p,\ q$ and an array \textbf{A}, swap elements $\textbf{A}[p]$ and $\textbf{A}[q]$. Input is given as $p,\ q,\ \textbf{A}[0],\ \dots,\ \textbf{A}[p],\ \dots,\ \textbf{A}[q],\ \dots,\ \textbf{A}[n-1],\ 0$. The expected modified array \textbf{A} is: $\textbf{A}[0],\ \dots,\ \textbf{A}[q],\ \dots,\ \textbf{A}[p],\ \dots,\ \textbf{A}[n-1]$.}
-	\item[6]{\textbf{Permutation} Given two arrays of n elements: P (contains a permutation of numbers $0,\ \dots,\ n-1$) and \textbf{A} (contains random elements), permutate \textbf{A} according to P. Input is given as a, $P[0],\ \dots,\ P[n-1],\ \textbf{A}[0],\ ...,\ \textbf{A}[n-1]$, where a is a pointer to the array \textbf{A}. The expected output is $\textbf{A}[P[0]],\ \dots,\ \textbf{A}[P[n-1]]$, which should override the array P.}
-	\item[6]{\textbf{Sum} Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the output $o$, sum the two arrays into one array. The input is given as: $a,\ b,\ o,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1],\ G,\ \textbf{B}[0],\ \dots,\ \textbf{B}[m-1],\ G$, where $a$ points to first element of \textbf{A}, $b$ points to the first element of \textbf{B}, $o$ points to first element of output array and $G$ is a special guardian value. The $\textbf{A}+\textbf{B}$ array should be written starting from position $o$.}
-\end{itemize}
+\subsection{Access}
+Given a value $k$ and an array \textbf{A}, return $\textbf{A}[k]$. Input is given as $k,\ A[0],\ \dots,\ $\\$\textbf{A}[n-1],\ \textit{NULL}$ and the network should replace the first memory cell with $\textbf{A}[k]$. An example is visible in Figure \ref{fig:access-example}.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
+		\textbf{4} & 5 & 1 & 4 & \underline{7} & 2 & 8 & 3 & 6 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
+		\textbf{7} & 5 & 1 & 4 & 7 & 2 & 8 & 3 & 6 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
+		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
+	\end{tabular}
+	\caption{Example of the memories generated with the task Access.}
+	\label{fig:access-example}
+\end{table}
+\FloatBarrier
+\subsection{Increment}
+Given an array $\textbf{A}$, increment all its elements by 1. Input is given as $\textbf{A}[0],\ \dots,\ \textbf{A}[n-1],\ \textit{NULL}$ and the expected output is $\textbf{A}[0] + 1,\ \dots,\ A[n-1] + 1$. An example is visible in Figure \ref{fig:increment-example}.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
+		\textbf{5} & 5 & 9 & 4 & 7 & 8 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
+		6 & 6 & 0 & 4 & 8 & 9 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
+		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
+	\end{tabular}
+	\caption{Example of the memories generated with the task Increment.}
+	\label{fig:increment-example}
+\end{table}
+\FloatBarrier
+\subsection{Copy}
+Given an array and a pointer to the destination, copy all elements from the array to the given location. Input is given as $p,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1]$ where $p$ points to one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[0],\ \dots,\ \textbf{A}[n-1]$ at positions $p,\ \dots,\ p+n-1$ respectively. An example is visible in Figure \ref{fig:copy-example}.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
+		\textbf{5} & 5 & 1 & 4 & 7 & 0 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
+		\textbf{5} & 5 & 1 & 4 & 7 & 5 & 1 & 4 & 7 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
+		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\ \hline
+	\end{tabular}
+	\caption{Example of the memories generated with the task Copy.}
+	\label{fig:copy-example}
+\end{table}
+\FloatBarrier
+\subsection{Reverse}
+Given an array and a pointer to the destination, copy all elements from the array in reversed order. Input is given as $p,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1]$ where $p$ points one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[n-1],\ \dots,\ \textbf{A}[0]$ at positions $p,\ \dots,\ p+n-1$ respectively. An example is visible in Figure \ref{fig:reverse-example}.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
+		\textbf{5} & 5 & 1 & 4 & 7 & 0 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
+		\textbf{5} & 5 & 1 & 4 & 7 & 7 & 4 & 1 & 5 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
+		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\ \hline
+	\end{tabular}
+	\caption{Example of the memories generated with the task Reverse.}
+	\label{fig:reverse-example}
+\end{table}
+\FloatBarrier
+\subsection{Swap}
+Given two pointers $p,\ q$ and an array \textbf{A}, swap elements $\textbf{A}[p]$ and $\textbf{A}[q]$. Input is given as $p,\ q,\ \textbf{A}[0],\ \dots,\ \textbf{A}[p],\ \dots,\ \textbf{A}[q],\ \dots,\ \textbf{A}[n-1],\ 0$. The expected modified array \textbf{A} is: $\textbf{A}[0],\ \dots,\ \textbf{A}[q],\ \dots,\ \textbf{A}[p],\ \dots,\ \textbf{A}[n-1]$. An example is visible in Figure \ref{fig:swap-example}.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
+		\textbf{5} & \textbf{7} & 1 & 4 & 7 & \underline{3} & 6 & \underline{8} & 1 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
+		\textbf{5} & \textbf{7} & 1 & 4 & 7 & \underline{8} & 6 & \underline{3} & 1 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
+		0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
+	\end{tabular}
+	\caption{Example of the memories generated with the task Swap.}
+	\label{fig:swap-example}
+\end{table}
+\FloatBarrier
+%\begin{itemize}
+%	\item[6]{\textbf{Permutation} Given two arrays of n elements: P (contains a permutation of numbers $0,\ \dots,\ n-1$) and \textbf{A} (contains random elements), permutate \textbf{A} according to P. Input is given as a, $P[0],\ \dots,\ P[n-1],\ \textbf{A}[0],\ ...,\ \textbf{A}[n-1]$, where a is a pointer to the array \textbf{A}. The expected output is $\textbf{A}[P[0]],\ \dots,\ \textbf{A}[P[n-1]]$, which should override the array P.}
+%	\item[6]{\textbf{Sum} Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the output $o$, sum the two arrays into one array. The input is given as: $a,\ b,\ o,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1],\ G,\ \textbf{B}[0],\ \dots,\ \textbf{B}[m-1],\ G$, where $a$ points to first element of \textbf{A}, $b$ points to the first element of \textbf{B}, $o$ points to first element of output array and $G$ is a special guardian value. The $\textbf{A}+\textbf{B}$ array should be written starting from position $o$.}
+%\end{itemize}
 
-\section{Results (to be completed)}
-In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, trying to test the learnability on the same ``easy'' and ``hard'' tasks using the Differential Evolution\footnote{The algorithms used are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, combined with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}.}. This tests are compared then to the implementation with ADAM. We have used always the same configurations of NRAM, like number of registers and maximum integer, among the tests. Hence, to not overload the tables they are showed in the Section \ref{subsec:circuits} associated to the generated circuits. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}, that evaluates the manipulated input memory with respect to the desired memory, according to the cost mask. Overall, the entropy calculation, the cost regularization and the curriculum learning have been tried during the tests - unfortunately, the first two have not brought any gain to training, worsening the situation in some cases bringing the costs to negative values.
+\section{Results}
+In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, trying to test the learnability of some ``easy'' tasks using the Differential Evolution\footnote{The algorithms used are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, combined with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}.}. These tests are compared with respect to the implementation with ADAM. We have used always the same configurations of NRAM, like number of registers and maximum integer, among the tests. Hence, to not overload the tables they are showed in the Section \ref{subsec:circuits} associated to the generated circuits. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}, that evaluates the manipulated input memory with respect to the desired memory, according to the cost mask. Overall, the entropy calculation, the cost regularization and the curriculum learning have been tried during the tests - unfortunately, the first two have not brought any gain to training, worsening the situation in some cases bringing the costs to negative values.
+
+\paragraph{The generalization problem}
+Generalization means the capacity of a neural network to recognize patterns never seen before in new examples. In a classic classification problem this means that the neural network should recognize the patterns in the features presented to it, classifying them with the correct label. The same concept can be also applied to NRAM, with some differences. In fact, here the example is the couple formed by the registers and the memory - only an extract of the registers is presented to the controller that maps them into circuit with which the memory is manipulated. Remembering that the training is made over memory with limited size, with ``generalization capacity'' means that the controller should learns to create the right circuit also for examples with greater memory. As stated previously in the Paragraph \ref{subpar:curriculum-learning}, the Curriculum Learning is used to boost the training making the neural network more robust - in fact, the training over a specific memory size could leads the objective function to have a value equal to zero, but this does not means that the neural network has learn to generalize.
+
+\subsection{Access}
+
+\subsection{Increment}
+
+\subsection{Copy}
+
+\subsection{Reverse}
+
+\subsection{Swap}
 
 \begin{table}[!h]
 	\centering
@@ -214,8 +307,16 @@ The generalization tests have been performed with sequences of maximum 100 value
 	\label{tbl:tests-configurations-swap}
 \end{table}
 
-\subsection{Circuits}\label{subsec:circuits}
+\section{Circuits}\label{subsec:circuits}
 Following are presented some working circuits generated in the training of simple tasks. For the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} are important the parameters order, indicated with $x$ and $y$. Instead, for the gates \textbf{Read} and \textbf{Write}, the pointer and the value to write are indicated, respectively, with $p$ and $a$ labels.\newline\newline
 For all the tasks for which the training has converged to zero, the circuits for the timesteps $\geq 2$ are always the same - the circuit in timesteps $=1$ is used as initialization of register/memory and so different to the others.
 
-\subsubsection{Access}
+\subsection{Access}
+
+\subsection{Increment}
+
+\subsection{Copy}
+
+\subsection{Reverse}
+
+\subsection{Swap}
