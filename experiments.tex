@@ -17,7 +17,7 @@ Given a value $k$ and an array \textbf{A}, return $\textbf{A}[k]$. Input is give
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
 		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
 	\end{tabular}
-	\caption{Example of the memories generated with the task Access.}
+	\caption{Example of the memories generated with the task Access - the first value is the pointer in the sequence A to which the NRAM should access.}
 	\label{fig:access-example}
 \end{table}
 \FloatBarrier
@@ -28,13 +28,13 @@ Given an array $\textbf{A}$, increment all its elements by 1. Input is given as 
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
 		\hline
 		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
-		\textbf{5} & 5 & 9 & 4 & 7 & 8 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
+		5 & 5 & 9 & 4 & 7 & 8 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
 		6 & 6 & 0 & 4 & 8 & 9 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
 		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
 	\end{tabular}
-	\caption{Example of the memories generated with the task Increment.}
+	\caption{Example of the memories generated with the task Increment - each element must be incremented by one, also considering the interval of the values N.}
 	\label{fig:increment-example}
 \end{table}
 \FloatBarrier
@@ -45,13 +45,13 @@ Given an array and a pointer to the destination, copy all elements from the arra
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
 		\hline
 		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
-		\textbf{5} & 5 & 1 & 4 & 7 & 0 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
+		\textbf{5} & 5 & 1 & 4 & 7 & \underline{0} & 0 & 0 & 0 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
 		\textbf{5} & 5 & 1 & 4 & 7 & 5 & 1 & 4 & 7 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
 		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\ \hline
 	\end{tabular}
-	\caption{Example of the memories generated with the task Copy.}
+	\caption{Example of the memories generated with the task Copy -the first value is the pointer to the memory to which the NRAM should starts copy the sequence A. }
 	\label{fig:copy-example}
 \end{table}
 \FloatBarrier
@@ -62,13 +62,13 @@ Given an array and a pointer to the destination, copy all elements from the arra
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
 		\hline
 		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
-		\textbf{5} & 5 & 1 & 4 & 7 & 0 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
+		\textbf{5} & 5 & 1 & 4 & 7 & \underline{0} & 0 & 0 & 0 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
 		\textbf{5} & 5 & 1 & 4 & 7 & 7 & 4 & 1 & 5 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
 		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\ \hline
 	\end{tabular}
-	\caption{Example of the memories generated with the task Reverse.}
+	\caption{Example of the memories generated with the task Reverse - the first value is the pointer to the memory to which the NRAM should starts reverse the sequence A.}
 	\label{fig:reverse-example}
 \end{table}
 \FloatBarrier
@@ -85,7 +85,7 @@ Given two pointers $p,\ q$ and an array \textbf{A}, swap elements $\textbf{A}[p]
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
 		0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
 	\end{tabular}
-	\caption{Example of the memories generated with the task Swap.}
+	\caption{Example of the memories generated with the task Swap - the first two value is the pointer in the sequence A that should be swapped.}
 	\label{fig:swap-example}
 \end{table}
 \FloatBarrier
