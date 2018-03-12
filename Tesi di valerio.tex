@@ -107,6 +107,22 @@
 \setlength{\abovedisplayskip}{0pt}
 \setlength{\belowdisplayskip}{0pt}
 
+% Tikz styles
+
+\tikzstyle{decision} = [diamond, draw, fill=white!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+
+\tikzstyle{block} = [rectangle, draw, fill=white!20, text width=5em, text centered, rounded corners, minimum height=4em]
+
+\tikzstyle{voidpoint} = [coordinate]
+
+\tikzstyle{round} = [draw, ellipse, fill=white!20, node distance=3cm, minimum height=3em]
+
+\tikzstyle{arrow} = [draw]
+
+\tikzstyle{line} = [draw]
+
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm, minimum height=2em]
+
 
 \makeatletter
 
@@ -119,6 +135,8 @@
 % Algorithmic ForEach new command
 \algnewcommand\algorithmicforeach{\textbf{for each}}
 \algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+\input{lib/tikzlibrarypaths.ortho.code}
 
 \makeatother
 

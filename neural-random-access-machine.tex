@@ -74,9 +74,35 @@ Hence, let $m_i \in M$ the $i^{th}$ module in $M$, $m_i$ is executed as follows
 		\end{equation}
 	}
 \end{itemize}
-where, as stated previously, $a_i, b_i \in \textrm{I\!R}^{R+i-1}$ are produced by the controller and the $o_i$ is the output that is appended to the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ and used later for the subsequent modules.\newline
+where, as stated previously, $a_i, b_i \in \textrm{I\!R}^{R+i-1}$ are produced by the controller and the $o_i$ is the output that is appended to the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ and used later for the subsequent modules.
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}[scale=1, node distance = 2.5cm, auto]
 
-Since the registers $r_j$ contain probability distributions, the inputs of the modules are also probability distributions because are weighted averages of probability distributions. Hence, in this way, the gates are extended to work over probability distributions and because the inputs are probability distributions also the output is a probability distribution as follows:
+		\node [block] (init) {Initialize dataset};
+    		\node [block, right of=init, node distance=2.5cm] (emit) {Controller emits the circuit};
+    		\node [block, right of=emit, node distance=2.5cm] (circuit) {Circuit executed};
+    		\node [decision, right of=circuit, node distance=2.5cm] (finish) {t == T?};
+    		\node [round, right of=finish, node distance=2.5cm] (stop) {Stop};
+    		
+    		% Void pointer
+		\node [coordinate, draw=none, fill=none, below of=finish, node distance=1.5cm] (void_one) {};
+		\node [coordinate, draw=none, fill=none, below of=emit, node distance=1.5cm] (void_two) {};    	
+    	
+    		\draw [->] (init) -- (emit);
+    		\draw [->] (emit) -- (circuit);
+    		\draw [->] (circuit) -- (finish);
+    		\draw [->] (finish) -- node [near start] {yes} (stop);
+    		
+    		\draw (finish) -- node [near start] {no} (void_one);
+    		\draw (void_one) -- node [midway, below] {t = t + 1}  (void_two);
+    		
+    		\draw [->] (void_two) -- (emit);
+    		
+	\end{tikzpicture}
+	\caption{High level execution of the NRAM without the Curriculum Learning activated. Here, $t$ is a variable which takes into account the current timestep.}
+\end{figure}
+Since the registers contain probability distributions, the inputs of the modules are also probability distributions because are weighted averages of probability distributions. Hence, the gates are extended to work over probability distributions and because the inputs are probability distributions also the output is a probability distribution as follows:
 \begin{equation}
 	\mathop{\forall}\limits_{c \in N} P(m_i(A, B) = c) = \sum\limits_{a,b \in N} P(A = a)P(B = b)[m_i(a, b) = c]
 \end{equation}

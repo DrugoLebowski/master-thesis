@@ -1,0 +1,114 @@
+\tikzset{
+	Norm/.code={%
+		\pgfmathparse{#1}%
+		\edef\qrr@tikz@norm{\pgfmathresult\ifpgfmathunitsdeclared pt\fi}%
+		\let\ifqrr@tikz@normcs@unitsdeclared\ifpgfmathunitsdeclared},
+	Norm=1,
+	norm/.style={to path={-- ++(norm cs: \tikztotarget\space from \tikztostart) \tikztonodes}}
+}
+\newif\ifqrr@tikz@normcs@unitsdeclared
+\newdimen\qrr@pgf@normcs@from@x\newdimen\qrr@pgf@normcs@from@y
+\tikzdeclarecoordinatesystem{norm}{%
+	\begingroup
+		\let\qrr@next\relax
+		\pgfutil@in@{ for }{#1}%
+		\ifpgfutil@in@
+			\qrr@tikz@normcs@parse@for#1\@qrr@tikz@normcs@parse@for
+		\else
+			\def\pgf@tempa{#1}%
+		\fi
+		\edef\pgf@marshal{\noexpand\pgfutil@in@{ from }{\pgf@tempa}}\pgf@marshal
+		\ifpgfutil@in@
+			\expandafter\qrr@tikz@normcs@parse@from\pgf@tempa\@qrr@tikz@normcs@parse@from
+			\let\qrr@next\qrr@tikz@normcs@calc@hard
+		\else
+			\let\qrr@tikz@normcs@parse@to\pgf@tempa
+			\qrr@pgf@normcs@from@x\z@
+			\qrr@pgf@normcs@from@y\z@
+		\fi
+		\expandafter\qrr@tikz@normcs@parse@@to\expandafter{\qrr@tikz@normcs@parse@to}%
+}
+\def\qrr@tikz@normcs@calc@easy#1{%
+	\pgf@xx\@ne
+	\pgf@yy\@ne
+	\pgf@xy\z@
+	\pgf@yx\z@
+	\tikz@scan@one@point\pgfutil@firstofone(#1)\relax
+	\pgf@xa\pgf@x\pgf@ya\pgf@y
+}
+\def\qrr@tikz@normcs@calc@hard#1{%
+	\tikz@scan@one@point\pgfutil@firstofone(#1)\relax
+	\pgf@xa\pgf@x\pgf@ya\pgf@y
+	\advance\pgf@xa-\qrr@pgf@normcs@from@x
+	\advance\pgf@ya-\qrr@pgf@normcs@from@y
+	\pgfpointnormalised{\pgfqpoint{\pgf@xa}{\pgf@ya}}
+	\pgfmathsetlength\pgf@xa{\pgf@yy*\pgf@x-\pgf@yx*\pgf@y}
+	\pgfmathsetlength\pgf@ya{-\pgf@xy*\pgf@x+\pgf@xx*\pgf@y}
+}
+\def\qrr@tikz@normcs@calc@unit#1{%
+	\tikz@scan@one@point\pgfutil@firstofone(#1)\relax
+	\pgf@xa\pgf@x\pgf@ya\pgf@y
+	\advance\pgf@xa-\qrr@pgf@normcs@from@x
+	\advance\pgf@ya-\qrr@pgf@normcs@from@y
+	\pgfpointnormalised{\pgfqpoint{\pgf@xa}{\pgf@ya}}
+	\pgf@xa\pgf@x\pgf@ya\pgf@y
+}
+\def\qrr@tikz@normcs@parse@@to#1{%
+		\ifqrr@tikz@normcs@unitsdeclared
+			\let\qrr@next\qrr@tikz@normcs@calc@unit
+		\else
+			\ifx\qrr@next\relax
+			  \pgfutil@in@{cs:}{#1}%
+			  \ifpgfutil@in@
+			    \let\qrr@next\qrr@tikz@normcs@calc@hard
+			  \else
+			    \pgfutil@in@{intersection }{#1}%
+			    \ifpgfutil@in@
+			      \let\qrr@next\qrr@tikz@normcs@calc@hard
+			    \else
+			      \pgfutil@in@|{#1}%
+			      \ifpgfutil@in@
+			        \let\qrr@next\qrr@tikz@normcs@calc@hard
+			      \else
+			        \pgfutil@in@:{#1}%
+			        \ifpgfutil@in@
+			          \let\qrr@next\qrr@tikz@normcs@calc@easy
+			        \else
+			          \pgfutil@in@,{#1}%
+			          \ifpgfutil@in@
+			            \let\qrr@next\qrr@tikz@normcs@calc@easy
+			          \else
+			            \let\qrr@next\qrr@tikz@normcs@calc@hard
+			          \fi
+			        \fi
+			      \fi
+			    \fi
+			  \fi
+			\fi
+		\fi
+		\qrr@next{#1}%
+		\pgfmathatantwo{+\pgf@xa}{+\pgf@ya}%
+		\ifqrr@tikz@normcs@unitsdeclared
+			\edef\pgf@marshal{\noexpand\pgfpointpolar{\pgfmathresult}{\qrr@tikz@norm}}
+		\else
+			\edef\pgf@marshal{\noexpand\pgfpointpolarxy{\pgfmathresult}{\qrr@tikz@norm}}
+		\fi
+		\pgfmath@smuggleone\pgf@marshal
+	\endgroup
+	\pgf@marshal
+
+}
+
+\def\qrr@tikz@normcs@parse@from#1 from #2\@qrr@tikz@normcs@parse@from{%
+	\def\qrr@tikz@normcs@parse@to{#1}%
+	\tikz@scan@one@point\pgfutil@firstofone(#2)\relax
+	\qrr@pgf@normcs@from@x\pgf@x
+	\qrr@pgf@normcs@from@y\pgf@y
+}
+\def\qrr@tikz@normcs@parse@for#1 for #2\@qrr@tikz@normcs@parse@for{%
+	\def\pgf@tempa{#1}%
+	\pgfkeysalso{/tikz/Norm={#2}}%
+}
+
+% a fix for the 2.10 version of PGF/TikZ
+\expandafter\let\expandafter\pgfmathatantwo\csname pgfmathatan2\endcsname
