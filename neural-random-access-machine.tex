@@ -113,12 +113,36 @@ At the same time of the emission of the vectors $a_{i}, b_{i} \in \textrm{I\!R}^
 
 As stated previously, at the Line \ref{lst:nram:line-6} the controller get some input from the registers. This input could be all the registers content, but in this way the controller's parameters would depend directly on M. This case is undesirable because the neural network could learn the specific problem on which it trains, preventing it to generalize to different size of M. 
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{figure}[t!]
 	\centering
-	\includegraphics[width=0.5\textwidth]{figures/circuit.png}
+	
+	\begin{tikzpicture}[>=latex',line join=bevel,]
+		%%
+		\node (R'0) at (389.1bp,84.0bp) [draw,ellipse] {R'0};
+  		\node (R'1) at (303.1bp,22.0bp) [draw,ellipse] {R'1};
+  		\node (R0) at (20.5bp,78.0bp) [draw,ellipse] {R0};
+  		\node (Read) at (105.0bp,78.0bp) [draw,rectangle,ultra thick] {Read};
+  		\node (Write) at (212.1bp,22.0bp) [draw,rectangle,ultra thick] {Write};
+  		\node (Zero) at (105.0bp,18.0bp) [draw,rectangle,ultra thick] {Zero};
+  		\node (Dec) at (303.1bp,84.0bp) [draw,rectangle,ultra thick] {Dec};
+  		\node (Inc) at (212.1bp,84.0bp) [draw,rectangle,ultra thick] {Inc};
+  		\draw [->] (Dec) ..controls (338.71bp,84.0bp) and (348.04bp,84.0bp)  .. (R'0);
+  		\draw [->] (R0) ..controls (49.413bp,78.0bp) and (58.833bp,78.0bp)  .. (Read);
+  		\draw [->] (Zero) ..controls (143.07bp,18.275bp) and (155.68bp,18.528bp)  .. (167.1bp,19.0bp) .. controls (169.64bp,19.105bp) and (172.25bp,19.231bp)  .. (Write);
+  		\definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  		\pgfsetstrokecolor{strokecol}
+  		\draw (158.55bp,26.0bp) node {ptr};
+  		\draw [->] (Read) ..controls (144.96bp,80.239bp) and (160.67bp,81.118bp)  .. (Inc);
+  		\draw [->] (Write) ..controls (249.28bp,22.0bp) and (260.51bp,22.0bp)  .. (R'1);
+  		\draw [->] (Inc) ..controls (247.68bp,84.0bp) and (256.93bp,84.0bp)  .. (Dec);
+  		\draw [->] (Read) ..controls (145.35bp,56.905bp) and (161.59bp,48.41bp)  .. (Write);
+  		\draw (158.55bp,61.0bp) node {val};
+		%
+	\end{tikzpicture}
+	%\includegraphics[width=0.5\textwidth]{figures/circuit.png}
 	\caption{Example of NRAM circuit. With the circles are represented the registers and with the rectangles are represented the various circuits. The registers with the apex are those that are modified in the timestep. The labels x and y represent the values order for the gates (obviously if it is violated, a gate produces a different result). The modules Read and Write are presented in the next section.}
 	\label{fig:example-circuit}
-\end{wrapfigure}
+\end{figure}
 
 Hence to resolve this inconvenient, in the original paper the controller receives from all the registers $R$ only $P(r_{i} = 0)$, i.e. the probability that a register content is equal to zero. Another possibility  is to give as input to the controller the discretized registers $r_{i}$ - in other words, what we is done is to discretize the probability distributions, contained in the registers, into integer, using these as input of the controller. Both the solutions limits the information available to the controller, forcing it to solve the problem with the modules instead on its own, and reducing the problem complexity.
 

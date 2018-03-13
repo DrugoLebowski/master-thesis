@@ -41,9 +41,22 @@
 	\usetikzlibrary{fadings}
 	\usetikzlibrary{positioning}
 	\usetikzlibrary{calc}
-	\usetikzlibrary{fit,shapes}
+	\usetikzlibrary{fit}
+	\usetikzlibrary{shapes}
+	\usetikzlibrary{snakes}
+	\usetikzlibrary{arrows}
 \usepackage{breakcites}
 
+
+\tikzset{
+    ultra thin/.style= {line width=0.1pt},
+    very thin/.style=  {line width=0.2pt},
+    thin/.style=       {line width=0.4pt},% thin is the default
+    semithick/.style=  {line width=0.6pt},
+    thick/.style=      {line width=0.8pt},
+    very thick/.style= {line width=1.2pt},
+    ultra thick/.style={line width=1.6pt}
+}
 
 \pgfdeclareradialshading{ring}{\pgfpoint{0cm}{0cm}}%
 {

@@ -2,7 +2,7 @@
 In this chapter we present in the first part the problems on which the NRAM is trained, finishing by comparing the results and by presenting the circuits learned by the neural networks.
 
 \section{Tasks}
-The following are the description of the executed task used in our experiments. In the description, big and small letters represents respectively arrays and pointers, \textit{NULL} denotes the value 0 and is used as an ending character or in the lists, as a placeholder for missing next element. In the experiments, along the initial and desired memories, are also generated the cost masks used during the cost calculation as attention mechanisms.
+The following are the description of the executed task used in our experiments. In the description, big and small letters represents respectively arrays and pointers, \textit{NULL} denotes the value 0 and is used as an ending character or in the lists, as a placeholder for missing next element. In the experiments, along the initial and desired memories, are also generated the cost masks that used during the cost calculation as attention mechanisms.
 
 \subsection{Access}
 Given a value $k$ and an array \textbf{A}, return $\textbf{A}[k]$. Input is given as $k,\ A[0],\ \dots,\ $\\$\textbf{A}[n-1],\ \textit{NULL}$ and the network should replace the first memory cell with $\textbf{A}[k]$. An example is visible in Figure \ref{fig:access-example}.
@@ -89,223 +89,70 @@ Given two pointers $p,\ q$ and an array \textbf{A}, swap elements $\textbf{A}[p]
 	\label{fig:swap-example}
 \end{table}
 \FloatBarrier
-%\begin{itemize}
-%	\item[6]{\textbf{Permutation} Given two arrays of n elements: P (contains a permutation of numbers $0,\ \dots,\ n-1$) and \textbf{A} (contains random elements), permutate \textbf{A} according to P. Input is given as a, $P[0],\ \dots,\ P[n-1],\ \textbf{A}[0],\ ...,\ \textbf{A}[n-1]$, where a is a pointer to the array \textbf{A}. The expected output is $\textbf{A}[P[0]],\ \dots,\ \textbf{A}[P[n-1]]$, which should override the array P.}
-%	\item[6]{\textbf{Sum} Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the output $o$, sum the two arrays into one array. The input is given as: $a,\ b,\ o,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1],\ G,\ \textbf{B}[0],\ \dots,\ \textbf{B}[m-1],\ G$, where $a$ points to first element of \textbf{A}, $b$ points to the first element of \textbf{B}, $o$ points to first element of output array and $G$ is a special guardian value. The $\textbf{A}+\textbf{B}$ array should be written starting from position $o$.}
-%\end{itemize}
+
+\subsection{Permutation}
+Given two arrays of n elements: P (contains a permutation of numbers $0,\ \dots,\ n-1$) and \textbf{A} (contains random elements), permutate \textbf{A} according to P. Input is given as a, $P[0],\ \dots,\ P[n-1],\ \textbf{A}[0],\ ...,\ \textbf{A}[n-1]$, where a is a pointer to the array \textbf{A}. The expected output is $\textbf{A}[P[0]],\ \dots,\ \textbf{A}[P[n-1]]$, which should override the array P. An example is visible in Figure \ref{fig:permutation-example}.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
+		\textbf{5} & 2 & 1 & 0 & 3 & \underline{3} & 6 & 8 & 1 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
+		\textbf{5} & 8 & 6 & 2 & 1 & \underline{3} & 6 & 8 & 1 & 0 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
+		0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	\end{tabular}
+	\caption{Example of the memories generated with the task Swap - the first two value is the pointer in the sequence A that should be swapped.}
+	\label{fig:permutation-example}
+\end{table}
+\FloatBarrier
+
+\subsection{Permutation}
+Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the output $o$, sum the two arrays into one array. The input is given as: $a,\ b,\ o,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1],\ G,\ \textbf{B}[0],\ \dots,\ \textbf{B}[m-1],\ G$, where $a$ points to first element of \textbf{A}, $b$ points to the first element of \textbf{B}, $o$ points to first element of output array and $G$ is a special guardian value. The $\textbf{A}+\textbf{B}$ array should be written starting from position $o$. An example is visible in Figure \ref{fig:sum-example}.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		\multicolumn{12}{|c|}{\textbf{Initial memory}} \\ \hline
+		\textbf{3} & \textbf{6} & \textbf{9} & \underline{3} & 5 & 0 & \underline{4} & 6 & 0 & \underline{0} & 0 & 0 \\ \hline\hline\hline
+		\multicolumn{12}{|c|}{\textbf{Desired memory}} \\ \hline
+		\textbf{3} & \textbf{6} & \textbf{9} & \underline{3} & 5 & 0 & \underline{4} & 6 & 0 & \underline{7} & 11 & 0 \\ \hline\hline\hline
+		\multicolumn{12}{|c|}{\textbf{Cost mask}} \\ \hline
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 \\ \hline
+	\end{tabular}
+	\caption{Example of the memories generated with the task Sum - the values of the two arrays are summed up and copied starting from the index $o$.}
+	\label{fig:sum-example}
+\end{table}
+\FloatBarrier
+
+\section{The generalization problem}
+Generalization means the capacity of a neural network to recognize patterns never seen before in new examples. In a classic classification problem this means that the neural network should recognize the patterns in the features presented to it, classifying them with the correct label. The same concept can be also applied to NRAM, with some differences. Remembering that the training is made over memory with limited size, with ``generalization capacity'' means that the controller should learns to create the right circuit also for examples\footnote{Please refer to Section \ref{subsubsec:nram-dataset} to see how the examples are formed.} with a greater memory. As stated previously in the Paragraph \ref{subpar:curriculum-learning}, the Curriculum Learning is used to boost the training making the neural network more robust - in fact, the training over a specific memory size could leads the objective function to have a value equal to zero, but this does not means that the neural network has learnt to generalize.
 
 \section{Results}
-In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, trying to test the learnability of some ``easy'' tasks using the Differential Evolution\footnote{The algorithms used are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, combined with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}.}. These tests are compared with respect to the implementation with ADAM. We have used always the same configurations of NRAM, like number of registers and maximum integer, among the tests. Hence, to not overload the tables they are showed in the Section \ref{subsec:circuits} associated to the generated circuits. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}, that evaluates the manipulated input memory with respect to the desired memory, according to the cost mask. Overall, the entropy calculation, the cost regularization and the curriculum learning have been tried during the tests - unfortunately, the first two have not brought any gain to training, worsening the situation in some cases bringing the costs to negative values.
-
-\paragraph{The generalization problem}
-Generalization means the capacity of a neural network to recognize patterns never seen before in new examples. In a classic classification problem this means that the neural network should recognize the patterns in the features presented to it, classifying them with the correct label. The same concept can be also applied to NRAM, with some differences. Remembering that the training is made over memory with limited size, with ``generalization capacity'' means that the controller should learns to create the right circuit also for examples\footnote{How are formed the examples please refer to Section \ref{subsubsec:nram-dataset}} with a greater memory. As stated previously in the Paragraph \ref{subpar:curriculum-learning}, the Curriculum Learning is used to boost the training making the neural network more robust - in fact, the training over a specific memory size could leads the objective function to have a value equal to zero, but this does not means that the neural network has learnt to generalize.
-
-\subsection{Access}
-
-\subsection{Increment}
-
-\subsection{Copy}
-
-\subsection{Reverse}
-
-\subsection{Swap}
-
-\begin{table}[!h]
+In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, trying to test the learnability of the ``easy'' and ``hard'' tasks and the performance of Differential Evolution\footnote{The algorithms used are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, combined with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}.}. These tests are compared to the implementation with ADAM in Theano. For the tests we have used always the same configurations of NRAM, like number of registers and maximum integer. All the tests are executed with a feedforward neural network with two level of 260 neurons. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}, that evaluates the manipulated input memory with respect to the desired memory, according to the cost mask. The train error is calculated with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. 
+\begin{table}[]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		\multicolumn{7}{|c|}{\textbf{Access}} \\ \hline
-		Train complexity & \multicolumn{6}{c|}{$\textrm{len}(A) \leq 10$} \\ \hline \hline \hline
-		\multicolumn{7}{|c|}{\textbf{Network}} \\ \hline
-		Hidden Layer & \multicolumn{6}{c|}{$2 \times 260$}\\ \hline
-		Activation Function & \multicolumn{6}{c|}{2 $\times$ ReLu}\\ \hline \hline
+
+	\definecolor{Gray}{gray}{0.8}
+	\definecolor{LightGray}{gray}{0.9}
+	
+	\rowcolors{2}{white}{LightGray}
+	\begin{tabular}{ccccccc}
+		\rowcolor{Gray} \textbf{Task} & \multicolumn{2}{c}{\textbf{Train complexity}} & \multicolumn{2}{c}{\textbf{Train error}} & \multicolumn{2}{c}{\textbf{Generalization}} \\
+		\rowcolor{Gray} & No CL & CL & No CL & CL & No CL & CL \\ 
 		
-		\multicolumn{7}{|c|}{\textbf{Training strategy helper}} \\ \hline
-		\begin{tabular}{@{}c@{}}Curriculum\\learning\end{tabular} & \multicolumn{2}{c|}{\textbf{Lambda}} & 0.001 & \multicolumn{2}{c|}{\textbf{Generation}} & 250\\ \hline
-		Entropy & \multicolumn{6}{c|}{$\times$} \\ \hline
-		\begin{tabular}{@{}c@{}}Cost\\regularization\end{tabular}& \multicolumn{6}{c|}{$\times$}\\ \hline \hline
-		
-		\multicolumn{7}{|c|}{\textbf{Differential Evolution}} \\ \hline
-		DE type & \multicolumn{2}{c|}{JADE} & \multicolumn{2}{c|}{SHADE} & \multicolumn{2}{c|}{L-SHADE}  \\ \hline
-		Mutation & DEGL & C.p.b. & DEGL & C.p.b. & DEGL & C.p.b. \\ \hline
-		Crossover & \multicolumn{6}{c|}{bin} \\ \hline
-		Population & \multicolumn{6}{c|}{100} \\ \hline
-		Training gen. & \multicolumn{6}{c|}{400} \\ \hline
-		F & $\textasciitilde$0.66 & $\textasciitilde$0.27 & $\textasciitilde$0.54 & $\textasciitilde$0.29 & $\textasciitilde$0.13 & $\textasciitilde$0.15 \\ \hline
-		CR & $\textasciitilde$0.51 & $\textasciitilde$0.10 & $\textasciitilde$0.45 & $\textasciitilde$0.53 & $\textasciitilde$0.56 & $\textasciitilde$0.65 \\ \hline
-		p & 0.1 & 0.1 & $\textasciitilde$0.13 & $\textasciitilde$0.03 & $\textasciitilde$0.06 & $\textasciitilde$0.15 \\ \hline
-		Archive size & \multicolumn{6}{c|}{0} \\ \hline
-		Memory \textbf{M} Size & \multicolumn{2}{c|}{$\times$} & \multicolumn{4}{c|}{120} \\ \hline
-		DEGL neighbors & 4 & $\times$ & 4 & $\times$ & 4 & $\times$  \\ \hline
-		Converged to 0 & \checkmark & \checkmark & \checkmark & \checkmark & $\times (\textasciitilde 13.23)$ & $\times (\textasciitilde 36.71)$ \\ \hline
-		
-		Generalization & Perfect & Perfect & Perfect & Perfect & Perfect & Perfect \\ \hline
-		Error & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline\hline
-		
-		\multicolumn{7}{|c|}{\textbf{ADAM}} \\ \hline
-		Converged to 0 & \multicolumn{6}{|c|}{$\times$} \\ \hline
- 	\end{tabular}
-	\caption{Configurations used in the tests of \textbf{Access}}
-	\label{tbl:tests-configurations-access}
+		Access & $\textrm{len}(A) = 6$ & $\textrm{len}(A) \leq 10$ & 0 & 0 & Perfect & Perfect \\ 
+		Increment & $\textrm{len}(A) = 8$ & $\textrm{len}(A) \leq 11$ & 0 & 0 & Perfect & Perfect \\
+		Copy & $\textrm{len}(A) = 5$ & $\textrm{len}(A) \leq 9$ & 0 & 0 & Perfect & Perfect \\ 
+		Reverse & $\textrm{len}(A) = 4$ & $\textrm{len}(A) \leq 8$ & 0 & 0 & Perfect & Perfect \\ 
+		Swap & $\textrm{len}(A) = 7$ & $\textrm{len}(A) = 7$ & 0 & 0 & Perfect & Perfect \\ 
+		Permutation & $\textrm{len}(A) = 5$ & $\textrm{len}(A) = 20$ & 0 & 0 & Perfect & Perfect \\ 
+		Sum & \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$= 6$\end{tabular}& \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$ = 10$\end{tabular} & 0 & 0 & Perfect & Perfect \\ 
+	\end{tabular}
+	\caption{Results of the tests. The train complexity represents the maximum length of integers sequence in the memory. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longest with respect to those used in training.}
+	\label{tbl:tests-configuration}
 \end{table}
 
-\paragraph{Easy tasks}
-The ``easy'' tasks set includes \textbf{Access}, \textbf{Copy}, \textbf{Increment}, \textbf{Reverse} and \textbf{Swap}. Overall, we have always have found a good set of training hyperparameters for Differential Evolution with which cost zero is achieved. The same is not happened with ADAM, which is not converged on \textbf{Swap}. The used configuration are visible in Tables \ref{tbl:tests-configurations-access}-\ref{tbl:tests-configurations-swap} and training trend in Figures \ref{fig:access-plot}-\ref{fig:swap-plot}.
-
-\begin{table}[!h]
-	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		\multicolumn{7}{|c|}{\textbf{Increment}} \\ \hline
-		Train complexity & \multicolumn{6}{c|}{$\textrm{len}(A) \leq 7$} \\ \hline \hline \hline
-		\multicolumn{7}{|c|}{\textbf{Network}} \\ \hline
-		Hidden Layer & \multicolumn{6}{c|}{$2 \times 260$}\\ \hline
-		Activation Function & \multicolumn{6}{c|}{2 $\times$ ReLu}\\ \hline \hline
-
-		\multicolumn{7}{|c|}{\textbf{Training strategy helper}} \\ \hline
-		Curriculum learning & \multicolumn{6}{c|}{$\times$}\\ \hline
-		Entropy & \multicolumn{6}{c|}{$\times$}\\ \hline
-		Cost regularization & \multicolumn{6}{c|}{$\times$}\\ \hline \hline		
-		
-		\multicolumn{7}{|c|}{\textbf{Differential Evolution}} \\ \hline
-		DE type & \multicolumn{2}{c|}{JADE} & \multicolumn{2}{c|}{SHADE} & \multicolumn{2}{c|}{L-SHADE}  \\ \hline
-		Mutation & DEGL & C.p.b. & DEGL & C.p.b. & DEGL & C.p.b. \\ \hline
-		Crossover & \multicolumn{6}{c|}{bin} \\ \hline
-		Population & \multicolumn{6}{c|}{110} \\ \hline
-		Training gen. & \multicolumn{6}{c|}{1000} \\ \hline
-		F & & & & & &\\ \hline
-		CR & & & & & &\\ \hline
-		p & & & & & & \\ \hline
-		Archive size & \multicolumn{6}{c|}{120} \\ \hline
-		Memory \textbf{M} Size & \multicolumn{2}{c|}{$\times$} & \multicolumn{4}{|c|}{120} \\ \hline
-		DEGL neighbors & 5 & $\times$ & 5 & $\times$ & 5 & $\times$  \\ \hline
-		Converged to 0 & \multicolumn{4}{|c|}{\checkmark} & \multicolumn{2}{c|}{$\times$} \\ \hline
-		Error & & & & & & \\ \hline\hline
-		
-		\multicolumn{7}{|c|}{\textbf{ADAM}} \\ \hline
-		Converged to 0 & \multicolumn{6}{|c|}{$\times$} \\ \hline
- 	\end{tabular}
-	\caption{Configurations used in the tests of \textbf{Increment}}
-	\label{tbl:tests-configurations-increment}
-\end{table}
-
-\paragraph{Hard tasks} 
-The ``hard'' tasks set includes \textbf{Permutation}, \textbf{Merge}, \textbf{ListK}, \textbf{ListSearch}, \textbf{WalkBST} and our custom \textbf{Sum}. Unfortunately, due to lack of time and computational capacity the tests of \textbf{Merge}, \textbf{ListK}, \textbf{ListSearch}, \textbf{WalkBST} were not completed or executed. The performed tests for \textbf{Permutation} and \textbf{Sum} ... //TODO %TODO
-
-\begin{table}[!h]
-	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		\multicolumn{7}{|c|}{\textbf{Copy}} \\ \hline
-		Train complexity & \multicolumn{6}{c|}{$\textrm{len}(A) \leq 9$} \\ \hline \hline \hline
-		\multicolumn{7}{|c|}{\textbf{Network}} \\ \hline
-		Hidden Layer & \multicolumn{6}{c|}{$2 \times 260$}\\ \hline
-		Activation Function & \multicolumn{6}{c|}{2 $\times$ ReLu}\\ \hline \hline
-		
-		\multicolumn{7}{|c|}{\textbf{Training strategy helper}} \\ \hline
-		Curriculum learning & \multicolumn{6}{c|}{$\times$} \\ \hline
-		Entropy & \multicolumn{6}{c|}{$\times$}\\ \hline
-		Cost regularization & \multicolumn{6}{c|}{$\times$}\\ \hline \hline		
-		
-		\multicolumn{7}{|c|}{\textbf{Differential Evolution}} \\ \hline
-		DE type & \multicolumn{2}{c|}{JADE} & \multicolumn{2}{c|}{SHADE} & \multicolumn{2}{c|}{L-SHADE}  \\ \hline
-		Mutation & DEGL & C.p.b. & DEGL & C.p.b. & DEGL & C.p.b. \\ \hline
-		Crossover & \multicolumn{6}{c|}{bin} \\ \hline
-		Population & \multicolumn{6}{c|}{110} \\ \hline
-		Training gen. & \multicolumn{6}{c|}{1000} \\ \hline
-		F & 1.0 & $\textasciitilde$0.59 & $\textasciitilde$0.94 & $\textasciitilde$0.85 & $\textasciitilde$0.52 & 1.0 \\ \hline
-		CR & $\textasciitilde$0.92 & 0.0 & $\textasciitilde$0.73 & 0.0 & $\textasciitilde$0.80 & $\textasciitilde$0.99 \\ \hline
-		p & 0.1 & 0.1 & $\textasciitilde$0.052 & $\textasciitilde$0.09 & $\textasciitilde$0.16 & $\textasciitilde$0.10 \\ \hline
-		Archive size & \multicolumn{6}{c|}{120} \\ \hline
-		Memory \textbf{M} Size & \multicolumn{2}{c|}{$\times$} & \multicolumn{4}{|c|}{120} \\ \hline
-		DEGL neighbors & 5 & $\times$ & 5 & $\times$ & 5 & $\times$  \\ \hline
-		Converged to 0 & \multicolumn{4}{|c|}{\checkmark} & \multicolumn{2}{c|}{$\times$} \\ \hline
-		Error & & & & & & \\ \hline\hline
-		
-		\multicolumn{7}{|c|}{\textbf{ADAM}} \\ \hline
-		Converged to 0 & \multicolumn{6}{|c|}{$\times$} \\ \hline
- 	\end{tabular}
-	\caption{Configurations used in the tests of \textbf{Copy}}
-	\label{tbl:tests-configurations-copy}
-\end{table}
-
-\paragraph{Generalization}
-The generalization tests have been performed with sequences of maximum 100 values. In tasks like \textbf{Access} the generalization happen correctly, indicating that the NRAM learns the underlying algorithm only if reaches precisely the cost zero. The error of each task associated to the complexity is visible in the Table \ref{tbl:error-hard-tasks} and Figure \ref{fig:error-hard-tasks}.
-
-
-\begin{table}[!h]
-	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		\multicolumn{7}{|c|}{\textbf{Reverse}} \\ \hline
-		Train complexity & \multicolumn{6}{c|}{$\textrm{len}(A) \leq 8$} \\ \hline \hline \hline
-		\multicolumn{7}{|c|}{\textbf{Network}} \\ \hline
-		Hidden Layer & \multicolumn{6}{c|}{$2 \times 130$}\\ \hline
-		Activation Function & \multicolumn{6}{c|}{2 $\times$ ReLu}\\ \hline \hline
-		
-		\multicolumn{7}{|c|}{\textbf{Training strategy helper}} \\ \hline
-		Curriculum learning & \multicolumn{2}{c|}{\textbf{Lambda}} & 0.001 & \multicolumn{2}{c|}{\textbf{Generation}} & 250\\ \hline
-		Entropy & \multicolumn{6}{c|}{$\times$}\\ \hline
-		Cost regularization & \multicolumn{6}{c|}{$\times$}\\ \hline \hline		
-		
-		\multicolumn{7}{|c|}{\textbf{Differential Evolution}} \\ \hline
-		DE type & \multicolumn{2}{c|}{JADE} & \multicolumn{2}{c|}{SHADE} & \multicolumn{2}{c|}{L-SHADE}  \\ \hline
-		Mutation & DEGL & C.p.b. & DEGL & C.p.b. & DEGL & C.p.b. \\ \hline
-		Crossover & \multicolumn{6}{c|}{bin} \\ \hline
-		Population & \multicolumn{6}{c|}{100} \\ \hline
-		Training gen. & \multicolumn{6}{c|}{600} \\ \hline
-		F & $\textasciitilde$0.61 & $\textasciitilde$0.72 & 1.0 & $\textasciitilde$0.05 & $\textasciitilde$0.12 & $\textasciitilde$0.06 \\ \hline
-		CR & $\textasciitilde$0.43 & $\textasciitilde$0.04 & $\textasciitilde$0.46 & $\textasciitilde$0.37 & 0.0 & 0.0 \\ \hline
-		p & 0.1 & 0.1 & $\textasciitilde$0.15 & $\textasciitilde$0.18 & $\textasciitilde$0.16 & $\textasciitilde$0.03 \\ \hline
-		Archive size & \multicolumn{6}{c|}{1000} \\ \hline
-		Memory \textbf{M} Size & \multicolumn{2}{c|}{$\times$} & \multicolumn{4}{c|}{1000} \\ \hline
-		DEGL neighbors & 8 & $\times$ & 8 & $\times$ & 8 & $\times$ \\ \hline
-		Converged to 0 & \checkmark & \multicolumn{2}{c|}{$\times$} & \checkmark & \multicolumn{2}{c|}{$\times$} \\ \hline
-		Error & 0 & & & & & \\ \hline\hline
-		
-		\multicolumn{7}{|c|}{\textbf{ADAM}} \\ \hline
-		Converged to 0 & \multicolumn{6}{|c|}{$\times$} \\ \hline
- 	\end{tabular}
-	\caption{Configurations used in the tests of \textbf{Reverse}}
-	\label{tbl:tests-configurations-reverse}
-\end{table}
-
-\begin{table}[!h]
-	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		\multicolumn{7}{|c|}{\textbf{Swap}} \\ \hline
-		Train complexity & \multicolumn{6}{c|}{$\textrm{len}(A) \leq 7$} \\ \hline \hline \hline
-		\multicolumn{7}{|c|}{\textbf{Network}} \\ \hline
-		Hidden Layer & \multicolumn{6}{c|}{$2 \times 260$}\\ \hline
-		\begin{tabular}{@{}c@{}}Activation\\Function\end{tabular}& \multicolumn{6}{c|}{2 $\times$ ReLu}\\ \hline \hline
-		
-		\multicolumn{7}{|c|}{\textbf{Training strategy helper}} \\ \hline
-		Curriculum learning & \multicolumn{2}{c|}{\textbf{Lambda}} & 0.001 & \multicolumn{2}{c|}{\textbf{Generation}} & 250\\ \hline
-		Entropy & \multicolumn{6}{c|}{$\times$}\\ \hline
-		\begin{tabular}{@{}c@{}}Cost\\regularization\end{tabular}& \multicolumn{6}{c|}{$\times$}\\ \hline \hline
-		
-		\multicolumn{7}{|c|}{\textbf{Differential Evolution}} \\ \hline
-		DE type & \multicolumn{2}{c|}{JADE} & \multicolumn{2}{c|}{SHADE} & \multicolumn{2}{c|}{L-SHADE}  \\ \hline
-		Mutation & DEGL & C.p.b. & DEGL & C.p.b. & DEGL & C.p.b. \\ \hline
-		Crossover & \multicolumn{6}{c|}{bin} \\ \hline
-		Population & \multicolumn{6}{c|}{100} \\ \hline
-		Training gen. & \multicolumn{6}{c|}{2000} \\ \hline
-		F & $\times$ & 0.632763 & $\times$ & 0.757295 & $\times$ & $\times$ \\ \hline
-		CR & $\times$ & 0.0 & $\times$ & 0.0 & $\times$ & $\times$ \\ \hline
-		p & $\times$ & 0.1 & $\times$ & 0.131320 & $\times$ & $\times$ \\ \hline
-		Archive size & \multicolumn{6}{c|}{110} \\ \hline
-		Memory \textbf{M} Size & $\times$ & $\times$ & \multicolumn{4}{c|}{110} \\ \hline
-		DEGL neighbors & 6 & $\times$ & 6 & $\times$ & 6 & $\times$  \\ \hline
-		Converged to 0 & \checkmark & \checkmark & $\times$ & \checkmark & $\times$ & $\times$ \\ \hline
-		Error & & & & & & \\ \hline\hline
-		
-		\multicolumn{7}{|c|}{\textbf{ADAM}} \\ \hline
-		Converged to 0 & \multicolumn{6}{|c|}{$\times$} \\ \hline
- 	\end{tabular}
-	\caption{Configurations used in the tests of \textbf{Swap}}
-	\label{tbl:tests-configurations-swap}
-\end{table}
 
 \section{Circuits}\label{subsec:circuits}
 Following are presented some working circuits generated in the training of simple tasks. For the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} are important the parameters order, indicated with $x$ and $y$. Instead, for the gates \textbf{Read} and \textbf{Write}, the pointer and the value to write are indicated, respectively, with $p$ and $a$ labels.\newline\newline
