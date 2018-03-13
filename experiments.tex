@@ -95,6 +95,7 @@ Given two arrays of n elements: P (contains a permutation of numbers $0,\ \dots,
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
 		\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
 		\textbf{5} & 2 & 1 & 0 & 3 & \underline{3} & 6 & 8 & 1 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
@@ -107,7 +108,7 @@ Given two arrays of n elements: P (contains a permutation of numbers $0,\ \dots,
 \end{table}
 \FloatBarrier
 
-\subsection{Permutation}
+\subsection{Sum}
 Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the output $o$, sum the two arrays into one array. The input is given as: $a,\ b,\ o,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1],\ G,\ \textbf{B}[0],\ \dots,\ \textbf{B}[m-1],\ G$, where $a$ points to first element of \textbf{A}, $b$ points to the first element of \textbf{B}, $o$ points to first element of output array and $G$ is a special guardian value. The $\textbf{A}+\textbf{B}$ array should be written starting from position $o$. An example is visible in Figure \ref{fig:sum-example}.
 \begin{table}[h!]
 	\centering
@@ -129,7 +130,12 @@ Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the out
 Generalization means the capacity of a neural network to recognize patterns never seen before in new examples. In a classic classification problem this means that the neural network should recognize the patterns in the features presented to it, classifying them with the correct label. The same concept can be also applied to NRAM, with some differences. Remembering that the training is made over memory with limited size, with ``generalization capacity'' means that the controller should learns to create the right circuit also for examples\footnote{Please refer to Section \ref{subsubsec:nram-dataset} to see how the examples are formed.} with a greater memory. As stated previously in the Paragraph \ref{subpar:curriculum-learning}, the Curriculum Learning is used to boost the training making the neural network more robust - in fact, the training over a specific memory size could leads the objective function to have a value equal to zero, but this does not means that the neural network has learnt to generalize.
 
 \section{Results}
-In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, trying to test the learnability of the ``easy'' and ``hard'' tasks and the performance of Differential Evolution\footnote{The algorithms used are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, combined with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}.}. These tests are compared to the implementation with ADAM in Theano. For the tests we have used always the same configurations of NRAM, like number of registers and maximum integer. All the tests are executed with a feedforward neural network with two level of 260 neurons. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}, that evaluates the manipulated input memory with respect to the desired memory, according to the cost mask. The train error is calculated with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. 
+=============> Questa versione
+In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, trying to test the learnability of the ``easy'' and ``hard'' tasks using the Differential Evolution\footnote{The algorithms used are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, combined with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}.} and the generalization capacity of the discovered controllers. Moreover, we have tested and compared the implementation of DENN and Theano without the Curriculum Learning and the performance of DENN with and without the Curriculum Learning.\newline
+==============\newline
+In the experiments we have follow what is do in the paper \cite{NRAM:2016}, training of NRAM with DENN and Theano on ``easy'' and ``hard'' tasks. The objectives are to compare the performances of DENN and Theano without the Curriculum Learning and the performances of DENN with and without the Curriculum Learning, focusing specially to the generalization capacity of the discovered solutions.
+<============= O questa versione\newline
+
 \begin{table}[]
 	\centering
 
@@ -142,16 +148,43 @@ In the experiments we have retraced what is do in the paper \cite{NRAM:2016}, tr
 		\rowcolor{Gray} & No CL & CL & No CL & CL & No CL & CL \\ 
 		
 		Access & $\textrm{len}(A) = 6$ & $\textrm{len}(A) \leq 10$ & 0 & 0 & Perfect & Perfect \\ 
-		Increment & $\textrm{len}(A) = 8$ & $\textrm{len}(A) \leq 11$ & 0 & 0 & Perfect & Perfect \\
+		Increment & $\textrm{len}(A) = 8$ & $\textrm{len}(A) \leq 11$ & \_ & \_ & \_ & \_ \\
 		Copy & $\textrm{len}(A) = 5$ & $\textrm{len}(A) \leq 9$ & 0 & 0 & Perfect & Perfect \\ 
 		Reverse & $\textrm{len}(A) = 4$ & $\textrm{len}(A) \leq 8$ & 0 & 0 & Perfect & Perfect \\ 
-		Swap & $\textrm{len}(A) = 7$ & $\textrm{len}(A) = 7$ & 0 & 0 & Perfect & Perfect \\ 
+		Swap & $\textrm{len}(A) = 7$ & $\textrm{len}(A) \leq 7$ & 0 & 40\% & Perfect & No \\ \hline\hline
 		Permutation & $\textrm{len}(A) = 5$ & $\textrm{len}(A) = 20$ & 0 & 0 & Perfect & Perfect \\ 
 		Sum & \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$= 6$\end{tabular}& \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$ = 10$\end{tabular} & 0 & 0 & Perfect & Perfect \\ 
 	\end{tabular}
-	\caption{Results of the tests. The train complexity represents the maximum length of integers sequence in the memory. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longest with respect to those used in training.}
-	\label{tbl:tests-configuration}
+	\caption{Results of the tests. The train complexity represents the maximum length of integers sequence in the memory. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longer with respect to those used in training.}
+	\label{tbl:tests-results}
 \end{table}
+The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, that are combined with the mutation methods \textbf{DEGL} and \textbf{Curr to p best} and the crossover method \textbf{bin}. All the tests are executed with a feedforward neural network with two hidden levels, each containing 260 neurons. The training set is composed of batches of 1000 examples. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}. The train error is calculated with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with dimensions of the sequences $A$ up to 1000 integer values.\newline\newline
+\begin{figure}[t]
+	\centering
+	\begin{tikzpicture}[smooth,scale=.875]
+			\begin{axis}[
+  				axis x line=center,
+  				axis y line=center,
+  				xlabel={Sequence A length},
+  				ylabel={Error rate},
+    				x label style={at={(axis description cs:0.5,-0.115)},anchor=north},
+    				y label style={at={(axis description cs:-0.115,.5)},rotate=90,anchor=south},
+			    xmin=0, xmax=1000,
+			    ymin=0, ymax=1,
+				legend style={at={(0.5,-0.25)},anchor=north}		
+			]
+  				\addplot table{data/swap-error-rate-CL.txt};
+  				\addlegendentry{Swap CL}
+			\end{axis}
+	\end{tikzpicture}
+	\label{fig:nram-tests-error-rate-plot}
+	\caption{Error rate of best controllers in generalization tests.}
+\end{figure}
+As showed in the Table \ref{tbl:tests-results}, the easy tasks are learned satisfactorily, reaching the same results of the paper even using shorter sequences $A$ for the training. \newline
+**************\newline
+TODO\newline
+**************
+
 
 
 \section{Circuits}\label{subsec:circuits}
