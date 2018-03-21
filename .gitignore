@@ -24,6 +24,7 @@ sl-nn.aux
 texput.log
 Tesi\ di\ valerio.bbl
 Tesi\ di\ valerio.blg
+results-tables.tex
 
 # Backup files
 Tesi\ di\ valerio.lof.bak
@@ -38,3 +39,4 @@ introduction.tex.bak
 neural-networks.tex.bak
 neural-random-access-machine.tex.bak
 ringraziamenti.tex.bak
+results-tables-tex.bak

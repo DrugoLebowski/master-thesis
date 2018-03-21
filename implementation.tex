@@ -37,7 +37,7 @@ The pseudocode of the implementation of the NRAM used to test the generalization
 
 
 \subsubsection{Datasets}\label{subsubsec:nram-dataset}
-The datasets used during the training are generated programmatically for each tasks with a procedure. In each procedure are generated the input dataset, i.e. the initial memory manipulated during the execution of the NRAM, the expected dataset, i.e. the desired memory, and the cost mask, i.e. a vector which has the integer one in the positions of interest of the memory and zero in the others. Remembering how a classification problem is defined, from an high level the $x$ is formed by the Registers and ``Initial memory'' and the $y$ is the ``Desired Memory''. The datasets are generated only at the start of the training of the NRAM, except when the Curriculum Learning is active in which are re-generated to every change of difficulty.
+The datasets used during the training are generated programmaticaly at runtime for each tasks. With a procedure are generated a batch of samples composed by the initial memories, the expected memories, the cost mask and the error rate masks. The initial memories are those manipulated by NRAM during the execution, along the registers, and which are compared to the expected memories for cost calculation. Remembering how a classification problem is defined, from an high level the $x$ is formed by the Registers and ``Initial memory'' and the $y$ is the ``Desired Memory''. The datasets are generated only at the start of the training of the NRAM, except when the Curriculum Learning is active in which are re-generated to every change of difficulty.
 
 \begin{algorithm}
 	\begin{algorithmic}[1]
