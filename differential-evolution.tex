@@ -319,7 +319,7 @@ DENN is a framework written in C++ by Gabriele Di Bari and Mirco Tracolli, based
 
 \subsection{How it work}
 DENN is a framework that aims to help the developer to construct a system to train Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which is decided how the neural network should be trained. For example, let the Differential Evolution configuration JADE/\\Rand/1/Bin - JADE, Rand/1 and Bin are three modules that can be selected for the training process at the time of configuration of DENN. The plug-in that could be used are not only for the DE, but also regard the dataset\footnote{Where is it, how to manage it, etc.}, how the neural network should be structured\footnote{How many levels and the activation functions} and, more important, what kind of neural network you want instruct\footnote{At this time, DENN can trains only feed-forward networks.}. Some of the configuration parameters can be found in the Table \ref{tbl:denn-parameters}.\newline\newline
-However, what really changes in DENN with respect to the standard Differential Evolution is how the population evolves. As stated in the Chapter \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the existence of a population of vectors, called \textit{NP}, that is paralleled evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors are bi-dimensional, i.e. a list of features to optimize. Hence in DENN, since the population is composed by neural networks it cannot be used as is, instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual is a neural network and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents.\newline\newline
+As said in the Chapter \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the existence of a population of vectors, called \textit{NP}, that is parallel evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors are multi-dimensional, i.e. a list of features to optimize. Hence in DENN, since the population is composed by neural networks it cannot be used as is, instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual is a neural network and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents.\newline\newline
 For a better explanation, let's examine the mutation phase through an example. Let \textit{NP} the Neural Networks population, Rand/1 the mutation strategy, $r_1, r_2$ and $r_3$ three mutually exclusive indexes, the donor $\textbf{u}_{1}$ is created as follows:
 \begin{align}
 	\textbf{u}_{1}^{w_1} &= \textbf{x}_{r_1}^{w_1} + F \cdot (\textbf{x}_{r_2}^{w_1} - \textbf{x}_{r_3}^{w_1}) \\
@@ -331,23 +331,23 @@ For a better explanation, let's examine the mutation phase through an example. L
 where $w_i$ and $b_i$ represent the weights and bias vectors of the $\textrm{i}^{\textrm{th}}$ level and \textbf{HL} is the hidden layers set. The same work is made also for the crossover phase, so we do not explain it with an example which is leaved to the reader.
 
 \begin{table}[]
-	\centering
+	\centering	
 	\begin{tabular}{|l|l|}
 		\hline
-		Argument     & Description \\ \hline \hline
+		\rowcolor{Gray}Argument     & Description \\ \hline
 
-		\multicolumn{2}{|c|}{\textbf{Execution args}} \\ \hline
+		\rowcolor{LightGray}\multicolumn{2}{|c|}{\textbf{Execution args}} \\ \hline
 		threads\_pop & Executed threads of DENN \\ \hline
 		seed     	 & Distribution seed \\ \hline
 		instance		 & Type of model (nram/default) \\ \hline \hline
 
-		\multicolumn{2}{|c|}{\textbf{Batch info}} \\ \hline
+		\rowcolor{LightGray}\multicolumn{2}{|c|}{\textbf{Batch info}} \\ \hline
 		batch\_size  	 & Number of training examples \\ \hline
 		batch\_offset	 & Examples per batch \\ \hline
 		use\_validation & Activate pop validation at the end of a sub-		geneneration \\ \hline
-		cumpter\_test\_per\_pass     	 & Compute the test accuracy for each pass \\ \hline \hline
+		cumpte\_test\_per\_pass     	 & Compute the test accuracy for each pass \\ \hline \hline
 
-		\multicolumn{2}{|c|}{\textbf{DE}} \\ \hline
+		\rowcolor{LightGray}\multicolumn{2}{|c|}{\textbf{DE}} \\ \hline
 		generations  	 & Total number of generations \\ \hline
 		sub\_gens  	 	& Number of sub-generations \\ \hline
 		number\_parents  	 	& DE population size \\ \hline
@@ -355,21 +355,23 @@ where $w_i$ and $b_i$ represent the weights and bias vectors of the $\textrm{i}^
 		cr						& DE CR coefficient \\ \hline
 		evolution\_method 		& Evolution method (JADE/SHADE/L-SHADE) \\ 	\hline
 		mutation 				& Mutation method (degl/curr\_p\_best) \\ \hline
-		crossover				& Crossover method (bin/exp/interm) \\ \hline
+		crossover				& Crossover method (bin/exp/interm) \\ \hline \hline
 
-		\multicolumn{2}{|c|}{\textbf{Network}} \\ \hline
+		\rowcolor{LightGray}\multicolumn{2}{|c|}{\textbf{Network}} \\ \hline
 		hidden\_layers  	 		& Levels size \\ \hline
-		activation\_functions  	& Activation functions of levels \\ \hline
+		activation\_functions  	& Activation functions of levels \\ \hline \hline
 
-		\multicolumn{2}{|c|}{\textbf{NRAM}} \\ \hline
+		\rowcolor{LightGray}\multicolumn{2}{|c|}{\textbf{NRAM}} \\ \hline
 		task  	 		& Task to execute \\ \hline
 		max\_int  		& Max int in the set \\ \hline
+		sequence\_size  & The size of the input sequence \\ \hline
 		n\_registers  	& Registers to use \\ \hline
 		time\_steps  	& Execution timesteps \\ \hline
 		gates  			& Gates to use \\ \hline
+		change\_difficulty\_level & The lambda under of which the difficulty can be changed \\ \hline
 		step\_gen\_change\_difficulty & Number of gen where the same difficulty is used  \\ \hline
 
 	\end{tabular}
-	\caption{Some arguments used in a DENN's configuration file.}
+	\caption{Some arguments could be used in the configuration file of DENN.}
 	\label{tbl:denn-parameters}
 \end{table}
