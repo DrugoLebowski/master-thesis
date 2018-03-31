@@ -139,153 +139,89 @@ In the experiments we have followed what is done in the paper \cite{NRAM:2016}, 
 		\rowcolor{Gray} \textbf{Task} & \multicolumn{2}{c}{\textbf{Train complexity}} & \multicolumn{2}{c}{\textbf{Reached cost 0}} & \multicolumn{2}{c}{\textbf{Train error}} & \multicolumn{2}{c}{\textbf{Generalization}} \\
 		\rowcolor{Gray} & No CL & CL & No CL & CL & No CL & CL & No CL & CL \\ \hline
 		
-		Access & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 6$\\
-			$t = 3$
-		\end{tabular} & $\textrm{len}(A) \leq 10$ & \checkmark & \checkmark & 0 & 0 & \begin{tabular}{@{}c@{}c}Semi\\-perfect\end{tabular} & Perfect \\ 
-		Increment & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 9$\\
-			$t = 9$
-		\end{tabular} & $\textrm{len}(A) \leq 11$  & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\
-		Copy & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 5$\\
-			$t = 12$
-		\end{tabular} & $\textrm{len}(A) \leq 9$  & \checkmark & $\times$ & 0 & --- & \begin{tabular}{@{}c@{}c}Semi\\-perfect\end{tabular} & --- \\ 
-		Reverse & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 4$\\
-			$t = 9$
-		\end{tabular} & $\textrm{len}(A) \leq 8$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
-		Swap & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 7$\\
-			$t = 6$
-		\end{tabular} & $\textrm{len}(A) \leq 7$ & \checkmark & $\times$ & 0 & --- & \begin{tabular}{@{}c@{}c}Semi\\-perfect\end{tabular} & --- \\ \hline\hline
+		Access & $\textrm{len}(A) = 8, t = 5$ & $\textrm{len}(A) \leq 10$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
+		Increment & 	$\textrm{len}(A) = 9, t = 4$ & $\textrm{len}(A) \leq 10$  & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\
+		Copy & $\textrm{len}(A) = 5, t = 12$ & $\textrm{len}(A) \leq 9$  & \checkmark & $\times$ & 0 & --- & Semi-perfect & --- \\ 
+		Reverse & $\textrm{len}(A) = 4, t = 9$ & $\textrm{len}(A) \leq 8$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
+		Swap & $\textrm{len}(A) = 7, t = 6$ & $\textrm{len}(A) \leq 7$ & \checkmark & $\times$ & 0 & --- & Semi-perfect & --- \\ \hline\hline
 		Permutation & $\textrm{len}(A) = 5$ & $\textrm{len}(A) \leq 20$ & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 		ListK & $\textrm{len}(list) = \_$ & $\textrm{len}(list) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & ---\\ 
 		ListSearch & $\textrm{len}(list) = \_$ & $\textrm{len}(list) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & ---  \\ 
-		Merge & \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$= \_$\end{tabular} & \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$\leq \_$\end{tabular} & $\times$ & $\times$ & --- & --- & --- & --- \\ 
+		Merge & $\textrm{len}(A)+\textrm{len}(B) = \_$ & $\textrm{len}(A)+\textrm{len}(B) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 		WalkBST & $\textrm{size}(tree) = \_$ & $\textrm{size}(tree) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & --- \\ 
-		Sum & \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$= 6$\end{tabular}& \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$ \leq 10$\end{tabular} & $\times$ & $\times$ & --- & --- & --- & --- \\
-	\end{tabular}\label{tbl:denn-tests-results}}
-	\caption{Results of the tests with DENN. The train complexity represents the maximum length of integers sequence A used in the training. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longer and more timesteps with respect to those used in training. The evaluation is executed as in \cite{NRAM:2016}, except for the keyword \textbf{Semi-Perfect} which means that the found solution generalize well only with input sequences and timesteps compatible to those used in the training. With \textbf{---} we indicate the lack of informations due to non-convergence of controller.}
-	
+		Sum & $\textrm{len}(A)+\textrm{len}(B) = 6$ & $\textrm{len}(A)+\textrm{len}(B) \leq 10$ & $\times$ & $\times$ & --- & --- & --- & --- \\
+	\end{tabular}}
+	\caption{Results of the tests with DENN. The train complexity represents the maximum length of integers sequence A used in the training. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longer and more timesteps with respect to those used in training. The evaluation is executed as in \cite{NRAM:2016}, except for the keyword \textbf{Semi-Perfect} which means that the found solution generalize well only with input sequences and timesteps compatible to those used in the training. With ``\textbf{---}'' we indicate the lack of informations due to non-convergence of controller.}\label{tbl:denn-tests-results}
 \end{table}
-
 \begin{table}[t]
 	\centering
 	
 	\rowcolors{2}{white}{LightGray}
-	\resizebox{\textwidth}{!}{\begin{tabular}{ccccc}
-		\rowcolor{Gray} \textbf{Task} & \textbf{Train complexity} & \textbf{Reached cost 0} & \textbf{Train error} & \textbf{Generalization} \\ \hline
-		Access & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 9$\\
-			$t = 3$
-		\end{tabular} & $\times$ & --- & --- \\ 
-		Increment & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 9$\\
-			$t = 3$
-		\end{tabular} & $\times$ & --- & --- \\
-		Copy & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 5$\\
-			$t = 3$
-		\end{tabular} & $\times$ & --- & ---  \\ 
-		Reverse & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 4$\\
-			$t = 3$
-		\end{tabular} & $\times$ & --- & --- \\ 
-		Swap & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = 7$\\
-			$t = 3$
-		\end{tabular} & $\times$ & 
-		--- & --- \\ \hline\hline
-		Permutation & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(A) = \_$\\
-			$t = \_$
-		\end{tabular} & $\times$ & --- & --- \\ 
-		ListK & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(list) = \_$\\
-			$t = \_$
-		\end{tabular} & $\times$ & --- & --- \\ 
-		ListSearch & \begin{tabular}{@{}c@{}c}
-			$\textrm{len}(list) = \_$\\
-			$t = \_$
-		\end{tabular} & $\times$ & --- & ---  \\ 
-		Merge & \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$= \_$\\$t=\_$\end{tabular} & $\times$ & --- & --- \\ 
-		WalkBST & \begin{tabular}{@{}c@{}c}$\textrm{size}(tree) = \_$\\$t=\_$\end{tabular} & $\times$ & --- & ---  \\ 
-		Sum & \begin{tabular}{@{}c@{}c}$\textrm{len}(A)+\textrm{len}(B)$\\$= \_$\\$t=\_$\end{tabular} & $\times$ & --- & --- \\
-	\end{tabular}\label{tbl:adam-tests}}
-	\caption{Results of the tests of Adam. The contained informations follows those in Table \ref{tbl:denn-tests-results}.}
+	\begin{tabular}{ccc}
+		\rowcolor{Gray} \textbf{Task} & \textbf{Train complexity} & \textbf{Reached cost 0} \\ \hline
+		Access & $\textrm{len}(A) = 9, t = 3$ & $\times$ \\ 
+		Increment & $\textrm{len}(A) = 9, t = 4$ & $\times$ \\
+		Copy & $\textrm{len}(A) = 5, t = 11$  & $\times$  \\ 
+		Reverse & $\textrm{len}(A) = 5 t = 9$  & $\times$ \\ 
+		Swap & $\textrm{len}(A) = 9, t = 6$ & $\times$ \\ \hline\hline
+		Permutation & $\textrm{len}(A) = \_, t = \_$ & $\times$ \\ 
+		ListK & $\textrm{len}(list) = \_, t = \_$ & $\times$ \\ 
+		ListSearch & $\textrm{len}(list) = \_, t = \_$ & $\times$  \\ 
+		Merge & $\textrm{len}(A)+\textrm{len}(B) = \_, t=\_$ & $\times$ \\ 
+		WalkBST & $\textrm{size}(tree) = \_, t=\_$ & $\times$  \\ 
+		Sum & $\textrm{len}(A)+\textrm{len}(B) = \_, t=\_$ & $\times$ \\
+	\end{tabular}
+	\caption{Results of the tests of Adam. The contained informations follows those in Table \ref{tbl:denn-tests-results}\label{tbl:adam-tests}.}
 \end{table}
 The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, which are combined with the mutation methods \textbf{DEGL} and \textbf{Current-to-pbest} and the crossover method \textbf{bin}. We used in each tests a population of 100 individuals. For DEGL we used a neighborhood in the interval $[4, 8]$ and for Current-to-pbest a $p = 0.1$. All the tests are executed with a feedforward neural network with two hidden levels, each containing 260 neurons. The training set is composed of batches of 1000 examples generated at runtime. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}. The train error is calculated with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with input sequences up to 1000 values. The Curriculum Learning was set up with an interval of batches between $[25, 250]$ and a threshold equal to 0.1. \newline\newline
 
 \begin{table}[t]
 	\centering
 	\rowcolors{2}{LightGray}{white}
-	\resizebox{\textwidth}{!}{\begin{tabular}{|c|cccccccccccc|cccccc|cc|}
+	\resizebox{\textwidth}{!}{\begin{tabular}{|c|cccccccccccc|cccc|cc|}
 		\hline
-		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & \textit{r}4 & \textit{r}5 & Read & Write \\ \hline 
-1 & 6 & 3 & 1 & 2 & 10 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & p:0 & p:6 v:6 \\ 
-2 & 6 & 3 & 1 & 2 & 10 & 11 & 6 & 0 & 0 & 0 & 0 & 0 & 2 & 2 & 0 & 0 & 0 & 2 & p:1 & p:10 v:3 \\ 
-3 & 6 & 3 & 1 & 2 & 10 & 11 & 6 & 0 & 0 & 0 & 3 & 0 & 3 & 3 & 0 & 0 & 0 & 3 & p:2 & p:9 v:1 \\ 
-4 & 6 & 3 & 1 & 2 & 10 & 11 & 6 & 0 & 0 & 1 & 3 & 0 & 4 & 4 & 0 & 0 & 0 & 4 & p:3 & p:8 v:2 \\ 
-5 & 6 & 3 & 1 & 2 & 10 & 11 & 6 & 0 & 2 & 1 & 3 & 0 & 5 & 5 & 0 & 0 & 0 & 5 & p:4 & p:7 v:10 \\ 
-6 & 6 & 3 & 1 & 2 & 10 & 11 & 6 & 10 & 2 & 1 & 3 & 0 & 6 & 6 & 0 & 0 & 0 & 6 & p:5 & p:6 v:11 \\ 
-7 & 6 & 3 & 1 & 2 & 10 & 11 & 11 & 10 & 2 & 1 & 3 & 0 & 7 & 7 & 0 & 0 & 0 & 7 & p:6 & p:5 v:11 \\ 
-8 & 6 & 3 & 1 & 2 & 10 & 11 & 11 & 10 & 2 & 1 & 3 & 0 & 8 & 8 & 0 & 0 & 0 & 8 & p:7 & p:4 v:10 \\ 
-9 & 6 & 3 & 1 & 2 & 10 & 11 & 11 & 10 & 2 & 1 & 3 & 0 & 9 & 9 & 0 & 0 & 0 & 9 & p:8 & p:3 v:2 \\ 
-10 & 6 & 3 & 1 & 2 & 10 & 11 & 11 & 10 & 2 & 1 & 3 & 0 & 10 & 10 & 0 & 0 & 0 & 10 & p:9 & p:2 v:1 \\ 
-11 & 6 & 3 & 1 & 2 & 10 & 11 & 11 & 10 & 2 & 1 & 3 & 0 & 11 & 11 & 0 & 0 & 0 & 11 & p:10 & p:1 v:3\\ \hline 
-\rowcolor{Gray}Final & 6 & 3 & 1 & 2 & 10 & 11 & 11 & 10 & 2 & 1 & 3 & 0 & 11 & 11 & 0 & 0 & 0 & 11 & $\times$ & $\times$ \\ \hline
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & Read & Write \\ \hline 
+1 & 6 & 4 & 3 & 6 & 5 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & p:0 & p:0 v:6 \\ 
+2 & 6 & 4 & 3 & 6 & 5 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 6 & 1 & 0 & 0 & p:1 & p:10 v:4 \\ 
+3 & 6 & 4 & 3 & 6 & 5 & 2 & 0 & 0 & 0 & 0 & 4 & 0 & 10 & 2 & 0 & 0 & p:2 & p:9 v:3 \\ 
+4 & 6 & 4 & 3 & 6 & 5 & 2 & 0 & 0 & 0 & 3 & 4 & 0 & 9 & 3 & 0 & 0 & p:3 & p:8 v:6 \\ 
+5 & 6 & 4 & 3 & 6 & 5 & 2 & 0 & 0 & 6 & 3 & 4 & 0 & 8 & 4 & 0 & 0 & p:4 & p:7 v:5 \\ 
+6 & 6 & 4 & 3 & 6 & 5 & 2 & 0 & 5 & 6 & 3 & 4 & 0 & 7 & 5 & 0 & 0 & p:5 & p:6 v:2 \\ 
+7 & 6 & 4 & 3 & 6 & 5 & 2 & 2 & 5 & 6 & 3 & 4 & 0 & 6 & 6 & 0 & 0 & p:6 & p:5 v:2 \\ 
+8 & 6 & 4 & 3 & 6 & 5 & 2 & 2 & 5 & 6 & 3 & 4 & 0 & 5 & 7 & 0 & 0 & p:7 & p:4 v:5 \\ 
+9 & 6 & 4 & 3 & 6 & 5 & 2 & 2 & 5 & 6 & 3 & 4 & 0 & 4 & 8 & 0 & 0 & p:8 & p:3 v:6 \\ 
+10 & 6 & 4 & 3 & 6 & 5 & 2 & 2 & 5 & 6 & 3 & 4 & 0 & 3 & 9 & 0 & 0 & p:9 & p:2 v:3 \\ 
+11 & 6 & 4 & 3 & 6 & 5 & 2 & 2 & 5 & 6 & 3 & 4 & 0 & 2 & 10 & 0 & 0 & p:10 & p:1 v:4\\ \hline 
+\rowcolor{Gray}Final & 6 & 4 & 3 & 6 & 5 & 2 & 2 & 5 & 6 & 3 & 4 & 0 & 1 & 11 & 0 & 0 & $\times$ & $\times$ \\
 	\end{tabular}}
+	\caption{Example of execution showing the memory, register and Read/Write gates states of Task Reverse with the controller discovered without the using of Curriculum Learning. The keywords \textbf{p} and \textbf{v} indicates respectively the pointer which is accessed and the value which is written.}
 	\label{tbl:example-memories-execution}
-	\caption{Example of execution showing the memory, register and Read/Write gates states of Task Reverse with the controller discovered without the using of Curriculum Learning. The keywords \textbf{p} and \textbf{v} indicates respectively the pointer which is accessed and the value which is written. }
 \end{table}
+
+The training was executed using configurations of Max-int, timesteps and registers compatible with those used by Kurach et al. As showed in the Table \ref{tbl:denn-tests-results}, for the easy tasks trained with Differential Evolution without the Curriculum Learning we found a set of hyperparameter which reached error 0 during the training, even using shorter input sequences compared to those used in the paper. Differently from which declared in Kurach at al., for tasks Copy and Swap the search of hyperparameters has been difficulty. The same results was not reached in the training with Theano and ADAM, as showed in \ref{tbl:adam-tests}. 
+
 \iffalse
-\begin{figure}[t]
-	\centering
-	\begin{tikzpicture}[samples=100,smooth, scale=.875]
-			\begin{axis}[
- 				axis x line=center,
-  				axis y line=center,
- 				xlabel={Sequence A length},
-  				ylabel={Error rate},
-    				x label style={at={(axis description cs:0.5,-0.115)},anchor=north},
-    				y label style={at={(axis description cs:-0.115,.5)},rotate=90,anchor=south},    				
-			    grid=both,
-			    grid style={line width=.1pt, draw=gray!10},
-			    major grid style={line width=.2pt,draw=gray!50},
-			    xtick={10, 20, 30 50, 100, 500, 1000},
-			    xmin=0, xmax=1000,
-			    ymin=0, ymax=1,
-				legend style={at={(0.5,-0.25)},anchor=north}		
-			]
-  				\addplot table{data/swap-error-rate-CL.txt};
-  				\addlegendentry{Swap CL}
-			\end{axis}
-	\end{tikzpicture}
-	\label{fig:nram-tests-error-rate-plot}
-	\caption{Error rate of best controllers in generalization tests.}
-\end{figure}
-\fi
-The training was executed using configurations of Max-int, timesteps and registers compatible with those used by Kurach et al. As showed in the Table \ref{tbl:denn-tests-results}, for the easy tasks trained with Differential Evolution without the Curriculum Learning we found a set of hyperparameter which reached error 0 during the training, even using shorter input sequences compared to those used in the paper. Differently from which declared in Kurach at al., for tasks Copy and Swap the search of hyperparameters has been difficulty. The same results was not reached in the training with Theano, as showed in \ref{tbl:adam-tests}. 
 \begin{table}[h]
 	\centering
 	\rowcolors{2}{LightGray}{white}
-	\begin{tabular}{c|ccccccccccccccc|cc}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|ccccccccccccccc|cc}
 		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & \textit{r}0 & \textit{r}1 \\ \hline 
 1 & 4 & 7 & 8 & 3 & 11 & 13 & 13 & 6 & 5 & 2 & 0 & 4 & 1 & 5 & 0 & 1 & 4 \\ 
 2 & 4 & 7 & 8 & 3 & 11 & 13 & 13 & 6 & 5 & 2 & 0 & 4 & 1 & 5 & 0 & 14 & 0 \\ 
 3 & 11 & 7 & 8 & 3 & 11 & 13 & 13 & 6 & 5 & 2 & 0 & 4 & 1 & 5 & 0 & 14 & 11 \\ \hline 
 \rowcolor{Gray}Final & 11 & 7 & 8 & 3 & 11 & 13 & 13 & 6 & 5 & 2 & 0 & 4 & 1 & 5 & 0 & 14 & 11 \\
 \rowcolor{Gray}Expected & 11 & 7 & 8 & 3 & 11 & 13 & 13 & 6 & 5 & 2 & 0 & 4 & 1 & 5 & 0 & 14 & 11 \\
-	\end{tabular}
-	\label{tbl:right-behaviour}
+	\end{tabular}}
 	\caption{Right behaviour obtained with the task Access using only 3 timesteps. Once the controller has accessed the value in the input sequence, ``stop'' the execution, i.e. generates a circuit that for each step $\geq 3$ writes in the first position the value previously accessed.}
+	\label{tbl:right-behaviour}
 \end{table}
-Regard the generalization, we observed that the solutions that reached error zero, except with task Reverse and Increment, generalize well only if the input sequences and timesteps are compatible with those used in the training. For example, the training with the task Access has been made with an input sequence of 6 values and 3 timesteps, as it can be seen in the Table \ref{tbl:right-behaviour}. However, if we execute a controller that reached in the training cost zero for more timesteps compared to those used in the training keeping the same input sequence, the resulting memory is not that expected, like it can be seen in the Table \ref{tbl:wrong-behaviour}. This shows that the controller learned the patterns that arise in the registers only for 3 steps and not for more of these, generating later circuits that have unexpected behaviours.\newline
+
+************** RISCRIVERE CON UN ALTRO ESEMPIO **************
+Regard the generalization, we observed that the solutions that reached error zero - except with tasks Access, Reverse and Increment - generalize well only if the input sequences and timesteps are compatible with those used in the training. For example, the training with the task Access has been made with an input sequence of 6 values and 3 timesteps, as it can be seen in the Table \ref{tbl:right-behaviour}. However, if we execute a controller that reached in the training cost zero for more timesteps compared to those used in the training keeping the same input sequence, the resulting memory is not that expected, like it can be seen in the Table \ref{tbl:wrong-behaviour}. This shows that the controller learned the patterns that arise in the registers only for 3 steps and not for more of these, generating later circuits that have unexpected behaviours.\newline
 \begin{table}[t]
 	\centering
 	\rowcolors{2}{LightGray}{white}
-	\begin{tabular}{c|ccccccccccccccc|cc}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|ccccccccccccccc|cc}
 		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & \textit{r}0 & \textit{r}1 \\ \hline 
 1 & 10 & 4 & 9 & 6 & 14 & 1 & 1 & 10 & 0 & 11 & 6 & 7 & 3 & 0 & 0 & 1 & 10 \\ 
 2 & 10 & 4 & 9 & 6 & 14 & 1 & 1 & 10 & 0 & 11 & 6 & 7 & 3 & 0 & 0 & 14 & 0 \\ 
@@ -294,117 +230,405 @@ Regard the generalization, we observed that the solutions that reached error zer
 5 & 1 & 4 & 9 & 6 & 14 & 1 & 1 & 10 & 0 & 11 & 6 & 7 & 3 & 0 & 0 & 14 & 1 \\ \hline 
 \rowcolor{Gray}Final & 1 & 4 & 9 & 6 & 14 & 1 & 1 & 10 & 0 & 11 & 6 & 7 & 3 & 0 & 0 & 14 & 1 \\
 \rowcolor{Gray}Expected & 6 & 4 & 9 & 6 & 14 & 1 & 1 & 10 & 0 & 11 & 6 & 7 & 3 & 0 & 0 & 14 & 1 \\
-	\end{tabular}
-	\label{tbl:wrong-behaviour}
+	\end{tabular}}
 	\caption{Wrong behaviour obtained with the task Access, executing for 5 timesteps the controller that reached cost zero and trained without Curriculum Learning. The controller continues to access the position of the memory indicated at the index 0.}
+	\label{tbl:wrong-behaviour}
 \end{table}
+\fi
 The hard tasks...\newline
 
 % Compare DENN without CL with DENN with CL
-As observed in Kurach et al., the Curriculum Learning is necessary in some cases. For example, the controller discovered with DENN that reached cost zero with the task Access generalize perfectly. 
+For the easy task, the Curriculum Learning is not always necessary --- in fact, with the tasks \textbf{access}, \textbf{increment} and \textbf{reverse} is possible to search a combination of hyperparameters, both for NRAM and DENN, that make it possible to converge to a solution which generalize perfectly. However this is possible, we observed that the  generated circuits by a controller trained with the Curriculum Learning generates more regulars or smart circuits, like with increment as showed in \ref{subsec:circuits-increment}. 
 
 
 \section{Circuits}\label{subsec:circuits}
-In the following we presented the circuits generated by the best solutions found with  the training using DENN. For the sake of readability, only the necessary gates and registers are showed in the circuits. In the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} the parameters order is important, indicated with $x$ and $y$. Instead, for the gates \textbf{Read} and \textbf{Write}, the pointer and the value to write are indicated, respectively, with \textbf{ptr} and \textbf{val} labels.\newline\newline
+In the following we present the circuits generated by the best solutions found with  the training using DENN. For the sake of readability, only the necessary gates and registers are showed in the circuits. In the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} the parameters order is important, indicated with $x$ and $y$. Instead, for the gates \textbf{Read} and \textbf{Write}, the pointer and the value to write are indicated, respectively, with \textbf{ptr} and \textbf{val} labels.\newline\newline
 Overall, the circuits generated differ from those shown in the paper. Moreover, we observed that the solutions found with different DE variants generate differents circuits. As done in \cite{NRAM:2016}, we present only the ``main'' circuits for the best solutions - to compare them please refers to \cite{NRAM:2016}. The tables shown in the following examples contains the states of the memories and registers at the beginning of the steps and the final memory when the NRAM end the execution.
 \clearpage
 \subsection{Access}
 \begin{figure}[h]
 	\centering
-	\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth, scale=.875]
+	\subfloat[The circuit generated by the controller from the steps $\geq 2$, found with JADE/current-to-pbest/1/bin without the Curriculum learning.\label{fig:access-circuit}]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth]
 		%%
-		\node (R'0) at (212.1bp,22.0bp) [draw,circle] {R'0};
-  		\node (R'1) at (105.0bp,80.0bp) [draw,circle] {R'1};
-  		\node (R1) at (20.5bp,92.0bp) [draw,circle] {R1};
-  		\node (Read) at (105.0bp,138.0bp) [draw,rectangle,ultra thick] {Read};
- 		\node (Write) at (212.1bp,100.0bp) [draw,rectangle,ultra thick] {Write};
-  		\node (Zero) at (105.0bp,22.0bp) [draw,rectangle,ultra thick] {Zero};
- 		\draw [->] (R1) ..controls (50.579bp,87.728bp) and (62.28bp,86.067bp)  .. (R'1);
- 		\draw [->] (Zero) ..controls (146.53bp,22.0bp) and (164.5bp,22.0bp)  .. (R'0);
-  		\draw [->] (Read) ..controls (145.22bp,123.73bp) and (161.28bp,118.03bp)  .. (Write);
-  		\definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  		\pgfsetstrokecolor{strokecol}
-  		\draw (158.55bp,128.0bp) node {val};
-  		\draw [->] (R1) ..controls (47.62bp,106.76bp) and (58.462bp,112.67bp)  .. (Read);
-  		\draw [->] (Zero) ..controls (144.34bp,50.647bp) and (162.82bp,64.105bp)  .. (Write);
-  		\draw (158.55bp,72.0bp) node {ptr};
-		%
-	\end{tikzpicture}
-	\label{fig:access-circuit}
-	\caption{The circuit generated by the controller for every step, found with SHADE/DEGL/1/bin with Curriculum learning.}
-\end{figure}
-\FloatBarrier
-\begin{table}[h]
-	\centering
-	\rowcolors{2}{LightGray}{white}
-	\begin{tabular}{c|ccccccccccccccc|cc}
-		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & \textit{r}0 & \textit{r}1 \\ \hline 
-1 & 6 & 10 & 13 & 11 & 13 & 13 & 9 & 4 & 1 & 12 & 3 & 6 & 11 & 4 & 0 & 0 & 6 \\ 
-2 & 6 & 10 & 13 & 11 & 13 & 13 & 9 & 4 & 1 & 12 & 3 & 6 & 11 & 4 & 0 & 0 & 6 \\ 
-3 & 9 & 10 & 13 & 11 & 13 & 13 & 9 & 4 & 1 & 12 & 3 & 6 & 11 & 4 & 0 & 0 & 6 \\ 
-4 & 9 & 10 & 13 & 11 & 13 & 13 & 9 & 4 & 1 & 12 & 3 & 6 & 11 & 4 & 0 & 0 & 6 \\ 
-5 & 9 & 10 & 13 & 11 & 13 & 13 & 9 & 4 & 1 & 12 & 3 & 6 & 11 & 4 & 0 & 0 & 6 \\ \hline 
-\rowcolor{Gray}Final & 9 & 10 & 13 & 11 & 13 & 13 & 9 & 4 & 1 & 12 & 3 & 6 & 11 & 4 & 0 & 0 & 6 \\
-	\end{tabular}
-	\label{tbl:access-execution-example}
-	\caption{Behaviour obtained with the task Access.}
-\end{table}
-\FloatBarrier
-\clearpage
-\subsection{Increment}
-\begin{figure}[h]
-	\centering
-	\begin{tikzpicture}[samples=100,smooth]
-		%%
-  \node (Read) at (118.0bp,259.0bp) [draw,rectangle,ultra thick] {Read};
-  \node (Two) at (27.0bp,204.0bp) [draw,rectangle,ultra thick] {Two};
-  \node (Write) at (330.66bp,283.0bp) [draw,rectangle,ultra thick] {Write};
-  \node (Add) at (118.0bp,204.0bp) [draw,rectangle,ultra thick] {Add};
-  \node (R4) at (27.0bp,261.0bp) [draw,circle] {R4};
-  \node (R'4) at (330.66bp,204.0bp) [draw,circle] {R'4};
-  \node (Dec) at (223.55bp,204.0bp) [draw,rectangle,ultra thick] {Dec};
-  \node (Inc) at (223.55bp,259.0bp) [draw,rectangle,ultra thick] {Inc};
-  \draw [->] (Inc) ..controls (263.64bp,267.98bp) and (279.53bp,271.54bp)  .. (Write);
+		\node (R'0) at (409.66bp,119.0bp) [draw,circle] {R'0};
+  \node (R'1) at (119.55bp,22.0bp) [draw,circle] {R'1};
+  \node (R0) at (119.55bp,142.0bp) [draw,circle] {R0};
+  \node (R1) at (20.5bp,38.0bp) [draw,circle] {R1};
+  \node (Read) at (119.55bp,80.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (Write) at (323.66bp,119.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (216.55bp,92.0bp) [draw,rectangle,ultra thick] {Add};
+  \draw [->] (R0) ..controls (146.03bp,127.71bp) and (155.74bp,122.55bp)  .. (164.55bp,118.0bp) .. controls (169.6bp,115.39bp) and (174.93bp,112.68bp)  .. (Add);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (277.1bp,279.0bp) node {val};
-  \draw [->] (Add) ..controls (157.74bp,204.0bp) and (172.85bp,204.0bp)  .. (Dec);
-  \draw [->] (R4) ..controls (55.204bp,243.33bp) and (69.205bp,234.56bp)  .. (Add);
-  \draw [->] (Read) ..controls (157.74bp,259.0bp) and (172.85bp,259.0bp)  .. (Inc);
-  \draw [->] (R4) ..controls (58.024bp,275.96bp) and (75.092bp,282.82bp)  .. (91.0bp,286.0bp) .. controls (168.4bp,301.48bp) and (189.62bp,289.11bp)  .. (268.55bp,290.0bp) .. controls (276.15bp,290.09bp) and (278.08bp,290.59bp)  .. (285.66bp,290.0bp) .. controls (288.21bp,289.8bp) and (290.83bp,289.54bp)  .. (Write);
-  \draw (170.78bp,300.0bp) node {ptr};
-  \draw [->] (Dec) ..controls (265.08bp,204.0bp) and (283.05bp,204.0bp)  .. (R'4);
-  \draw [->] (Two) ..controls (62.581bp,204.0bp) and (71.822bp,204.0bp)  .. (Add);
-  \draw [->] (R4) ..controls (57.446bp,260.33bp) and (69.459bp,260.07bp)  .. (Read);
+  \draw (168.05bp,125.0bp) node {x};
+  \draw [->] (R0) ..controls (170.52bp,136.94bp) and (229.01bp,130.96bp)  .. (278.66bp,125.0bp) .. controls (281.19bp,124.7bp) and (283.8bp,124.37bp)  .. (Write);
+  \draw (216.55bp,141.0bp) node {ptr};
+  \draw [->] (Add) ..controls (256.64bp,102.11bp) and (272.53bp,106.11bp)  .. (Write);
+  \draw (270.1bp,114.0bp) node {val};
+  \draw [->] (Write) ..controls (359.26bp,119.0bp) and (368.59bp,119.0bp)  .. (R'0);
+  \draw [->] (Read) ..controls (154.67bp,79.516bp) and (163.49bp,79.951bp)  .. (171.55bp,81.0bp) .. controls (174.06bp,81.327bp) and (176.64bp,81.74bp)  .. (Add);
+  \draw (168.05bp,88.0bp) node {y};
+  \draw [->] (R1) ..controls (54.468bp,32.513bp) and (72.314bp,29.63bp)  .. (R'1);
+  \draw [->] (R1) ..controls (51.865bp,51.299bp) and (68.198bp,58.225bp)  .. (Read);
+  \draw (66.776bp,67.0bp) node {ptr};
 		%
-	\end{tikzpicture}
-	\label{fig:increment-circuit}
-	\caption{The circuit generated for every step by the controller, found with SHADE/current to p best/1/bin with Curriculum Learning.}
+	\end{tikzpicture}}}
+	\subfloat[The circuit generated by the controller from the steps $\geq 2$, found with JADE/current-to-pbest/1/bin with the Curriculum learning.\label{fig:access-circuit}]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth]
+		%%
+		\node (R'1) at (132.55bp,76.0bp) [draw,circle] {R'1};
+  \node (R1) at (27.0bp,99.0bp) [draw,circle] {R1};
+  \node (Read) at (132.55bp,134.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (Write) at (239.66bp,36.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Zero) at (132.55bp,18.0bp) [draw,rectangle,ultra thick] {Zero};
+  \draw [->] (R1) ..controls (62.433bp,91.279bp) and (83.282bp,86.736bp)  .. (R'1);
+  \draw [->] (Read) ..controls (169.28bp,100.39bp) and (193.57bp,78.166bp)  .. (Write);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (186.1bp,98.0bp) node {val};
+  \draw [->] (R1) ..controls (60.503bp,110.11bp) and (79.044bp,116.26bp)  .. (Read);
+  \draw (79.776bp,126.0bp) node {ptr};
+  \draw [->] (Zero) ..controls (172.64bp,24.738bp) and (188.53bp,27.407bp)  .. (Write);
+  \draw (186.1bp,36.0bp) node {ptr};
+		%
+	\end{tikzpicture}}}
+\end{figure}
+\FloatBarrier
+\begin{table}[h]
+	\centering
+	\rowcolors{2}{LightGray}{white}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccccccc|cc|cc}
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & \textit{r}0 & \textit{r}1 & Read & Write \\ \hline 
+1 & 4 & 15 & 7 & 1 & 5 & 13 & 7 & 9 & 8 & 2 & 0 & 5 & 9 & 13 & 4 & 0 & 0 & 0 & p:0 & p:0 v:4 \\ 
+2 & 4 & 15 & 7 & 1 & 5 & 13 & 7 & 9 & 8 & 2 & 0 & 5 & 9 & 13 & 4 & 0 & 0 & 4 & p:4 & p:0 v:5 \\ 
+3 & 5 & 15 & 7 & 1 & 5 & 13 & 7 & 9 & 8 & 2 & 0 & 5 & 9 & 13 & 4 & 0 & 0 & 4 & p:4 & p:0 v:5 \\ 
+4 & 5 & 15 & 7 & 1 & 5 & 13 & 7 & 9 & 8 & 2 & 0 & 5 & 9 & 13 & 4 & 0 & 0 & 4 & p:4 & p:0 v:5 \\ 
+5 & 5 & 15 & 7 & 1 & 5 & 13 & 7 & 9 & 8 & 2 & 0 & 5 & 9 & 13 & 4 & 0 & 0 & 4 & p:4 & p:0 v:5\\ \hline 
+\rowcolor{Gray}Final & 5 & 15 & 7 & 1 & 5 & 13 & 7 & 9 & 8 & 2 & 0 & 5 & 9 & 13 & 4 & 0 & 0 & 4 & $\times$ & $\times$ \\
+	\end{tabular}}
+	\caption{Behaviour obtained with the task Access with the controller found with JADE/current-to-pbest/1/bin without the Curriculum Learning.}
+	\label{tbl:access-execution-example}
+\end{table}
+\FloatBarrier
+\begin{table}[h]
+	\centering
+	\rowcolors{2}{LightGray}{white}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccccccc|cc|cc}
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & \textit{r}0 & \textit{r}1 & Read & Write \\ \hline 
+1 & 3 & 4 & 6 & 6 & 13 & 14 & 5 & 9 & 8 & 2 & 7 & 3 & 13 & 13 & 0 & 0 & 0 & 0 & p:0 & p:0 v:0 \\ 
+2 & 0 & 4 & 6 & 6 & 13 & 14 & 5 & 9 & 8 & 2 & 7 & 3 & 13 & 13 & 0 & 0 & 2 & 3 & p:3 & p:0 v:6 \\ 
+3 & 6 & 4 & 6 & 6 & 13 & 14 & 5 & 9 & 8 & 2 & 7 & 3 & 13 & 13 & 0 & 0 & 2 & 3 & p:3 & p:0 v:6 \\ 
+4 & 6 & 4 & 6 & 6 & 13 & 14 & 5 & 9 & 8 & 2 & 7 & 3 & 13 & 13 & 0 & 0 & 2 & 3 & p:3 & p:0 v:6 \\ 
+5 & 6 & 4 & 6 & 6 & 13 & 14 & 5 & 9 & 8 & 2 & 7 & 3 & 13 & 13 & 0 & 0 & 2 & 3 & p:3 & p:0 v:6\\ \hline 
+\rowcolor{Gray}Final & 6 & 4 & 6 & 6 & 13 & 14 & 5 & 9 & 8 & 2 & 7 & 3 & 13 & 13 & 0 & 0 & 2 & 3 & $\times$ & $\times$ \\
+	\end{tabular}}
+	\caption{Behaviour obtained with the task Access with the controller found with JADE/current-to-pbest/1/bin with the Curriculum Learning.}
+	\label{tbl:access-execution-example}
+\end{table}
+\FloatBarrier
+\clearpage
+\subsection{Increment}\label{subsec:circuits-increment}
+\begin{figure}[h!]
+	\centering
+	\subfloat[The generated circuit in the first timestep.]{
+		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+			\node (R'0) at (119.55bp,290.0bp) [draw,circle] {R'0};
+  \node (R'1) at (332.21bp,210.0bp) [draw,circle] {R'1};
+  \node (R'2) at (225.1bp,348.0bp) [draw,circle] {R'2};
+  \node (R'3) at (225.1bp,22.0bp) [draw,circle] {R'3};
+  \node (R0) at (119.55bp,229.0bp) [draw,circle] {R0};
+  \node (R2) at (20.5bp,311.0bp) [draw,circle] {R2};
+  \node (Min) at (225.1bp,210.0bp) [draw,rectangle,ultra thick] {Min};
+  \node (Read) at (119.55bp,172.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (One) at (119.55bp,118.0bp) [draw,rectangle,ultra thick] {One};
+  \node (Write) at (332.21bp,92.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (225.1bp,118.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (R4) at (20.5bp,72.0bp) [draw,circle] {R4};
+  \node (Dec) at (119.55bp,348.0bp) [draw,rectangle,ultra thick] {Dec};
+  \node (Inc) at (119.55bp,24.0bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (R0) ..controls (153.47bp,222.9bp) and (171.69bp,219.61bp)  .. (Min);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (172.33bp,228.0bp) node {y};
+  \draw [->] (Read) ..controls (159.42bp,186.35bp) and (174.7bp,191.85bp)  .. (Min);
+  \draw (172.33bp,201.0bp) node {x};
+  \draw [->] (Min) ..controls (266.63bp,210.0bp) and (284.6bp,210.0bp)  .. (R'1);
+  \draw [->] (R2) ..controls (54.56bp,303.78bp) and (72.558bp,299.96bp)  .. (R'0);
+  \draw [->] (One) ..controls (159.29bp,118.0bp) and (174.4bp,118.0bp)  .. (Add);
+  \draw (172.33bp,125.0bp) node {y};
+  \draw [->] (Add) ..controls (265.2bp,108.27bp) and (281.08bp,104.41bp)  .. (Write);
+  \draw (278.66bp,114.0bp) node {val};
+  \draw [->] (R4) ..controls (93.393bp,76.677bp) and (228.8bp,85.365bp)  .. (Write);
+  \draw (172.33bp,90.0bp) node {ptr};
+  \draw [->] (Read) ..controls (159.54bp,151.54bp) and (174.99bp,143.64bp)  .. (Add);
+  \draw (172.33bp,156.0bp) node {x};
+  \draw [->] (R4) ..controls (51.568bp,56.944bp) and (68.334bp,48.82bp)  .. (Inc);
+  \draw [->] (R2) ..controls (52.255bp,322.86bp) and (68.315bp,328.86bp)  .. (Dec);
+  \draw [->] (Inc) ..controls (160.79bp,23.219bp) and (178.05bp,22.892bp)  .. (R'3);
+  \draw [->] (Dec) ..controls (160.79bp,348.0bp) and (178.05bp,348.0bp)  .. (R'2);
+  \draw [->] (R4) ..controls (49.635bp,101.62bp) and (72.597bp,124.91bp)  .. (92.552bp,145.0bp) .. controls (93.077bp,145.53bp) and (93.609bp,146.06bp)  .. (Read);
+  \draw (66.776bp,132.0bp) node {ptr};
+		\end{tikzpicture}}
+	}
+	\subfloat[The circuit generated for every step $\geq 2$ and $\leq \textrm{size}(A)$.]{
+		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+			\node (R'0) at (119.55bp,84.0bp) [draw,circle] {R'0};
+  \node (R4) at (20.5bp,242.0bp) [draw,circle] {R4};
+  \node (R'2) at (119.55bp,22.0bp) [draw,circle] {R'2};
+  \node (R'3) at (225.1bp,399.0bp) [draw,circle] {R'3};
+  \node (R'4) at (119.55bp,146.0bp) [draw,circle] {R'4};
+  \node (R2) at (20.5bp,53.0bp) [draw,circle] {R2};
+  \node (R3) at (20.5bp,146.0bp) [draw,circle] {R3};
+  \node (Read) at (119.55bp,242.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (R'1) at (225.1bp,337.0bp) [draw,circle] {R'1};
+  \node (One) at (119.55bp,296.0bp) [draw,rectangle,ultra thick] {One};
+  \node (Write) at (332.21bp,212.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (225.1bp,242.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (Inc) at (119.55bp,350.0bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (R2) ..controls (53.852bp,42.562bp) and (72.592bp,36.697bp)  .. (R'2);
+  \draw [->] (One) ..controls (159.54bp,275.54bp) and (174.99bp,267.64bp)  .. (Add);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (172.33bp,279.0bp) node {y};
+  \draw [->] (R2) ..controls (53.852bp,63.438bp) and (72.592bp,69.303bp)  .. (R'0);
+  \draw [->] (R3) ..controls (54.375bp,146.0bp) and (72.07bp,146.0bp)  .. (R'4);
+  \draw [->] (Add) ..controls (265.2bp,230.77bp) and (281.08bp,226.32bp)  .. (Write);
+  \draw (278.66bp,235.0bp) node {val};
+  \draw [->] (R4) ..controls (53.211bp,226.65bp) and (73.646bp,218.55bp)  .. (92.552bp,215.0bp) .. controls (163.08bp,201.76bp) and (247.34bp,205.0bp)  .. (Write);
+  \draw (172.33bp,213.0bp) node {ptr};
+  \draw [->] (Read) ..controls (159.29bp,242.0bp) and (174.4bp,242.0bp)  .. (Add);
+  \draw (172.33bp,249.0bp) node {x};
+  \draw [->] (R4) ..controls (48.335bp,274.28bp) and (71.631bp,300.82bp)  .. (92.552bp,323.0bp) .. controls (93.063bp,323.54bp) and (93.582bp,324.09bp)  .. (Inc);
+  \draw [->] (Inc) ..controls (161.81bp,369.62bp) and (180.56bp,378.32bp)  .. (R'3);
+  \draw [->] (R4) ..controls (52.854bp,242.0bp) and (68.094bp,242.0bp)  .. (Read);
+  \draw (66.776bp,249.0bp) node {ptr};
+  \draw [->] (Inc) ..controls (160.79bp,344.92bp) and (178.05bp,342.8bp)  .. (R'1);
+		\end{tikzpicture}}
+	}
+	\hfill
+	\subfloat[The generated circuit for timestep $ \geq \textrm{size}(A)$ and $\neq \textrm{T}$.]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+		\node (R4) at (20.5bp,234.0bp) [draw,circle] {R4};
+  \node (R'0) at (225.1bp,366.0bp) [draw,circle] {R'0};
+  \node (R'2) at (119.55bp,22.0bp) [draw,circle] {R'2};
+  \node (R'3) at (225.1bp,242.0bp) [draw,circle] {R'3};
+  \node (R'4) at (119.55bp,84.0bp) [draw,circle] {R'4};
+  \node (R2) at (20.5bp,22.0bp) [draw,circle] {R2};
+  \node (R3) at (20.5bp,84.0bp) [draw,circle] {R3};
+  \node (Read) at (119.55bp,234.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (R'1) at (225.1bp,304.0bp) [draw,circle] {R'1};
+  \node (One) at (119.55bp,180.0bp) [draw,rectangle,ultra thick] {One};
+  \node (Write) at (332.21bp,150.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (225.1bp,180.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (Inc) at (119.55bp,296.0bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (R2) ..controls (54.375bp,22.0bp) and (72.07bp,22.0bp)  .. (R'2);
+  \draw [->] (One) ..controls (159.29bp,180.0bp) and (174.4bp,180.0bp)  .. (Add);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (172.33bp,187.0bp) node {y};
+  \draw [->] (R3) ..controls (54.375bp,84.0bp) and (72.07bp,84.0bp)  .. (R'4);
+  \draw [->] (Add) ..controls (265.2bp,168.77bp) and (281.08bp,164.32bp)  .. (Write);
+  \draw (278.66bp,173.0bp) node {val};
+  \draw [->] (R4) ..controls (42.271bp,196.18bp) and (64.129bp,165.97bp)  .. (92.552bp,153.0bp) .. controls (158.68bp,122.82bp) and (246.15bp,132.43bp)  .. (Write);
+  \draw (172.33bp,141.0bp) node {ptr};
+  \draw [->] (Read) ..controls (159.54bp,213.54bp) and (174.99bp,205.64bp)  .. (Add);
+  \draw (172.33bp,217.0bp) node {x};
+  \draw [->] (R4) ..controls (50.768bp,252.95bp) and (68.062bp,263.77bp)  .. (Inc);
+  \draw [->] (Inc) ..controls (161.91bp,274.33bp) and (180.81bp,264.66bp)  .. (R'3);
+  \draw [->] (R4) ..controls (52.854bp,234.0bp) and (68.094bp,234.0bp)  .. (Read);
+  \draw (66.776bp,241.0bp) node {ptr};
+  \draw [->] (Inc) ..controls (162.46bp,324.46bp) and (182.19bp,337.54bp)  .. (R'0);
+  \draw [->] (Inc) ..controls (160.79bp,299.13bp) and (178.05bp,300.43bp)  .. (R'1);
+	\end{tikzpicture}}}
+	\subfloat[The generated circuit for the step equals to T.]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+		\node (R'0) at (252.97bp,84.0bp) [draw,circle] {R'0};
+  \node (R4) at (27.0bp,320.0bp) [draw,circle] {R4};
+  \node (R'2) at (252.97bp,22.0bp) [draw,circle] {R'2};
+  \node (R'3) at (252.97bp,413.0bp) [draw,circle] {R'3};
+  \node (R0) at (27.0bp,198.0bp) [draw,circle] {R0};
+  \node (R2) at (144.26bp,112.0bp) [draw,circle] {R2};
+  \node (R'1) at (252.97bp,351.0bp) [draw,circle] {R'1};
+  \node (EqualThan) at (144.26bp,210.0bp) [draw,rectangle,ultra thick] {EqualThan};
+  \node (Max) at (252.97bp,210.0bp) [draw,rectangle,ultra thick] {Max};
+  \node (One) at (27.0bp,262.0bp) [draw,rectangle,ultra thick] {One};
+  \node (Write) at (360.08bp,236.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Read) at (144.26bp,314.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (Add) at (252.97bp,264.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (R'4) at (252.97bp,146.0bp) [draw,circle] {R'4};
+  \node (Inc) at (144.26bp,368.0bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (R2) ..controls (180.23bp,123.25bp) and (203.65bp,130.57bp)  .. (R'4);
+  \draw [->] (R2) ..controls (176.91bp,141.43bp) and (204.64bp,166.43bp)  .. (Max);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (204.47bp,173.0bp) node {y};
+  \draw [->] (One) ..controls (94.661bp,262.6bp) and (170.54bp,263.27bp)  .. (Add);
+  \draw (144.26bp,270.0bp) node {y};
+  \draw [->] (R0) ..controls (59.265bp,197.36bp) and (74.271bp,197.61bp)  .. (87.552bp,199.0bp) .. controls (90.083bp,199.26bp) and (92.669bp,199.58bp)  .. (EqualThan);
+  \draw (79.776bp,206.0bp) node {x};
+  \draw [->] (R2) ..controls (180.23bp,102.73bp) and (203.05bp,96.857bp)  .. (R'0);
+  \draw [->] (EqualThan) ..controls (193.8bp,210.0bp) and (205.26bp,210.0bp)  .. (Max);
+  \draw (204.47bp,217.0bp) node {x};
+  \draw [->] (Add) ..controls (293.06bp,253.52bp) and (308.95bp,249.37bp)  .. (Write);
+  \draw (306.52bp,258.0bp) node {val};
+  \draw [->] (Max) ..controls (290.91bp,217.42bp) and (303.64bp,220.15bp)  .. (315.08bp,223.0bp) .. controls (317.72bp,223.66bp) and (320.45bp,224.37bp)  .. (Write);
+  \draw (306.52bp,230.0bp) node {ptr};
+  \draw [->] (R2) ..controls (178.13bp,83.957bp) and (207.16bp,59.927bp)  .. (R'2);
+  \draw [->] (One) ..controls (59.97bp,241.99bp) and (66.108bp,238.74bp)  .. (72.0bp,236.0bp) .. controls (79.649bp,232.45bp) and (87.929bp,229.07bp)  .. (EqualThan);
+  \draw (79.776bp,243.0bp) node {y};
+  \draw [->] (Read) ..controls (185.03bp,295.25bp) and (201.72bp,287.57bp)  .. (Add);
+  \draw (204.47bp,294.0bp) node {x};
+  \draw [->] (R4) ..controls (62.685bp,334.61bp) and (87.165bp,344.63bp)  .. (Inc);
+  \draw [->] (Inc) ..controls (187.04bp,385.71bp) and (206.7bp,393.85bp)  .. (R'3);
+  \draw [->] (R4) ..controls (64.08bp,318.1bp) and (87.393bp,316.91bp)  .. (Read);
+  \draw (79.776bp,324.0bp) node {ptr};
+  \draw [->] (Inc) ..controls (186.33bp,361.42bp) and (204.94bp,358.51bp)  .. (R'1);
+	\end{tikzpicture}}}
+	\caption{The circuits generated by the controller found with SHADE/current-to-pbest/1/bin with Curriculum Learning.}
+\end{figure}
+
+\begin{table}[h]
+	\centering
+	\rowcolors{2}{LightGray}{white}
+	\resizebox{\textwidth}{!}{\begin{tabular}{c|cccccccccccccccc|ccccc|cc}
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & \textit{r}4 & Read & Write \\ \hline 
+1 & 4 & 15 & 12 & 9 & 14 & 14 & 9 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & p:0 & p:0 v:5 \\ 
+2 & 5 & 15 & 12 & 9 & 14 & 14 & 9 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 15 & 1 & 1 & p:1 & p:1 v:0 \\ 
+3 & 5 & 0 & 12 & 9 & 14 & 14 & 9 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 15 & 2 & 15 & 2 & 2 & p:2 & p:2 v:13 \\ 
+4 & 5 & 0 & 13 & 9 & 14 & 14 & 9 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 3 & 3 & 15 & 3 & 3 & p:3 & p:3 v:10 \\ 
+5 & 5 & 0 & 13 & 10 & 14 & 14 & 9 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 4 & 4 & 15 & 4 & 4 & p:4 & p:4 v:15 \\ 
+6 & 5 & 0 & 13 & 10 & 15 & 14 & 9 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 5 & 5 & 15 & 5 & 5 & p:5 & p:5 v:15 \\ 
+7 & 5 & 0 & 13 & 10 & 15 & 15 & 9 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 6 & 6 & 15 & 6 & 6 & p:6 & p:6 v:10 \\ 
+8 & 5 & 0 & 13 & 10 & 15 & 15 & 10 & 10 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 7 & 7 & 15 & 7 & 7 & p:7 & p:7 v:11 \\ 
+9 & 5 & 0 & 13 & 10 & 15 & 15 & 10 & 11 & 6 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 8 & 8 & 15 & 8 & 8 & p:8 & p:8 v:7\\ \hline 
+\rowcolor{Gray}Final & 5 & 0 & 13 & 10 & 15 & 15 & 10 & 11 & 7 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 9 & 9 & 15 & 9 & 9 & $\times$ & $\times$ \\
+\end{tabular}}
+	\caption{Behaviour obtained with the task Increment in the training with SHADE/current-to-pbest/1/bin with Curriculum Learning.}
+	\label{tbl:increment-execution-example-CL}
+\end{table}
+
+\begin{figure}[h!]
+	\centering
+	\subfloat[The generated circuit in the first timestep.]{
+		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+			\node (R4) at (27.0bp,305.5bp) [draw,circle] {R4};
+  \node (LessEqualThan) at (157.09bp,20.5bp) [draw,rectangle,ultra thick] {LessEqualThan};
+  \node (R'2) at (480.29bp,54.5bp) [draw,circle] {R'2};
+  \node (R'3) at (287.19bp,228.5bp) [draw,circle] {R'3};
+  \node (R0) at (27.0bp,20.5bp) [draw,circle] {R0};
+  \node (R'4) at (157.09bp,362.5bp) [draw,circle] {R'4};
+  \node (R3) at (27.0bp,156.5bp) [draw,circle] {R3};
+  \node (Read) at (157.09bp,74.5bp) [draw,rectangle,ultra thick] {Read};
+  \node (Two) at (27.0bp,362.5bp) [draw,rectangle,ultra thick] {Two};
+  \node (Min) at (394.29bp,54.5bp) [draw,rectangle,ultra thick] {Min};
+  \node (R'1) at (287.19bp,128.5bp) [draw,circle] {R'1};
+  \node (LessThan) at (157.09bp,297.5bp) [draw,rectangle,ultra thick] {LessThan};
+  \node (R'0) at (287.19bp,297.5bp) [draw,circle] {R'0};
+  \node (One) at (157.09bp,128.5bp) [draw,rectangle,ultra thick] {One};
+  \node (Write) at (394.29bp,116.5bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (287.19bp,70.5bp) [draw,rectangle,ultra thick] {Add};
+  \node (Zero) at (27.0bp,248.5bp) [draw,rectangle,ultra thick] {Zero};
+  \node (Inc) at (157.09bp,226.5bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (LessThan) ..controls (212.1bp,297.5bp) and (236.03bp,297.5bp)  .. (R'0);
+  \draw [->] (R3) ..controls (49.62bp,114.89bp) and (74.89bp,74.092bp)  .. (105.55bp,47.5bp) .. controls (106.84bp,46.385bp) and (108.18bp,45.3bp)  .. (LessEqualThan);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (79.776bp,89.5bp) node {y};
+  \draw [->] (R0) ..controls (60.61bp,20.5bp) and (78.14bp,20.5bp)  .. (LessEqualThan);
+  \draw (79.776bp,27.5bp) node {x};
+  \draw [->] (Two) ..controls (74.889bp,362.5bp) and (103.26bp,362.5bp)  .. (R'4);
+  \draw [->] (Zero) ..controls (70.971bp,265.06bp) and (92.754bp,273.27bp)  .. (LessThan);
+  \draw (79.776bp,277.5bp) node {y};
+  \draw [->] (R4) ..controls (64.808bp,303.18bp) and (89.937bp,301.63bp)  .. (LessThan);
+  \draw (79.776bp,310.5bp) node {x};
+  \draw [->] (One) ..controls (204.98bp,128.5bp) and (233.35bp,128.5bp)  .. (R'1);
+  \draw [->] (Add) ..controls (327.28bp,64.511bp) and (343.16bp,62.138bp)  .. (Min);
+  \draw (340.74bp,70.5bp) node {x};
+  \draw [->] (Add) ..controls (327.41bp,87.774bp) and (343.47bp,94.673bp)  .. (Write);
+  \draw (340.74bp,103.5bp) node {val};
+  \draw [->] (R3) ..controls (94.775bp,168.07bp) and (216.75bp,184.0bp)  .. (314.19bp,159.5bp) .. controls (330.13bp,155.49bp) and (346.37bp,147.62bp)  .. (Write);
+  \draw (234.41bp,179.5bp) node {ptr};
+  \draw [->] (R3) ..controls (50.738bp,177.89bp) and (61.453bp,186.36bp)  .. (72.0bp,192.5bp) .. controls (87.111bp,201.3bp) and (104.93bp,208.81bp)  .. (Inc);
+  \draw [->] (One) ..controls (203.62bp,107.76bp) and (229.63bp,96.16bp)  .. (Add);
+  \draw (234.41bp,103.5bp) node {x};
+  \draw [->] (LessEqualThan) ..controls (239.59bp,20.942bp) and (279.38bp,23.171bp)  .. (314.19bp,29.5bp) .. controls (328.58bp,32.117bp) and (344.0bp,36.527bp)  .. (Min);
+  \draw (287.19bp,36.5bp) node {y};
+  \draw [->] (Inc) ..controls (204.98bp,227.24bp) and (233.35bp,227.67bp)  .. (R'3);
+  \draw [->] (R3) ..controls (59.05bp,132.47bp) and (83.366bp,115.0bp)  .. (105.55bp,101.5bp) .. controls (110.41bp,98.546bp) and (115.62bp,95.587bp)  .. (Read);
+  \draw (79.776bp,130.5bp) node {ptr};
+  \draw [->] (Min) ..controls (429.9bp,54.5bp) and (439.23bp,54.5bp)  .. (R'2);
+  \draw [->] (Read) ..controls (200.9bp,64.911bp) and (222.73bp,61.996bp)  .. (242.19bp,63.5bp) .. controls (244.74bp,63.697bp) and (247.36bp,63.957bp)  .. (Add);
+  \draw (234.41bp,70.5bp) node {y};
+		\end{tikzpicture}}
+	}
+	\subfloat[The circuit generated for the timesteps $ \geq 2$.]{
+		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+			\node (R'0) at (279.07bp,24.0bp) [draw,circle] {R'0};
+  \node (LessEqualThan) at (279.07bp,110.0bp) [draw,rectangle,ultra thick] {LessEqualThan};
+  \node (R'2) at (496.72bp,193.0bp) [draw,circle] {R'2};
+  \node (R'3) at (279.07bp,346.0bp) [draw,circle] {R'3};
+  \node (R'4) at (279.07bp,284.0bp) [draw,circle] {R'4};
+  \node (R3) at (27.0bp,346.0bp) [draw,circle] {R3};
+  \node (Read) at (140.77bp,284.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (Min) at (410.72bp,193.0bp) [draw,rectangle,ultra thick] {Min};
+  \node (R'1) at (279.07bp,168.0bp) [draw,circle] {R'1};
+  \node (Zero) at (27.0bp,84.0bp) [draw,rectangle,ultra thick] {Zero};
+  \node (One) at (140.77bp,197.0bp) [draw,rectangle,ultra thick] {One};
+  \node (Write) at (410.72bp,257.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (279.07bp,226.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (LessThan) at (140.77bp,24.0bp) [draw,rectangle,ultra thick] {LessThan};
+  \node (Two) at (27.0bp,18.0bp) [draw,rectangle,ultra thick] {Two};
+  \node (Dec) at (140.77bp,134.0bp) [draw,rectangle,ultra thick] {Dec};
+  \node (Inc) at (140.77bp,346.0bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (LessThan) ..controls (197.8bp,24.0bp) and (225.52bp,24.0bp)  .. (R'0);
+  \draw [->] (Dec) ..controls (182.24bp,126.8bp) and (200.13bp,123.7bp)  .. (LessEqualThan);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (201.76bp,132.0bp) node {y};
+  \draw [->] (Zero) ..controls (84.185bp,85.882bp) and (133.62bp,88.241bp)  .. (175.98bp,93.0bp) .. controls (189.34bp,94.501bp) and (203.6bp,96.558bp)  .. (LessEqualThan);
+  \draw (140.77bp,100.0bp) node {x};
+  \draw [->] (LessEqualThan) ..controls (320.22bp,130.91bp) and (325.61bp,133.96bp)  .. (330.61bp,137.0bp) .. controls (346.58bp,146.71bp) and (363.64bp,158.43bp)  .. (Min);
+  \draw (357.17bp,167.0bp) node {y};
+  \draw [->] (Zero) ..controls (69.306bp,102.59bp) and (88.206bp,110.9bp)  .. (Dec);
+  \draw [->] (One) ..controls (190.86bp,186.5bp) and (223.31bp,179.69bp)  .. (R'1);
+  \draw [->] (Add) ..controls (325.85bp,214.27bp) and (352.33bp,207.64bp)  .. (Min);
+  \draw (357.17bp,216.0bp) node {x};
+  \draw [->] (Add) ..controls (325.85bp,237.02bp) and (352.33bp,243.25bp)  .. (Write);
+  \draw (357.17bp,254.0bp) node {val};
+  \draw [->] (Two) ..controls (64.593bp,18.12bp) and (76.634bp,18.398bp)  .. (87.552bp,19.0bp) .. controls (90.065bp,19.139bp) and (92.643bp,19.304bp)  .. (LessThan);
+  \draw (79.776bp,26.0bp) node {x};
+  \draw [->] (R3) ..controls (95.75bp,376.78bp) and (234.13bp,428.6bp)  .. (330.61bp,377.0bp) .. controls (366.77bp,357.66bp) and (389.44bp,313.99bp)  .. (Write);
+  \draw (201.76bp,405.0bp) node {ptr};
+  \draw [->] (R3) ..controls (63.09bp,346.0bp) and (84.736bp,346.0bp)  .. (Inc);
+  \draw [->] (One) ..controls (180.55bp,205.01bp) and (195.82bp,208.13bp)  .. (209.53bp,211.0bp) .. controls (220.05bp,213.2bp) and (231.45bp,215.64bp)  .. (Add);
+  \draw (201.76bp,218.0bp) node {x};
+  \draw [->] (Zero) ..controls (60.065bp,62.748bp) and (66.174bp,59.153bp)  .. (72.0bp,56.0bp) .. controls (79.741bp,51.811bp) and (88.128bp,47.627bp)  .. (LessThan);
+  \draw (79.776bp,63.0bp) node {y};
+  \draw [->] (Inc) ..controls (190.72bp,346.0bp) and (222.92bp,346.0bp)  .. (R'3);
+  \draw [->] (Read) ..controls (189.4bp,263.6bp) and (219.2bp,251.11bp)  .. (Add);
+  \draw (201.76bp,268.0bp) node {y};
+  \draw [->] (R3) ..controls (61.0bp,327.47bp) and (84.805bp,314.5bp)  .. (Read);
+  \draw (79.776bp,328.0bp) node {ptr};
+  \draw [->] (Min) ..controls (446.33bp,193.0bp) and (455.65bp,193.0bp)  .. (R'2);
+  \draw [->] (Read) ..controls (190.72bp,284.0bp) and (222.92bp,284.0bp)  .. (R'4);
+		\end{tikzpicture}}
+	}
+	\caption{The circuits generated by the controller found with JADE/current-to-pbest/1/bin without Curriculum Learning.}
 \end{figure}
 \begin{table}[h]
 	\centering
 	\rowcolors{2}{LightGray}{white}
-	\resizebox{\textwidth}{!}{\begin{tabular}{c|ccccccccccccccc|ccccc}
-		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & \textit{r}4 \\ \hline 
-1 & 12 & 12 & 12 & 10 & 1 & 12 & 10 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 0 & 0 & 13 & 0 & 1 \\ 
-2 & 13 & 12 & 12 & 10 & 1 & 12 & 10 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 13 & 0 & 0 & 0 & 2 \\ 
-3 & 13 & 13 & 12 & 10 & 1 & 12 & 10 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 0 & 12 & 13 & 12 & 3 \\ 
-4 & 13 & 13 & 13 & 10 & 1 & 12 & 10 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 13 & 10 & 11 & 10 & 4 \\ 
-5 & 13 & 13 & 13 & 11 & 1 & 12 & 10 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 11 & 1 & 2 & 1 & 5 \\ 
-6 & 13 & 13 & 13 & 11 & 2 & 12 & 10 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 2 & 12 & 13 & 12 & 6 \\ 
-7 & 13 & 13 & 13 & 11 & 2 & 13 & 10 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 13 & 10 & 11 & 10 & 7 \\ 
-8 & 13 & 13 & 13 & 11 & 2 & 13 & 11 & 1 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 11 & 1 & 2 & 1 & 8 \\ 
-9 & 13 & 13 & 13 & 11 & 2 & 13 & 11 & 2 & 10 & 1 & 13 & 14 & 4 & 11 & 0 & 2 & 10 & 11 & 10 & 9 \\ 
-10 & 13 & 13 & 13 & 11 & 2 & 13 & 11 & 2 & 11 & 1 & 13 & 14 & 4 & 11 & 0 & 11 & 1 & 2 & 1 & 10 \\ 
-11 & 13 & 13 & 13 & 11 & 2 & 13 & 11 & 2 & 11 & 2 & 13 & 14 & 4 & 11 & 0 & 2 & 13 & 14 & 13 & 11 \\ 
-12 & 13 & 13 & 13 & 11 & 2 & 13 & 11 & 2 & 11 & 2 & 14 & 14 & 4 & 11 & 0 & 14 & 14 & 0 & 14 & 12 \\ \hline 
-\rowcolor{Gray}Final & 13 & 13 & 13 & 11 & 2 & 13 & 11 & 2 & 11 & 2 & 14 & 0 & 4 & 11 & 0 & 14 & 14 & 0 & 14 & 12 \\
+	\resizebox{\textwidth}{!}{\begin{tabular}{c|cccccccccccccccc|ccccc|cc}
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & \textit{r}4 & Read & Write \\ \hline 
+1 & 5 & 2 & 5 & 8 & 1 & 4 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & p:0 & p:0 v:6 \\ 
+2 & 6 & 2 & 5 & 8 & 1 & 4 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 2 & p:1 & p:1 v:3 \\ 
+3 & 6 & 3 & 5 & 8 & 1 & 4 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 2 & 2 & p:2 & p:2 v:6 \\ 
+4 & 6 & 3 & 6 & 8 & 1 & 4 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 3 & 5 & p:3 & p:3 v:9 \\ 
+5 & 6 & 3 & 6 & 9 & 1 & 4 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 4 & 8 & p:4 & p:4 v:2 \\ 
+6 & 6 & 3 & 6 & 9 & 2 & 4 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 5 & 1 & p:5 & p:5 v:5 \\ 
+7 & 6 & 3 & 6 & 9 & 2 & 5 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 6 & 4 & p:6 & p:6 v:12\\ \hline 
+\rowcolor{Gray}Final & 6 & 3 & 6 & 9 & 2 & 5 & 12 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 7 & 11 & $\times$ & $\times$ \\
 \end{tabular}}
-	\label{tbl:increment-execution-example}
-	\caption{Behaviour obtained with the task Increment.}
+	\caption{Behaviour obtained with the task Increment in the training with JADE/current-to-pbest/1/bin.}
+	\label{tbl:increment-execution-example-NO-CL}
 \end{table}
-\clearpage
-
 
 \clearpage
 \subsection{Copy}
@@ -440,8 +664,8 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   		\draw [->] (R1) ..controls (47.62bp,48.764bp) and (58.462bp,54.666bp)  .. (Read);
 		%
 	\end{tikzpicture}
-	\label{fig:copy-circuit}
 	\caption{The only circuit generated by the controller, found with JADE/current to p best/1/bin.}
+	\label{fig:copy-circuit}
 \end{figure}
 \begin{table}[h]
 	\centering
@@ -465,68 +689,287 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
 15 & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 3 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 7 & 15 & 4 & 4 \\ \hline
 Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 8 & 1 & 1 \\
 	\end{tabular}}
-	\label{tbl:access-execution-example}
 	\caption{Behaviour obtained with the task Copy.}
+	\label{tbl:access-execution-example}
 \end{table}
 \clearpage
 \subsection{Reverse}
 
 \begin{figure}[h]
 	\centering
-	\resizebox{0.4\linewidth}{!}{\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth]
+	
+	\subfloat[The circuit generated by the controller in the first timestep.\label{fig:reverse-circuit-1}]{
+	\resizebox{0.475\textwidth}{!}{
+		\begin{tikzpicture}[samples=100,smooth]
 		%%
-		\node (R'0) at (225.1bp,84.0bp) [draw,circle] {R'0};
-        \node (R'1) at (225.1bp,236.0bp) [draw,circle] {R'1};
-        \node (R'3) at (225.1bp,22.0bp) [draw,circle] {R'3};
-        \node (R1) at (27.0bp,236.0bp) [draw,circle] {R1};
-        \node (R3) at (27.0bp,113.0bp) [draw,circle] {R3};
-        \node (Read) at (118.0bp,127.0bp) [draw,rectangle,ultra thick] {Read};
-        \node (Two) at (27.0bp,179.0bp) [draw,rectangle,ultra thick] {Two};
-        \node (Write) at (225.1bp,160.0bp) [draw,rectangle,ultra thick] {Write};
-        \node (Inc) at (118.0bp,73.0bp) [draw,rectangle,ultra thick] {Inc};
-        \node (Dec) at (118.0bp,236.0bp) [draw,rectangle,ultra thick] {Dec};
-        \node (Sub) at (118.0bp,181.0bp) [draw,rectangle,ultra thick] {Sub};
-        \draw [->] (Dec) ..controls (159.53bp,236.0bp) and (177.5bp,236.0bp)  .. (R'1);
-        \draw [->] (R1) ..controls (55.204bp,218.95bp) and (69.205bp,210.49bp)  .. (Sub);
-        \draw [->] (Sub) ..controls (158.09bp,173.14bp) and (173.97bp,170.02bp)  .. (Write);
-        \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-        \pgfsetstrokecolor{strokecol}
-        \draw (171.55bp,179.0bp) node {ptr};
-        \draw [->] (Inc) ..controls (159.63bp,77.275bp) and (177.75bp,79.137bp)  .. (R'0);
-        \draw [->] (Two) ..controls (62.581bp,179.78bp) and (71.822bp,179.99bp)  .. (Sub);
-        \draw [->] (R3) ..controls (56.125bp,100.2bp) and (69.19bp,94.455bp)  .. (Inc);
-        \draw [->] (R1) ..controls (57.446bp,236.0bp) and (69.459bp,236.0bp)  .. (Dec);
-        \draw [->] (Inc) ..controls (160.52bp,52.751bp) and (179.99bp,43.483bp)  .. (R'3);
-        \draw [->] (Read) ..controls (158.09bp,139.35bp) and (173.97bp,144.25bp)  .. (Write);
-        \draw (171.55bp,153.0bp) node {val};
-        \draw [->] (R3) ..controls (57.446bp,117.68bp) and (69.459bp,119.53bp)  .. (Read);
+			\node (R'0) at (471.74bp,158.5bp) [draw,circle] {R'0};
+  \node (LessEqualThan) at (361.2bp,24.5bp) [draw,rectangle,ultra thick] {LessEqualThan};
+  \node (R'2) at (361.2bp,86.5bp) [draw,circle] {R'2};
+  \node (R'3) at (471.74bp,24.5bp) [draw,circle] {R'3};
+  \node (R0) at (124.0bp,185.5bp) [draw,circle] {R0};
+  \node (Sub) at (229.55bp,189.5bp) [draw,rectangle,ultra thick] {Sub};
+  \node (R2) at (124.0bp,114.5bp) [draw,circle] {R2};
+  \node (R'1) at (229.55bp,251.5bp) [draw,circle] {R'1};
+  \node (Read) at (229.55bp,135.5bp) [draw,rectangle,ultra thick] {Read};
+  \node (Two) at (27.0bp,245.5bp) [draw,rectangle,ultra thick] {Two};
+  \node (Write) at (361.2bp,158.5bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (124.0bp,246.5bp) [draw,rectangle,ultra thick] {Add};
+  \node (Inc) at (229.55bp,81.5bp) [draw,rectangle,ultra thick] {Inc};
+  \node (R1) at (229.55bp,20.5bp) [draw,circle] {R1};
+  \draw [->] (LessEqualThan) ..controls (421.99bp,24.5bp) and (431.21bp,24.5bp)  .. (R'3);
+  \draw [->] (R2) ..controls (157.91bp,121.25bp) and (176.14bp,124.87bp)  .. (Read);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (176.78bp,133.5bp) node {ptr};
+  \draw [->] (Sub) ..controls (276.33bp,178.48bp) and (302.81bp,172.25bp)  .. (Write);
+  \draw (283.1bp,186.5bp) node {ptr};
+  \draw [->] (R0) ..controls (156.44bp,185.7bp) and (171.32bp,185.95bp)  .. (184.55bp,186.5bp) .. controls (187.08bp,186.61bp) and (189.7bp,186.73bp)  .. (Sub);
+  \draw (176.78bp,193.5bp) node {x};
+  \draw [->] (Add) ..controls (164.11bp,224.84bp) and (179.74bp,216.4bp)  .. (Sub);
+  \draw (176.78bp,228.5bp) node {y};
+  \draw [->] (R2) ..controls (157.5bp,104.03bp) and (176.04bp,98.229bp)  .. (Inc);
+  \draw [->] (Write) ..controls (403.65bp,158.5bp) and (423.07bp,158.5bp)  .. (R'0);
+  \draw [->] (Two) ..controls (64.13bp,245.88bp) and (75.802bp,246.0bp)  .. (Add);
+  \draw (75.5bp,253.5bp) node {x};
+  \draw [->] (Two) ..controls (62.083bp,228.43bp) and (70.793bp,226.92bp)  .. (79.0bp,228.5bp) .. controls (81.696bp,229.02bp) and (84.435bp,229.7bp)  .. (Add);
+  \draw (75.5bp,235.5bp) node {y};
+  \draw [->] (Inc) ..controls (277.8bp,83.332bp) and (306.83bp,84.435bp)  .. (R'2);
+  \draw [->] (R1) ..controls (262.33bp,20.841bp) and (277.86bp,21.091bp)  .. (291.66bp,21.5bp) .. controls (294.19bp,21.575bp) and (296.78bp,21.658bp)  .. (LessEqualThan);
+  \draw (283.1bp,28.5bp) node {x};
+  \draw [->] (Read) ..controls (276.25bp,143.66bp) and (302.57bp,148.26bp)  .. (Write);
+  \draw (283.1bp,153.5bp) node {val};
+  \draw [->] (Add) ..controls (165.24bp,248.45bp) and (182.49bp,249.27bp)  .. (R'1);
+  \draw [->] (Inc) ..controls (272.22bp,63.025bp) and (291.95bp,54.481bp)  .. (LessEqualThan);
+  \draw (283.1bp,68.5bp) node {y};
 		%
-	\end{tikzpicture}}
-	\label{fig:reverse-circuit-2}
-	\caption{The circuit generated by the controller by step $\geq 2$, found with JADE/current to p best/1/bin with Curriculum Learning.}
+	\end{tikzpicture}}}
+	\hfill
+	\subfloat[The circuit generated for the $t \in [2, \textrm{size}(A))$ and for the odd timesteps $\geq \textrm{size}(A)$.\label{fig:reverse-circuit-2}]{\resizebox{0.475\textwidth}{!}{
+\begin{tikzpicture}[samples=100,smooth]
+		%%
+	\node (R'0) at (455.1bp,203.0bp) [draw,circle] {R'0};
+  \node (R'1) at (369.1bp,22.0bp) [draw,circle] {R'1};
+  \node (R'2) at (263.55bp,84.0bp) [draw,circle] {R'2};
+  \node (R'3) at (455.1bp,141.0bp) [draw,circle] {R'3};
+  \node (R0) at (119.55bp,154.0bp) [draw,circle] {R0};
+  \node (Sub) at (263.55bp,146.0bp) [draw,rectangle,ultra thick] {Sub};
+  \node (R2) at (20.5bp,143.0bp) [draw,circle] {R2};
+  \node (Read) at (191.55bp,203.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (Write) at (369.1bp,203.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (263.55bp,22.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (Dec) at (369.1bp,141.0bp) [draw,rectangle,ultra thick] {Dec};
+  \node (Inc) at (119.55bp,84.0bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (R2) ..controls (51.609bp,164.08bp) and (72.568bp,176.63bp)  .. (92.552bp,184.0bp) .. controls (112.36bp,191.31bp) and (135.49bp,195.95bp)  .. (Read);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (66.776bp,182.0bp) node {ptr};
+  \draw [->] (Sub) ..controls (301.26bp,163.18bp) and (313.37bp,169.12bp)  .. (324.1bp,175.0bp) .. controls (327.01bp,176.59bp) and (329.99bp,178.29bp)  .. (Write);
+  \draw (316.33bp,182.0bp) node {ptr};
+  \draw [->] (R0) ..controls (162.59bp,151.61bp) and (198.86bp,149.59bp)  .. (Sub);
+  \draw (191.55bp,158.0bp) node {x};
+  \draw [->] (Inc) ..controls (169.22bp,62.615bp) and (201.62bp,48.664bp)  .. (Add);
+  \draw (191.55bp,71.0bp) node {x};
+  \draw [->] (Inc) ..controls (135.37bp,51.825bp) and (147.71bp,33.656bp)  .. (164.55bp,25.0bp) .. controls (183.35bp,15.339bp) and (206.92bp,14.263bp)  .. (Add);
+  \draw (191.55bp,32.0bp) node {y};
+  \draw [->] (Inc) ..controls (169.22bp,105.39bp) and (201.62bp,119.34bp)  .. (Sub);
+  \draw (191.55bp,132.0bp) node {y};
+  \draw [->] (R2) ..controls (50.768bp,124.97bp) and (68.062bp,114.67bp)  .. (Inc);
+  \draw [->] (Write) ..controls (404.71bp,203.0bp) and (414.04bp,203.0bp)  .. (R'0);
+  \draw [->] (Inc) ..controls (170.59bp,84.0bp) and (205.58bp,84.0bp)  .. (R'2);
+  \draw [->] (Sub) ..controls (303.29bp,144.12bp) and (318.4bp,143.4bp)  .. (Dec);
+  \draw [->] (Read) ..controls (249.1bp,203.0bp) and (297.89bp,203.0bp)  .. (Write);
+  \draw (263.55bp,210.0bp) node {val};
+  \draw [->] (Dec) ..controls (404.71bp,141.0bp) and (414.04bp,141.0bp)  .. (R'3);
+  \draw [->] (Add) ..controls (304.79bp,22.0bp) and (322.05bp,22.0bp)  .. (R'1);
+		%
+	\end{tikzpicture}}}
+	\hfill
+	\subfloat[The circuit generated for the even timesteps $\geq \textrm{size}(A)$.]{\resizebox{0.475\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+		\node (R'0) at (455.1bp,22.0bp) [draw,circle] {R'0};
+  \node (R'1) at (369.1bp,82.0bp) [draw,circle] {R'1};
+  \node (R'2) at (119.55bp,184.0bp) [draw,circle] {R'2};
+  \node (R'3) at (455.1bp,140.0bp) [draw,circle] {R'3};
+  \node (R0) at (119.55bp,69.0bp) [draw,circle] {R0};
+  \node (Sub) at (263.55bp,82.0bp) [draw,rectangle,ultra thick] {Sub};
+  \node (R2) at (20.5bp,73.0bp) [draw,circle] {R2};
+  \node (Read) at (191.55bp,20.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (Write) at (369.1bp,22.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Inc) at (119.55bp,126.0bp) [draw,rectangle,ultra thick] {Inc};
+  \node (Dec) at (369.1bp,140.0bp) [draw,rectangle,ultra thick] {Dec};
+  \node (R1) at (20.5bp,184.0bp) [draw,rectangle] {R1};
+  \draw [->] (R2) ..controls (52.901bp,55.3bp) and (73.484bp,45.219bp)  .. (92.552bp,39.0bp) .. controls (112.49bp,32.498bp) and (135.45bp,27.921bp)  .. (Read);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (66.776bp,60.0bp) node {ptr};
+  \draw [->] (Sub) ..controls (303.66bp,59.2bp) and (319.29bp,50.315bp)  .. (Write);
+  \draw (316.33bp,63.0bp) node {ptr};
+  \draw [->] (R0) ..controls (162.59bp,72.886bp) and (198.86bp,76.16bp)  .. (Sub);
+  \draw (191.55bp,85.0bp) node {x};
+  \draw [->] (Inc) ..controls (169.12bp,110.85bp) and (201.33bp,101.01bp)  .. (Sub);
+  \draw (191.55bp,119.0bp) node {y};
+  \draw [->] (R2) ..controls (51.155bp,89.403bp) and (68.162bp,98.503bp)  .. (Inc);
+  \draw [->] (Write) ..controls (404.71bp,22.0bp) and (414.04bp,22.0bp)  .. (R'0);
+  \draw [->] (Sub) ..controls (303.66bp,104.04bp) and (319.29bp,112.63bp)  .. (Dec);
+  \draw [->] (Sub) ..controls (304.79bp,82.0bp) and (322.05bp,82.0bp)  .. (R'1);
+  \draw [->] (Read) ..controls (249.1bp,20.648bp) and (297.89bp,21.198bp)  .. (Write);
+  \draw (263.55bp,29.0bp) node {val};
+  \draw [->] (R1) ..controls (54.375bp,184.0bp) and (72.07bp,184.0bp)  .. (R'2);
+  \draw [->] (Dec) ..controls (404.71bp,140.0bp) and (414.04bp,140.0bp)  .. (R'3);
+	\end{tikzpicture}}}
+	\caption{The circuits generated by the controller found with SHADE/current-to-pbest/1/bin with Curriculum Learning.}
 \end{figure}
 \def\arraystretch{1.0}
 \begin{table}[h]
 	\centering
 	\rowcolors{2}{LightGray}{white}
-	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccc|cccc}
-		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 \\ \hline 
-1 & 6 & 11 & 10 & 10 & 4 & 3 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\ 
-2 & 6 & 11 & 10 & 10 & 4 & 3 & 0 & 0 & 0 & 0 & 6 & 0 & 2 & 11 & 0 & 2 \\ 
-3 & 6 & 11 & 10 & 10 & 4 & 3 & 0 & 0 & 0 & 0 & 11 & 0 & 3 & 10 & 0 & 3 \\ 
-4 & 6 & 11 & 10 & 10 & 4 & 3 & 0 & 0 & 0 & 10 & 11 & 0 & 4 & 9 & 0 & 4 \\ 
-5 & 6 & 11 & 10 & 10 & 4 & 3 & 0 & 0 & 10 & 10 & 11 & 0 & 5 & 8 & 0 & 5 \\ 
-6 & 6 & 11 & 10 & 10 & 4 & 3 & 0 & 4 & 10 & 10 & 11 & 0 & 6 & 7 & 0 & 6 \\ 
-7 & 6 & 11 & 10 & 10 & 4 & 3 & 3 & 4 & 10 & 10 & 11 & 0 & 7 & 6 & 0 & 7 \\ 
-8 & 6 & 11 & 10 & 10 & 4 & 3 & 3 & 4 & 10 & 10 & 11 & 0 & 8 & 5 & 0 & 8 \\ 
-9 & 6 & 11 & 10 & 10 & 4 & 3 & 3 & 4 & 10 & 10 & 11 & 0 & 9 & 4 & 0 & 9 \\ 
-10 & 6 & 11 & 10 & 10 & 4 & 3 & 3 & 4 & 10 & 10 & 11 & 0 & 10 & 3 & 0 & 10 \\ 
-11 & 6 & 11 & 10 & 10 & 4 & 3 & 3 & 4 & 10 & 10 & 11 & 0 & 11 & 2 & 0 & 11 \\ \hline 
-\rowcolor{Gray}Final & 6 & 11 & 10 & 10 & 4 & 3 & 3 & 4 & 10 & 10 & 11 & 0 & 11 & 2 & 0 & 11 \\
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccccccc|cccc|cc}
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & Read & Write \\ \hline 
+1 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & p:0 & p:12 v:8 \\ 
+2 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 0 & 0 & 0 & 8 & 0 & 0 & 0 & 0 & 4 & 1 & 1 & p:1 & p:14 v:10 \\ 
+3 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 0 & 0 & 0 & 8 & 0 & 10 & 0 & 0 & 4 & 2 & 13 & p:2 & p:13 v:7 \\ 
+4 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 0 & 0 & 0 & 8 & 7 & 10 & 0 & 0 & 6 & 3 & 12 & p:3 & p:12 v:1 \\ 
+5 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 0 & 0 & 0 & 1 & 7 & 10 & 0 & 0 & 8 & 4 & 11 & p:4 & p:11 v:8 \\ 
+6 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 0 & 0 & 8 & 1 & 7 & 10 & 0 & 0 & 10 & 5 & 10 & p:5 & p:10 v:3 \\ 
+7 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 0 & 3 & 8 & 1 & 7 & 10 & 0 & 0 & 12 & 6 & 9 & p:6 & p:9 v:3 \\ 
+8 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 0 & 3 & 3 & 8 & 1 & 7 & 10 & 0 & 0 & 14 & 7 & 8 & p:7 & p:8 v:4 \\ 
+9 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 4 & 3 & 3 & 8 & 1 & 7 & 10 & 0 & 0 & 0 & 8 & 7 & p:8 & p:7 v:4 \\ 
+10 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 4 & 3 & 3 & 8 & 1 & 7 & 10 & 0 & 0 & 7 & 7 & 6 & p:7 & p:8 v:4 \\ 
+11 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 4 & 3 & 3 & 8 & 1 & 7 & 10 & 0 & 0 & 0 & 8 & 7 & p:8 & p:7 v:4 \\ 
+12 & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 4 & 3 & 3 & 8 & 1 & 7 & 10 & 0 & 0 & 7 & 7 & 6 & p:7 & p:8 v:4\\ \hline 
+\rowcolor{Gray}Final & 8 & 10 & 7 & 1 & 8 & 3 & 3 & 4 & 4 & 3 & 3 & 8 & 1 & 7 & 10 & 0 & 0 & 0 & 8 & 7 & $\times$ & $\times$ \\
 	\end{tabular}}
-	\label{tbl:reverse-execution-example}
-	\caption{Behaviour obtained with the task Reverse.}
+	\caption{Behaviour obtained with the task Reverse with SHADE/current-to-pbest/1/bin with Curriculum Learning.}
+	\label{tbl:reverse-execution-example-CL}
+\end{table}
+\begin{figure}[h]
+	\centering
+	
+	\subfloat[The circuit generated by the controller in the first timestep.\label{fig:reverse-circuit-1-NO-CL}]{
+	\resizebox{0.475\textwidth}{!}{
+		\begin{tikzpicture}[samples=100,smooth]
+		%%
+			\node (R'0) at (336.66bp,89.0bp) [draw,circle] {R'0};
+  \node (R'1) at (336.66bp,205.0bp) [draw,circle] {R'1};
+  \node (R'2) at (229.55bp,258.0bp) [draw,circle] {R'2};
+  \node (R'3) at (336.66bp,24.0bp) [draw,circle] {R'3};
+  \node (Sub) at (229.55bp,198.0bp) [draw,rectangle,ultra thick] {Sub};
+  \node (R1) at (124.0bp,92.0bp) [draw,circle] {R1};
+  \node (Min) at (229.55bp,24.0bp) [draw,rectangle,ultra thick] {Min};
+  \node (Read) at (229.55bp,90.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (R3) at (27.0bp,203.0bp) [draw,circle] {R3};
+  \node (Zero) at (27.0bp,266.0bp) [draw,rectangle,ultra thick] {Zero};
+  \node (Two) at (124.0bp,18.0bp) [draw,rectangle,ultra thick] {Two};
+  \node (Write) at (336.66bp,147.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (124.0bp,252.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (Inc) at (229.55bp,144.0bp) [draw,rectangle,ultra thick] {Inc};
+  \draw [->] (Min) ..controls (271.08bp,24.0bp) and (289.05bp,24.0bp)  .. (R'3);
+  \draw [->] (R1) ..controls (156.88bp,108.2bp) and (176.42bp,117.82bp)  .. (Inc);
+  \draw [->] (Sub) ..controls (269.9bp,178.79bp) and (286.14bp,171.05bp)  .. (Write);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (283.1bp,182.0bp) node {ptr};
+  \draw [->] (Add) ..controls (165.24bp,254.34bp) and (182.49bp,255.33bp)  .. (R'2);
+  \draw [->] (Add) ..controls (163.99bp,231.54bp) and (179.44bp,223.64bp)  .. (Sub);
+  \draw (176.78bp,235.0bp) node {y};
+  \draw [->] (R1) ..controls (155.49bp,71.712bp) and (175.75bp,58.663bp)  .. (Min);
+  \draw (176.78bp,70.0bp) node {y};
+  \draw [->] (Two) ..controls (161.6bp,18.01bp) and (173.64bp,18.305bp)  .. (184.55bp,19.0bp) .. controls (187.09bp,19.162bp) and (189.71bp,19.362bp)  .. (Min);
+  \draw (176.78bp,26.0bp) node {x};
+  \draw [->] (R3) ..controls (57.625bp,218.47bp) and (73.47bp,226.47bp)  .. (Add);
+  \draw (75.5bp,235.0bp) node {y};
+  \draw [->] (R3) ..controls (81.378bp,201.66bp) and (149.35bp,199.98bp)  .. (Sub);
+  \draw (124.0bp,208.0bp) node {x};
+  \draw [->] (Zero) ..controls (64.13bp,260.64bp) and (75.802bp,258.96bp)  .. (Add);
+  \draw (75.5bp,266.0bp) node {x};
+  \draw [->] (Read) ..controls (269.9bp,111.47bp) and (286.14bp,120.12bp)  .. (Write);
+  \draw (283.1bp,129.0bp) node {val};
+  \draw [->] (Read) ..controls (271.08bp,89.612bp) and (289.05bp,89.444bp)  .. (R'0);
+  \draw [->] (R1) ..controls (158.09bp,91.354bp) and (176.1bp,91.013bp)  .. (Read);
+  \draw (176.78bp,99.0bp) node {ptr};
+  \draw [->] (Inc) ..controls (250.88bp,165.1bp) and (253.81bp,168.11bp)  .. (256.55bp,171.0bp) .. controls (264.78bp,179.68bp) and (264.23bp,184.96bp)  .. (274.55bp,191.0bp) .. controls (283.54bp,196.27bp) and (294.33bp,199.55bp)  .. (R'1);
+		%
+	\end{tikzpicture}}}
+	\hfill
+	\subfloat[The circuit generated for the timesteps $ \geq 2$.\label{fig:reverse-circuit-2-NO-CL}]{\resizebox{0.475\textwidth}{!}{
+\begin{tikzpicture}[samples=100,smooth]
+		%%
+	\node (R'0) at (369.1bp,100.0bp) [draw,circle] {R'0};
+  \node (R'1) at (263.55bp,158.0bp) [draw,circle] {R'1};
+  \node (R'2) at (369.1bp,28.0bp) [draw,circle] {R'2};
+  \node (R'3) at (119.55bp,264.0bp) [draw,circle] {R'3};
+  \node (Sub) at (263.55bp,100.0bp) [draw,rectangle,ultra thick] {Sub};
+  \node (R2) at (20.5bp,264.0bp) [draw,circle] {R2};
+  \node (R3) at (119.55bp,84.0bp) [draw,circle] {R3};
+  \node (Read) at (191.55bp,213.0bp) [draw,rectangle,ultra thick] {Read};
+  \node (Zero) at (119.55bp,18.0bp) [draw,rectangle,ultra thick] {Zero};
+  \node (Write) at (369.1bp,188.0bp) [draw,rectangle,ultra thick] {Write};
+  \node (Add) at (263.55bp,28.0bp) [draw,rectangle,ultra thick] {Add};
+  \node (Inc) at (119.55bp,158.0bp) [draw,rectangle,ultra thick] {Inc};
+  \node (R1) at (20.5bp,191.0bp) [draw,rectangle] {R1};
+  \draw [->] (R1) ..controls (52.255bp,180.42bp) and (68.315bp,175.07bp)  .. (Inc);
+  \draw [->] (Sub) ..controls (300.72bp,130.98bp) and (321.89bp,148.64bp)  .. (Write);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (316.33bp,157.0bp) node {ptr};
+  \draw [->] (Add) ..controls (304.79bp,28.0bp) and (322.05bp,28.0bp)  .. (R'2);
+  \draw [->] (Inc) ..controls (169.22bp,137.99bp) and (201.62bp,124.94bp)  .. (Sub);
+  \draw (191.55bp,147.0bp) node {y};
+  \draw [->] (R3) ..controls (161.12bp,67.834bp) and (198.85bp,53.162bp)  .. (Add);
+  \draw (191.55bp,73.0bp) node {y};
+  \draw [->] (R2) ..controls (54.375bp,264.0bp) and (72.07bp,264.0bp)  .. (R'3);
+  \draw [->] (R3) ..controls (160.12bp,87.021bp) and (191.49bp,89.668bp)  .. (218.55bp,93.0bp) .. controls (221.09bp,93.313bp) and (223.71bp,93.658bp)  .. (Sub);
+  \draw (191.55bp,100.0bp) node {x};
+  \draw [->] (Sub) ..controls (304.79bp,100.0bp) and (322.05bp,100.0bp)  .. (R'0);
+  \draw [->] (Zero) ..controls (166.86bp,16.442bp) and (194.45bp,16.49bp)  .. (218.55bp,19.0bp) .. controls (221.21bp,19.277bp) and (223.94bp,19.635bp)  .. (Add);
+  \draw (191.55bp,26.0bp) node {x};
+  \draw [->] (Read) ..controls (249.23bp,204.88bp) and (298.31bp,197.97bp)  .. (Write);
+  \draw (263.55bp,214.0bp) node {val};
+  \draw [->] (R1) ..controls (69.075bp,197.25bp) and (119.44bp,203.72bp)  .. (Read);
+  \draw (66.776bp,205.0bp) node {ptr};
+  \draw [->] (Inc) ..controls (170.59bp,158.0bp) and (205.58bp,158.0bp)  .. (R'1);
+		%
+	\end{tikzpicture}}}
+	\caption{The circuits generated by the controller found with JADE/current-to-pbest/1/bin without Curriculum Learning.}
+\end{figure}
+\def\arraystretch{1.0}
+\begin{table}[h]
+	\centering
+	\rowcolors{2}{LightGray}{white}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccccccc|cccc|cc}
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & Read & Write \\ \hline 
+1 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & p:0 & p:0 v:8 \\ 
+2 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 8 & 1 & 0 & 0 & p:1 & p:14 v:15 \\ 
+3 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 15 & 0 & 14 & 2 & 0 & 0 & p:2 & p:13 v:3 \\ 
+4 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 0 & 0 & 0 & 0 & 3 & 15 & 0 & 13 & 3 & 0 & 0 & p:3 & p:12 v:14 \\ 
+5 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 0 & 0 & 0 & 14 & 3 & 15 & 0 & 12 & 4 & 0 & 0 & p:4 & p:11 v:13 \\ 
+6 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 0 & 0 & 13 & 14 & 3 & 15 & 0 & 11 & 5 & 0 & 0 & p:5 & p:10 v:13 \\ 
+7 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 0 & 13 & 13 & 14 & 3 & 15 & 0 & 10 & 6 & 0 & 0 & p:6 & p:9 v:14 \\ 
+8 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 0 & 14 & 13 & 13 & 14 & 3 & 15 & 0 & 9 & 7 & 0 & 0 & p:7 & p:8 v:11 \\ 
+9 & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 11 & 14 & 13 & 13 & 14 & 3 & 15 & 0 & 8 & 8 & 0 & 0 & p:8 & p:7 v:11\\ \hline 
+\rowcolor{Gray}Final & 8 & 15 & 3 & 14 & 13 & 13 & 14 & 11 & 11 & 14 & 13 & 13 & 14 & 3 & 15 & 0 & 7 & 9 & 0 & 0 & $\times$ & $\times$ \\
+	\end{tabular}}
+	\caption{Behaviour obtained with the task Reverse with JADE/current-to-pbest/1/bin without Curriculum Learning.}
+	\label{tbl:reverse-execution-example-CL}
 \end{table}
 \clearpage
 \subsection{Swap}
-TODO
+\iffalse
+\def\arraystretch{1.0}
+\begin{table}[h]
+	\centering
+	\rowcolors{2}{LightGray}{white}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccc|cccccc}
+		\rowcolor{Gray}\textbf{Step} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & \textit{r}0 & \textit{r}1 & \textit{r}2 & \textit{r}3 & Read & Write \\ \hline 
+1 & 5 & 8 & 11 & 6 & 4 & 13 & 9 & 7 & 10 & 10 & 2 & 8 & 4 & 0 & 0 & 0 & 0 & 5 & p:0 & p:0 v:5 \\ 
+2 & 5 & 8 & 11 & 6 & 4 & 13 & 9 & 7 & 10 & 10 & 2 & 8 & 4 & 0 & 5 & 0 & 1 & 5 & p:0 & p:0 v:5 \\ 
+3 & 5 & 8 & 11 & 6 & 4 & 13 & 9 & 7 & 10 & 10 & 2 & 8 & 4 & 0 & 5 & 1 & 5 & 8 & p:1 & p:0 v:8 \\ 
+4 & 8 & 8 & 11 & 6 & 4 & 13 & 9 & 7 & 10 & 10 & 2 & 8 & 4 & 0 & 1 & 5 & 8 & 0 & p:5 & p:1 v:13 \\ 
+5 & 8 & 13 & 11 & 6 & 4 & 13 & 9 & 7 & 10 & 10 & 2 & 8 & 4 & 0 & 1 & 8 & 1 & 0 & p:8 & p:5 v:10 \\ 
+6 & 8 & 13 & 11 & 6 & 4 & 10 & 9 & 7 & 10 & 10 & 2 & 8 & 4 & 0 & 1 & 1 & 1 & 0 & p:1 & p:8 v:13\\ \hline 
+\rowcolor{Gray}Final & 8 & 13 & 11 & 6 & 4 & 10 & 9 & 7 & 13 & 10 & 2 & 8 & 4 & 0 & 1 & 1 & 1 & 0 & $\times$ & $\times$ \\
+	\end{tabular}}
+	\caption{Behaviour obtained with the task Reverse.}
+	\label{tbl:reverse-execution-example}
+\end{table}
+\fi
+\clearpage

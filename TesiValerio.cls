@@ -14,7 +14,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{color}
 % interlinea
-\linespread{1.4}
+\linespread{1.3}
 % margini (la dimensione del blocco di testo viene regolata di conseguenza)
 \setlrmarginsandblock{3cm}{3.5cm}{*}
 % profondità dell'indice (settato per stampare fino alle sottosezioni)
@@ -64,15 +64,15 @@
 	\thispagestyle{empty}
 	\begin{center}
 		\vspace{-20mm}
-		\large {UNIVERSIT\`{A} DEGLI STUDI DI PERUGIA\\ Dipartimento di Matematica ed Informatica} 
+		\large {UNIVERSITY OF PERUGIA\\ Department of Mathematics and Computer Science} 
 		\vspace{5mm}
 		\begin{center}
-			\includegraphics[width=0.30\textwidth]{figures/unipg.png}
+			\includegraphics[width=0.30\textwidth]{figures/logo.png}
 		\end{center}
 		\vspace{5mm}
-		{\Large Corso di Laurea Magistrale in Informatica} \\
+		{\Large Master's Degree in Computer Science} \\
 		\vspace{20mm}
-		{\LARGE Tesi Di Laurea} \\
+		{\LARGE Thesis} \\
 		\vspace{10mm}
 		{\HUGE \@titolo} \\
 		\vspace{20mm}
@@ -84,13 +84,13 @@
 % ... oppure scommenta questo blocco
 %
       \begin{tabular}{c  @{\hspace{2.5cm}}  c}
-       \large Laureando & \large Relatore \\
+       \large Graduand & \large Supervisors \\
        {\textbf{\@autore}} & {\textbf{\@relatore}}\\
-       {\textbf{Matricola \@matricola}} & {\textbf{\@relatoredue}}
+    	   {	} & {\textbf{\@relatoredue}}
       \end{tabular} \\
 \vspace{10mm}
 		\vfill
-		{\large Anno Accademico \@annoAccademico} \\
+		{\large Academic year \@annoAccademico} \\
 	\end{center}
 	\newpage 
 }

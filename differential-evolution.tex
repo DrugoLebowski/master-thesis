@@ -10,7 +10,7 @@ Differential Evolution is a parallel iterative direct search metaheuristic which
 	x_{i},\ i=1,\ \dots,\ NP 
 \end{align}
 where each of them is called \textbf{individual}, \textbf{genoma} or \textbf{chromosome}. Every individual is manipulated for \textbf{G} generations, where the population is not reduced nor incremented, looking for one individual that can be considered as solution. The search is guided by an objective function called \textbf{fitness function}, which represents the goodness of an individual. For a better research, the individuals should be randomly initialized covering most possible the search space.\newline
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{figures/de-flow-complete.png}
 	\caption{Execution flow of the Differential Evolution referred to a generation.}
@@ -146,10 +146,10 @@ In the algorithm explanation we have described one method for the mutation and o
 	\item{\textbf{y}: indicates how many targets couple are selected in the mutation step;}
 	\item{\textbf{z}: indicates the crossover strategy;}
 \end{itemize}
-Hence, for example, a possible variant is \textit{DE/rand/1/bin}. For the thesis work have been used and tested DE's different configurations made available by the framework DENN (\ref{sec:DENN}). Hence, about this, following are introduced some of the used algorithms and strategies.
+Hence, for example, a possible variant is \textit{DE/rand/1/bin}. For the thesis work have been used and tested different configurations of the DE made available by the framework DENN (\ref{sec:DENN}). Hence, about this, following are introduced some of the used algorithms and strategies.
 \subsection{Differential Evolution variants}
 \subsubsection{Adaptive DE (JADE)}
-The base version of Differential Evolution is powerful, but one of its biggest drawback is that the constants $F$ and $CR$ must be selected by the user. Though \cite{RPODE:2005} suggests to set the $F\in[0.4, 0.95]$ and $CR \in (0, 0.2)$, if the function is separable, or $CR \in (0.9, 1.0)$ when the function's parameters are dependent, this choice remains always a problem dependent decision.Hence, JADE was introduced in \cite{JADE:2009} to solve this problem.\newline\newline
+The base version of Differential Evolution is powerful, but one of its biggest drawback is that the constants $F$ and $CR$ must be selected by the user. Though \cite{RPODE:2005} suggests to set the $F\in[0.4, 0.95]$ and $CR \in (0, 0.2)$, if the function is separable, or $CR \in (0.9, 1.0)$ when the parameters of the function are dependent, this choice remains always a problem dependent decision.Hence, JADE was introduced in \cite{JADE:2009} to solve this problem.\newline\newline
 Briefly, this DE variant removes the necessity of selecting the best combination of $F$ and $CR$ constants. This is done with a parameter adaptation system which searches the constants best values refining them at each generation. Moreover, these constants are generated for each individual and so they are, generally, different one from the another, e.g. $\textit{CR}_{1} \neq \textit{CR}_{i}$. Formally what is done is the following:
 \begin{itemize}
 	\item{\textbf{CR}: Let $\mu_{\textit{CR}}$ be the mean of the $CR$ values, initialized at the first generation to $0.5$. For each generation the crossover probability $\textit{CR}_{i}$ associated to the $x_{i}$ individual, is generated according to a normal distribution with mean $\mu_{CR}$ and a standard deviation $0.1$
@@ -161,7 +161,7 @@ Briefly, this DE variant removes the necessity of selecting the best combination
 	\begin{align}
 		\mu_{\textit{CR}} = (1 - c)\cdot\mu_{\textit{CR}} + c\cdot\textrm{mean}_{A}(S_{\textit{CR}})
 	\end{align}
-	where the $c$ is a positive constant between 0 and 1 and $mean_{A}(\cdot)$ is the arithmetic mean.	
+	where the $c\in[0,1]$ is a positive constant  and $mean_{A}(\cdot)$ is the arithmetic mean.	
 	}
 	\item{\textbf{F}: similarly to CR, \textit{F} is generated for each target with a system similar to that used for CR. Let $\mu_{F}$ the average of the $F$ values, initialized at the first generation to $0.5$. Hence, for each generation and for each target individual,  $F_{i}$ is generated using the mean $\mu_{F}$ and a standard deviation $0.1$ as follows:
 		\begin{align}
@@ -174,7 +174,7 @@ As for the CR case, let $S_{\textit{F}}$ the set of successful mutation factors 
 		\end{align}
 		where the $c$ is a positive constant in $[0, 1]$ and $\textit{mean}_{L}$ is the Lehmer mean defined as:
 		\begin{align}
-			\textrm{mean}_{L}(S_{F}) = \frac{\sum_{F \in S_{F}}F^{2}}{\sum\limits{F \in S_{F}}F} 
+			\textrm{mean}_{L}(S_{F}) = \frac{\sum\limits_{F \in S_{F}}F^{2}}{\sum\limits_{F \in S_{F}}F} 
 		\end{align}
 		}
 \end{itemize}
@@ -182,9 +182,9 @@ As for the CR case, let $S_{\textit{F}}$ the set of successful mutation factors 
 Moreover, JADE has introduced an optional external memory denoted as \textbf{A} with a size equal than \textit{NP}, where all the elements that have failed the selection process is stored. Once the memory is full and it is necessary to add a new failing individual, a randomly selected element is deleted. This optional memory is used in the crossover method named current-to-pbest, as said in Section \ref{subsubsec:curr_p_best}.
 
 \subsubsection{Success-History based Adaptive DE (SHADE)}
-JADE's main problem is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performances.\newline\newline
+The main problem of JADE is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performances.\newline\newline
 SHADE introduced in \cite{SHADE:2013} aims to strengthen JADE introducing a crossover and mutation constants generation alternative system. This is done leaving out the $S_{\textit{CR}}$ and $S_{F}$ memories and adding two new memories, named \textit{historical memories}, $M_{\textit{CR}}$ and $M_{F}$ where the values that have well performed in the past are stored.
-\begin{table}[h]
+\begin{table}[t]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|l|}
 		\hline
@@ -317,7 +317,7 @@ where $< \cdot >_{D}$ is the modulo function with modulus D. An example is showe
 \section{DENN}\label{sec:DENN}
 DENN is a framework written in C++ by Gabriele Di Bari and Mirco Tracolli, based on their thesis work. It aims to apply the Differential Evolution concepts on the ANN training as an alternative to Gradient-based algorithms. It has been initially created as a TensorFlow extension due to the performance and simplicity offered by this latter, but now it is completely based on the C++ library Eigen due to its implementation based on the high performance library LAPACK written in Fortran 77.
 
-\subsection{How it work}
+\subsection{How it works}
 DENN is a framework that aims to help the developer to construct a system to train Neural Networks with Differential Evolution. To achieve this goal, DENN is structured in pluggable modules through which is decided how the neural network should be trained. For example, let the Differential Evolution configuration JADE/\\Rand/1/Bin - JADE, Rand/1 and Bin are three modules that can be selected for the training process at the time of configuration of DENN. The plug-in that could be used are not only for the DE, but also regard the dataset\footnote{Where is it, how to manage it, etc.}, how the neural network should be structured\footnote{How many levels and the activation functions} and, more important, what kind of neural network you want instruct\footnote{At this time, DENN can trains only feed-forward networks.}. Some of the configuration parameters can be found in the Table \ref{tbl:denn-parameters}.\newline\newline
 As said in the Chapter \ref{chap:differential-evolution}, Differential Evolution bases its functioning also on the existence of a population of vectors, called \textit{NP}, that is parallel evolved by the optimization algorithm aiming to arrive to the fitness function minimum value, i.e. to a solution vector which has the fitness minimum value. By the definition of DE, it is assumed that vectors are multi-dimensional, i.e. a list of features to optimize. Hence in DENN, since the population is composed by neural networks it cannot be used as is, instead the individuals must be managed as a set of weights and biases matrices, i.e. every individual is a neural network and is formed by a weights and biases matrices set. Hence, the mutation and crossover actions are not executed over the whole structure of individuals, but singularly over their subcomponents.\newline\newline
 For a better explanation, let's examine the mutation phase through an example. Let \textit{NP} the Neural Networks population, Rand/1 the mutation strategy, $r_1, r_2$ and $r_3$ three mutually exclusive indexes, the donor $\textbf{u}_{1}$ is created as follows:

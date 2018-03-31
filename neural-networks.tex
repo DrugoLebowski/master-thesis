@@ -63,7 +63,7 @@ At the step 7 of the Algorithm \ref{alg:perceptron-learning}
 \end{center}
 where $w_{j}^{(k)}$ is the connection weight at the step $k$, $\lambda$ is the learning rate\footnote{Learning rate is a parameter that indicates to the optimization algorithm how much quickly the neural network must abandons the "old beliefs" substituting them with the new ones, or in other words, how much the connections weight are updated.} and $x_{ij}$ is the $j^{th}$ feature of the $i^{th}$ example.
 
-\begin{algorithm}
+\begin{algorithm}[t]
 	\begin{algorithmic}[1]
 		\State{Let $D = \{(\textbf{x}_i, y_i)\ |\ i  = 1, \dots, N\}$ be the set of examples.}
 		\State{Initialize the weight vector with random values, $\textbf{w}^{(0)}$}
@@ -94,7 +94,8 @@ The Multi-Layer Perceptron (MLP), known as feedforward neural network, has been 
     	     	grid=major, % Display a grid
     	      	grid style={dashed,gray!30}, % Set the style
 			xlabel=$x_1$,
-			ylabel=$x_2$
+			ylabel=$x_2$,
+			style={mark size=6pt}
 		    %xtick=\empty, ytick=\empty
 		]
 		\addplot [only marks] table {
@@ -111,7 +112,7 @@ The Multi-Layer Perceptron (MLP), known as feedforward neural network, has been 
 		\addplot [domain=-10:10, samples=2, dashed] {-x + 3};
       \end{axis}
 	\end{tikzpicture}
-	\caption{Representation of perceptron's decision separation.}\label{fig:perceptron-boundaries}
+	\caption{Representation of the decision separation of the Perceptron.}\label{fig:perceptron-boundaries}
 \end{figure}
 As for the Perceptron, the goal of MLP is to approximate a function $f^{*}$ that should represents the underlying data with which the neural network is trained, e.g. a classifier where $y=f^{*}(\textbf{x})$ associates an example record $\textbf{x}$ to class $y$.\newline\newline
 These models set, that include also single layered perceptrons, are called \textit{feedforward} because the information flows from the input layer, that contains the data of the example \textbf{x}, through all the intermediate layers called \textbf{hidden layers} and finally to the output layer $\textbf{y}$. So all these levels are connected only with the ones next and feedback connections that fed back the network are missing. Neural networks having this exclusive characteristic are called \textbf{recurrent neural networks}.\newline\newline
