@@ -3,7 +3,7 @@ In this chapter we will make an overview about the aspects of Neural Random-Acce
 
 \section{Registers only model}
 The simplified NRAM model can be divided in three main pieces: the controller, which can be a feedforward or a Long-Short Term Memory (LSTM) neural network, the registers and the gates (modules). \newline \newline 
-Let $N\ =\ \{0,\ 1,\ 2,\ \dots,\ I - 1\}$ a set of integers, where $I$ is a integer constant. Because the model in \cite{NRAM:2016} should be trained with the gradient descent, the NRAM does not work directly with integers but with probability distributions $p \in \textrm{I\!R}^{|N|}$, which must satisfy $p_{i} \geq 0$ and $\sum\limits_{i = 0}^{I-1} p_{i} = 1$. Hence, each register or memory cell plays the role of random variable. For instance, let $I = 3$ and $r_1$ a register - the probability distribution contained in $r_1$ associated to the integer 1 is $r_1 = \{0, 1, 0\}$. In this way, the model is fully differentiable.
+Let $N\ =\ \{0,\ 1,\ 2,\ \dots,\ I - 1\}$ a set of integers, where $I$ is a integer constant. Because the model in \cite{NRAM:2016} should be trained with the gradient descent, the NRAM does not work directly with integers but with probability distributions $p \in \mathbb{R}^{|N|}$, which must satisfy $p_{i} \geq 0$ and $\sum\limits_{i = 0}^{I-1} p_{i} = 1$. Hence, each register or memory cell plays the role of random variable. For instance, let $I = 3$ and $r_1$ a register - the probability distribution contained in $r_1$ associated to the integer 1 is $r_1 = \{0, 1, 0\}$. In this way, the model is fully differentiable.
 
 \subsubsection*{The registers}
 The registers is a set of quick access memory cells where each of them contains a vector $p$. The controller does not have a write direct access to the registers, but it can manipulate their values only through the modules.
@@ -55,7 +55,7 @@ selected through a weighted average with a coefficient as follows
 \begin{equation}
 	(r_1, r_2, \dots, r_R, o_1, o_2, \dots, o_{i-1})^T\textbf{softmax}(s_i)
 \end{equation}
-where $\textrm{s}_i \in \textrm{I\!R}^{R+i-1}$ is a generic vector that indicates the input source for the $i^{th}$ gate. \newline
+where $\textrm{s}_i \in \mathbb{R}^{R+i-1}$ is a generic vector that indicates the input source for the $i^{th}$ gate. \newline
 Hence, let $m_i \in M$ the $i^{th}$ module in $M$, $m_i$ is executed as follows
 \begin{itemize}
 	\item{Constant gate
@@ -74,7 +74,7 @@ Hence, let $m_i \in M$ the $i^{th}$ module in $M$, $m_i$ is executed as follows
 		\end{equation}
 	}
 \end{itemize}
-where, as stated previously, $a_i, b_i \in \textrm{I\!R}^{R+i-1}$ are produced by the controller and the $o_i$ is the output that is appended to the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ and used later for the subsequent modules.
+where, as stated previously, $a_i, b_i \in \mathbb{R}^{R+i-1}$ are produced by the controller and the $o_i$ is the output that is appended to the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ and used later for the subsequent modules.
 \begin{figure}[t]
 	\centering
 	\begin{tikzpicture}[scale=1, node distance = 2.5cm, auto]
@@ -106,12 +106,12 @@ Since the registers contain probability distributions, the inputs of the modules
 \begin{equation}
 	P(m_i(A, B) = c) = \sum\limits_{a,b \in N} P(A = a)P(B = b)[m_i(a, b) = c],  for c \in N
 \end{equation}
-At the same time of the emission of the vectors $a_{i}, b_{i} \in \textrm{I\!R}^{R+i-1}$, the vectors $c_i \in \textrm{I\!R}^{R+|M|}$ for $i = 1, 2, \dots, R$  are also emitted, which indicate the sources, that can be the register content at timestep $t-1$ or a module output at the current timestep $t$, from which the new registers content is get. So after the circuit is executed, at the Line \ref{lst:nram:line-10}, the registers content is updated as follows:
+At the same time of the emission of the vectors $a_{i}, b_{i} \in \mathbb{R}^{R+i-1}$, the vectors $c_i \in \mathbb{R}^{R+|M|}$ for $i = 1, 2, \dots, R$  are also emitted, which indicate the sources, that can be the register content at timestep $t-1$ or a module output at the current timestep $t$, from which the new registers content is get. So after the circuit is executed, at the Line \ref{lst:nram:line-10}, the registers content is updated as follows:
 \begin{equation}
 	r_i^{(t + 1)} = (r_1^{(t)}, \dots, r_R^{(t)}, o_1, \dots, o_{|M|})^T\textbf{softmax}(c_i),\ \ \ i = 1,\dots,R
 \end{equation}
 
-As stated previously, at the Line \ref{lst:nram:line-6} the controller gets input from the registers. An easy way would be to give the entire content of the registers, recalling that each of them stores a probability distribution $\textrm{I\!R}^{I - 1}$. However, in this way the controller cannot generalize to different memory sizes. In fact, as discussed in Section \ref{sec:nram-memory}, the sizes of the memory depends directly on the constant $I$.
+As stated previously, at the Line \ref{lst:nram:line-6} the controller gets input from the registers. An easy way would be to give the entire content of the registers, recalling that each of them stores a probability distribution $\mathbb{R}^{I - 1}$. However, in this way the controller cannot generalize to different memory sizes. In fact, as discussed in Section \ref{sec:nram-memory}, the sizes of the memory depends directly on the constant $I$.
 
 \begin{figure}[t!]
 	\centering
@@ -150,7 +150,7 @@ Hence to resolve this inconvenient, in the original paper the controller receive
 
 \section{Memory augmented model}\label{sec:nram-memory}
 The previously described model works only with the registers. Hence, to make that the controller learns an algorithm, the learning process starts initializing the registers with the starting input sequence of the problem. The main disadvantage of this solution is that the model is constrained to the number of the registers, unable to generalize to longer sequence of a problem because, simply, the model cannot process sequences longer than the number of the registers which is constant.\newline\newline
-Hence to resolve this problem, the model is augmented with a variable-sized memory tape of $|N|$ memory cells, where each of them stores a distribution over the set $N$. Each distribution both in registers and in memory could be seen as a fuzzy address and so can used by the NRAM as a fuzzy pointer to a memory location. The memory can be formalized as a matrix $\mathcal{M} \in \textrm{I\!R}_{|N|}^{|N|}$, where a value $\mathcal{M}_{i,j}$ is the probability that the $i^{th}$ memory cell contains the $j^{th}$ integer value.\newline\newline
+Hence to resolve this problem, the model is augmented with a variable-sized memory tape of $|N|$ memory cells, where each of them stores a distribution over the set $N$. Each distribution both in registers and in memory could be seen as a fuzzy address and so can used by the NRAM as a fuzzy pointer to a memory location. The memory can be formalized as a matrix $\mathcal{M} \in \mathbb{R}_{|N|}^{|N|}$, where a value $\mathcal{M}_{i,j}$ is the probability that the $i^{th}$ memory cell contains the $j^{th}$ integer value.\newline\newline
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.8\textwidth]{figures/timestep-nram-execution.png}
@@ -159,7 +159,7 @@ Hence to resolve this problem, the model is augmented with a variable-sized memo
 \end{figure}
 Hence, to interact with the memory the NRAM contains another two modules:
 \begin{itemize}
-	\item{\textbf{Read}: this module takes as input a pointer and returns as output the memory content at the location pointed by the pointer. This behaviour is the same when the pointer is an integer or is a probability distribution. More precisely, if the pointer $p\in\textrm{I\!R}^{|N|}$ is a probability distribution represented as a column vector, then the module returns $\mathcal{M}^{T}p$, while if it is an integer the result is just that cell.}
+	\item{\textbf{Read}: this module takes as input a pointer and returns as output the memory content at the location pointed by the pointer. This behaviour is the same when the pointer is an integer or is a probability distribution. More precisely, if the pointer $p\in\mathbb{R}^{|N|}$ is a probability distribution represented as a column vector, then the module returns $\mathcal{M}^{T}p$, while if it is an integer the result is just that cell.}
 	\item{\textbf{Write}: this module takes as input a pointer and a value and returns zero. If the inputs are probability distributions the module behave as follows:
 \begin{equation}
 	\mathcal{M} = (J - p)J^{T} \cdot \mathcal{M} + pa^{T}
@@ -176,7 +176,7 @@ The architecture of the memory augmented NRAM is presented in the Figure \ref{fi
 The NRAM uses a system to decide if the execution can be terminated. Recalling that the execution is divided $T$ timesteps, in each of them the controller emits along the circuit configuration a scalar $f_{t} \in [0, 1]$\footnote{The controller emits a scalar $x_{i}$, with which is produced the $f_i = \textbf{sigmoid}(x_{i})$.}, which represents the willingness of finish the execution in the current timestep $t$. Although in the paper is not explicitly specified, we decided that if $f_{t} = 1.0$ than the execution of NRAM is terminated. Starting from these $f_i$, we have the probability that the execution is not finished in the previous timestep is $\prod\limits_{i=1}^{t-1}(1 - f_{i})$ and the probability that the output is produced in the current timestep is $p_{t} = f_{t} \cdot \prod\limits_{i=1}^{t-1}(1 - f_{i})$. As stated previously, the execution is continued for a maximum of timesteps $T$, except for the previous cases, where the NRAM is forced to emits an output and, due to this, the probability to terminate is $p_{T} = 1 - \sum\limits_{i=1}^{T-1}p_{i}$ regardless of the $f_{T}$ of the last timestep. 
 
 \subsection{Cost function}\label{subsec:cost-function}
-Let $\mathcal{M}^{(t)} \in \textrm{I\!R}^{|N|}_{|N|}$ the memory matrix at the end of the execution of the timestep $t$ and $(x, y) \in N^{|N|}$ a couple which contains the starting input sequence and the expected output sequence, the cost function is defined, only for the memory augmented version, as the expected negative log-likelihood of producing the correct output, i.e.
+Let $\mathcal{M}^{(t)} \in \mathbb{R}^{|N|}_{|N|}$ the memory matrix at the end of the execution of the timestep $t$ and $(x, y) \in N^{|N|}$ a couple which contains the starting input sequence and the expected output sequence, the cost function is defined, only for the memory augmented version, as the expected negative log-likelihood of producing the correct output, i.e.
 \begin{equation}
 	-\sum\limits_{i=1}^{T}\Bigg(p_{t}\cdot\sum\limits_{i=1}^{|N|}log\Big(\mathcal{M}_{i, y_{i}}^{(t)}\Big)\Bigg)
 \end{equation}

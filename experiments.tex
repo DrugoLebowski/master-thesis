@@ -72,6 +72,7 @@ Given an array and a pointer to the destination, copy all elements from the arra
 	\label{fig:reverse-example}
 \end{table}
 \FloatBarrier
+\iffalse
 \subsection{Swap}
 Given two pointers $p,\ q$ and an array \textbf{A}, swap elements $\textbf{A}[p]$ and $\textbf{A}[q]$. Input is given as $p,\ q,\ \textbf{A}[0],\ \dots,\ \textbf{A}[p],\ \dots,\ \textbf{A}[q],\ \dots,\ \textbf{A}[n-1],\ 0$. The expected modified array \textbf{A} is: $\textbf{A}[0],\ \dots,\ \textbf{A}[q],\ \dots,\ \textbf{A}[p],\ \dots,\ \textbf{A}[n-1]$. An example is visible in Figure \ref{fig:swap-example}.
 \begin{table}[h!]
@@ -125,7 +126,7 @@ Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the out
 	\label{fig:sum-example}
 \end{table}
 \FloatBarrier
-
+\fi
 \section{The generalization problem}
 Generalization means the capacity of a neural network to recognize in new examples patterns which were never seen before. In a classic classification problem this means that the neural network should recognize the patterns in the features presented to it, classifying them with the correct label. The same concept can be also applied to NRAM, with some differences. Remembering that the training is made over memory with limited size and timesteps, with ``generalization capacity'' means that the controller should learn to create the right circuit also for examples\footnote{Please refer to Section \ref{subsubsec:nram-dataset} to see how the examples are formed.} with memory of different sizes and timesteps. As stated previously in the Paragraph \ref{subpar:curriculum-learning}, the Curriculum Learning is used to boost the training making the neural network more robust - in fact, the training over a specific memory size and timesteps could lead the objective function to have a value equal to zero, but this does not means that the neural network has learnt to generalize.
 
@@ -141,17 +142,20 @@ In the experiments we have followed what is done in the paper \cite{NRAM:2016}, 
 		
 		Access & $\textrm{len}(A) = 8, t = 5$ & $\textrm{len}(A) \leq 10$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
 		Increment & 	$\textrm{len}(A) = 9, t = 4$ & $\textrm{len}(A) \leq 10$  & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\
-		Copy & $\textrm{len}(A) = 5, t = 12$ & $\textrm{len}(A) \leq 9$  & \checkmark & $\times$ & 0 & --- & Semi-perfect & --- \\ 
+		Copy & $\textrm{len}(A) = 5, t = 12$ & $\textrm{len}(A) \leq 9$  & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 		Reverse & $\textrm{len}(A) = 4, t = 9$ & $\textrm{len}(A) \leq 8$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
-		Swap & $\textrm{len}(A) = 7, t = 6$ & $\textrm{len}(A) \leq 7$ & \checkmark & $\times$ & 0 & --- & Semi-perfect & --- \\ \hline\hline
+		
+		\iffalse
+		Swap & $\textrm{len}(A) = 7, t = 6$ & $\textrm{len}(A) \leq 7$ & $\times$ & $\times$ & --- & --- & --- & --- \\ \hline
 		Permutation & $\textrm{len}(A) = 5$ & $\textrm{len}(A) \leq 20$ & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 		ListK & $\textrm{len}(list) = \_$ & $\textrm{len}(list) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & ---\\ 
 		ListSearch & $\textrm{len}(list) = \_$ & $\textrm{len}(list) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & ---  \\ 
 		Merge & $\textrm{len}(A)+\textrm{len}(B) = \_$ & $\textrm{len}(A)+\textrm{len}(B) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 		WalkBST & $\textrm{size}(tree) = \_$ & $\textrm{size}(tree) \leq \_$ & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 		Sum & $\textrm{len}(A)+\textrm{len}(B) = 6$ & $\textrm{len}(A)+\textrm{len}(B) \leq 10$ & $\times$ & $\times$ & --- & --- & --- & --- \\
+		\fi
 	\end{tabular}}
-	\caption{Results of the tests with DENN. The train complexity represents the maximum length of integers sequence A used in the training. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longer and more timesteps with respect to those used in training. The evaluation is executed as in \cite{NRAM:2016}, except for the keyword \textbf{Semi-Perfect} which means that the found solution generalize well only with input sequences and timesteps compatible to those used in the training. With ``\textbf{---}'' we indicate the lack of informations due to non-convergence of controller.}\label{tbl:denn-tests-results}
+	\caption{Results of the tests with DENN. The train complexity represents the maximum length of integers sequence A used in the training. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longer and more timesteps with respect to those used in training. The evaluation is executed as in \cite{NRAM:2016}.\iffalse, except for the keyword \textbf{Semi-Perfect} which means that the found solution generalize well only with input sequences and timesteps compatible to those used in the training.\fi With ``\textbf{---}'' we indicate the lack of informations due to non-convergence of controller.}\label{tbl:denn-tests-results}
 \end{table}
 \begin{table}[t]
 	\centering
@@ -163,17 +167,19 @@ In the experiments we have followed what is done in the paper \cite{NRAM:2016}, 
 		Increment & $\textrm{len}(A) = 9, t = 4$ & $\times$ \\
 		Copy & $\textrm{len}(A) = 5, t = 11$  & $\times$  \\ 
 		Reverse & $\textrm{len}(A) = 5 t = 9$  & $\times$ \\ 
-		Swap & $\textrm{len}(A) = 9, t = 6$ & $\times$ \\ \hline\hline
+		\iffalse
+		Swap & $\textrm{len}(A) = 9, t = 6$ & $\times$ \\ \hline
 		Permutation & $\textrm{len}(A) = \_, t = \_$ & $\times$ \\ 
 		ListK & $\textrm{len}(list) = \_, t = \_$ & $\times$ \\ 
 		ListSearch & $\textrm{len}(list) = \_, t = \_$ & $\times$  \\ 
 		Merge & $\textrm{len}(A)+\textrm{len}(B) = \_, t=\_$ & $\times$ \\ 
 		WalkBST & $\textrm{size}(tree) = \_, t=\_$ & $\times$  \\ 
 		Sum & $\textrm{len}(A)+\textrm{len}(B) = \_, t=\_$ & $\times$ \\
+		\fi
 	\end{tabular}
-	\caption{Results of the tests of Adam. The contained informations follows those in Table \ref{tbl:denn-tests-results}\label{tbl:adam-tests}.}
+	\caption{Results of the tests of ADAM. The contained informations follows those in Table \ref{tbl:denn-tests-results}\label{tbl:adam-tests}.}
 \end{table}
-The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, which are combined with the mutation methods \textbf{DEGL} and \textbf{Current-to-pbest} and the crossover method \textbf{bin}. We used in each tests a population of 100 individuals. For DEGL we used a neighborhood in the interval $[4, 8]$ and for Current-to-pbest a $p = 0.1$. All the tests are executed with a feedforward neural network with two hidden levels, each containing 260 neurons. The training set is composed of batches of 1000 examples generated at runtime. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}. The train error is calculated with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with input sequences up to 1000 values. The Curriculum Learning was set up with an interval of batches between $[25, 250]$ and a threshold equal to 0.1. \newline\newline
+The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, which are combined with the mutation methods \textbf{DEGL} and \textbf{Current-to-pbest} and the crossover method \textbf{bin}. We used in each tests a population of 100 individuals. For DEGL we used a neighborhood in the interval $[4, 8]$ and for Current-to-pbest a $p = 0.1$. All the tests are executed with a feedforward neural network with two hidden levels. The training set is composed of batches of 1000 examples generated at runtime. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}. The train error is calculated with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with input sequences up to 1000 values. The Curriculum Learning was set up with an interval of batches between $[25, 250]$ and a threshold equal to 0.1. \newline\newline
 
 \begin{table}[t]
 	\centering
@@ -199,7 +205,21 @@ The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, 
 \end{table}
 
 The training was executed using configurations of Max-int, timesteps and registers compatible with those used by Kurach et al. As showed in the Table \ref{tbl:denn-tests-results}, for the easy tasks trained with Differential Evolution without the Curriculum Learning we found a set of hyperparameter which reached error 0 during the training, even using shorter input sequences compared to those used in the paper. Differently from which declared in Kurach at al., for tasks Copy and Swap the search of hyperparameters has been difficulty. The same results was not reached in the training with Theano and ADAM, as showed in \ref{tbl:adam-tests}. 
-
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\begin{table}[t]
+	\centering
+	\rowcolors{2}{LightGray}{white}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccc}
+	\rowcolor{Gray} \textbf{Task} & \multicolumn{2}{c}{\textbf{JADE/DEGL/1}} & \multicolumn{2}{c}{\textbf{JADE/Current-to-pbest/1}} & \multicolumn{2}{c}{\textbf{SHADE/DEGL/1}} & \multicolumn{2}{c}{\textbf{SHADE/Current-to-pbest/1}} & \multicolumn{2}{c}{\textbf{L-SHADE/DEGL/1}} & \multicolumn{2}{c}{\textbf{L-SHADE/Current-to-pbest/1}}\\
+		\rowcolor{Gray} & No CL & CL & No CL & CL & No CL & CL & No CL & CL & No CL & CL & No CL & CL \\ \hline
+		Access & $\times$ & \checkmark & \checkmark & \checkmark & $\times$ & $\times$ & $\times$ & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ \\
+		Increment & $\times$ & $\times$ & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ \\
+		Copy & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ \\
+		Reverse & $\times$ & \checkmark & \checkmark & $\times$ & \checkmark & \checkmark & $\times$ & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ \\
+	\end{tabular}}
+	\caption{Convergence table. Although not specified, all the variants are associated with the crossover method \textbf{bin}. As it can be seen, L-SHADE seems unable with all the tasks to search a solution probably due to the linear reduce of the population. For the other cases, except for the task \textbf{Increment} with JADE/Current-to-pbest/1/bin, it can be seen that Curriculum Learning boost the training of the controller.}
+	\label{tbl:convergence-variants}
+\end{table}
 \iffalse
 \begin{table}[h]
 	\centering
@@ -235,17 +255,198 @@ Regard the generalization, we observed that the solutions that reached error zer
 	\label{tbl:wrong-behaviour}
 \end{table}
 \fi
-The hard tasks...\newline
 
 % Compare DENN without CL with DENN with CL
 For the easy task, the Curriculum Learning is not always necessary --- in fact, with the tasks \textbf{access}, \textbf{increment} and \textbf{reverse} is possible to search a combination of hyperparameters, both for NRAM and DENN, that make it possible to converge to a solution which generalize perfectly. However this is possible, we observed that the  generated circuits by a controller trained with the Curriculum Learning generates more regulars or smart circuits, like with increment as showed in \ref{subsec:circuits-increment}. 
 
+\subsection{DENN variants results}\label{subsec:circuits}
 
-\section{Circuits}\label{subsec:circuits}
+\subsubsection{Access}
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[smooth,scale=.875]
+			\begin{axis}[  				
+  				xlabel={$\textrm{Generation}$},
+  				ylabel={$\textrm{Cost}$},
+  				xlabel style={below right},
+  				ylabel style={above left},	
+			    xmin=0, xmax=350,
+				legend pos=outer north east
+			]
+  				\addplot +[mark=none] table{data/access/adam};
+  				\addlegendentry{ADAM}
+
+  				\addplot +[mark=none] table{data/access/jade_degl};
+  				\addlegendentry{JADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/jade_degl_cl};
+  				\addlegendentry{JADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best_cl};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
+
+  				\addplot +[mark=none] table{data/access/shade_degl};
+  				\addlegendentry{SHADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/shade_degl_cl};
+  				\addlegendentry{SHADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best_cl};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
+
+			\end{axis}
+	\end{tikzpicture}
+	\caption{Reached costs by DE variants with task \textbf{Access}.}
+	\label{fig:access-costs}
+\end{figure}
+\FloatBarrier
+\subsubsection{Increment}
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[smooth,scale=.875]
+			\begin{axis}[  				
+  				xlabel={$\textrm{Generation}$},
+  				ylabel={$\textrm{Cost}$},
+  				xlabel style={below right},
+  				ylabel style={above left},	
+			    xmin=0, xmax=350,
+				legend pos=outer north east
+			]
+  				\addplot +[mark=none] table{data/access/adam};
+  				\addlegendentry{ADAM}
+
+  				\addplot +[mark=none] table{data/access/jade_degl};
+  				\addlegendentry{JADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/jade_degl_cl};
+  				\addlegendentry{JADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best_cl};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
+
+  				\addplot +[mark=none] table{data/access/shade_degl};
+  				\addlegendentry{SHADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/shade_degl_cl};
+  				\addlegendentry{SHADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best_cl};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
+
+			\end{axis}
+	\end{tikzpicture}
+	\caption{Reached costs by DE variants with task \textbf{Increment}.}
+	\label{fig:increment-costs}
+\end{figure}
+\FloatBarrier
+\subsubsection{Copy}
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[smooth,scale=.875]
+			\begin{axis}[  				
+  				xlabel={$\textrm{Generation}$},
+  				ylabel={$\textrm{Cost}$},
+  				xlabel style={below right},
+  				ylabel style={above left},	
+			    xmin=0, xmax=350,
+				legend pos=outer north east
+			]
+  				\addplot +[mark=none] table{data/access/adam};
+  				\addlegendentry{ADAM}
+
+  				\addplot +[mark=none] table{data/access/jade_degl};
+  				\addlegendentry{JADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/jade_degl_cl};
+  				\addlegendentry{JADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best_cl};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
+
+  				\addplot +[mark=none] table{data/access/shade_degl};
+  				\addlegendentry{SHADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/shade_degl_cl};
+  				\addlegendentry{SHADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best_cl};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
+
+			\end{axis}
+	\end{tikzpicture}
+	\caption{Reached costs by DE variants with task \textbf{Copy}.}
+	\label{fig:copy-costs}
+\end{figure}
+\FloatBarrier
+\subsubsection{Reverse}
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[smooth,scale=.875]
+			\begin{axis}[  				
+  				xlabel={$\textrm{Generation}$},
+  				ylabel={$\textrm{Cost}$},
+  				xlabel style={below right},
+  				ylabel style={above left},	
+			    xmin=0, xmax=350,
+				legend pos=outer north east
+			]
+  				\addplot +[mark=none] table{data/access/adam};
+  				\addlegendentry{ADAM}
+
+  				\addplot +[mark=none] table{data/access/jade_degl};
+  				\addlegendentry{JADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/jade_degl_cl};
+  				\addlegendentry{JADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/jade_curr_p_best_cl};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
+
+  				\addplot +[mark=none] table{data/access/shade_degl};
+  				\addlegendentry{SHADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{data/access/shade_degl_cl};
+  				\addlegendentry{SHADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{data/access/shade_curr_p_best_cl};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
+
+			\end{axis}
+	\end{tikzpicture}
+	\caption{Reached costs by DE variants with task \textbf{Reverse}.}
+	\label{fig:reverse-costs}
+\end{figure}
+\FloatBarrier
+
+\subsection{Circuits}\label{subsec:circuits}
 In the following we present the circuits generated by the best solutions found with  the training using DENN. For the sake of readability, only the necessary gates and registers are showed in the circuits. In the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} the parameters order is important, indicated with $x$ and $y$. Instead, for the gates \textbf{Read} and \textbf{Write}, the pointer and the value to write are indicated, respectively, with \textbf{ptr} and \textbf{val} labels.\newline\newline
 Overall, the circuits generated differ from those shown in the paper. Moreover, we observed that the solutions found with different DE variants generate differents circuits. As done in \cite{NRAM:2016}, we present only the ``main'' circuits for the best solutions - to compare them please refers to \cite{NRAM:2016}. The tables shown in the following examples contains the states of the memories and registers at the beginning of the steps and the final memory when the NRAM end the execution.
 \clearpage
-\subsection{Access}
+\subsubsection{Access}
 \begin{figure}[h]
 	\centering
 	\subfloat[The circuit generated by the controller from the steps $\geq 2$, found with JADE/current-to-pbest/1/bin without the Curriculum learning.\label{fig:access-circuit}]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth]
@@ -326,7 +527,7 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
 \end{table}
 \FloatBarrier
 \clearpage
-\subsection{Increment}\label{subsec:circuits-increment}
+\subsubsection{Increment}\label{subsec:circuits-increment}
 \begin{figure}[h!]
 	\centering
 	\subfloat[The generated circuit in the first timestep.]{
@@ -343,6 +544,7 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   \node (Write) at (332.21bp,92.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (225.1bp,118.0bp) [draw,rectangle,ultra thick] {Add};
   \node (R4) at (20.5bp,72.0bp) [draw,circle] {R4};
+  \node (R'4) at (225.1bp,52.0bp) [draw,circle] {R'4};
   \node (Dec) at (119.55bp,348.0bp) [draw,rectangle,ultra thick] {Dec};
   \node (Inc) at (119.55bp,24.0bp) [draw,rectangle,ultra thick] {Inc};
   \draw [->] (R0) ..controls (153.47bp,222.9bp) and (171.69bp,219.61bp)  .. (Min);
@@ -364,6 +566,7 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   \draw [->] (R4) ..controls (51.568bp,56.944bp) and (68.334bp,48.82bp)  .. (Inc);
   \draw [->] (R2) ..controls (52.255bp,322.86bp) and (68.315bp,328.86bp)  .. (Dec);
   \draw [->] (Inc) ..controls (160.79bp,23.219bp) and (178.05bp,22.892bp)  .. (R'3);
+  \draw [->] (Inc) ..controls (160.79bp,23.219bp) and (178.05bp,52.892bp)  .. (R'4);
   \draw [->] (Dec) ..controls (160.79bp,348.0bp) and (178.05bp,348.0bp)  .. (R'2);
   \draw [->] (R4) ..controls (49.635bp,101.62bp) and (72.597bp,124.91bp)  .. (92.552bp,145.0bp) .. controls (93.077bp,145.53bp) and (93.609bp,146.06bp)  .. (Read);
   \draw (66.776bp,132.0bp) node {ptr};
@@ -631,7 +834,8 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
 \end{table}
 
 \clearpage
-\subsection{Copy}
+\iffalse
+\subsubsection{Copy}
 
 \begin{figure}[h]
 	\centering
@@ -693,7 +897,8 @@ Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 
 	\label{tbl:access-execution-example}
 \end{table}
 \clearpage
-\subsection{Reverse}
+\fi
+\subsubsection{Reverse}
 
 \begin{figure}[h]
 	\centering
@@ -952,8 +1157,8 @@ Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 
 	\label{tbl:reverse-execution-example-CL}
 \end{table}
 \clearpage
-\subsection{Swap}
 \iffalse
+\subsection{Swap}
 \def\arraystretch{1.0}
 \begin{table}[h]
 	\centering
