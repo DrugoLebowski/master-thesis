@@ -3,7 +3,7 @@ In this chapter we will make an overview about the aspects of Neural Random-Acce
 
 \section{Registers only model}
 The simplified NRAM model can be divided in three main pieces: the controller, which can be a feedforward or a Long-Short Term Memory (LSTM) neural network, the registers and the gates (modules). \newline \newline 
-Let $N\ =\ \{0,\ 1,\ 2,\ \dots,\ I - 1\}$ a set of integers, where $I$ is a integer constant. Because the model in \cite{NRAM:2016} should be trained with the gradient descent, the NRAM does not work directly with integers but with probability distributions $p \in \mathbb{R}^{|N|}$, which must satisfy $p_{i} \geq 0$ and $\sum\limits_{i = 0}^{I-1} p_{i} = 1$. Hence, each register or memory cell plays the role of random variable. For instance, let $I = 3$ and $r_1$ a register - the probability distribution contained in $r_1$ associated to the integer 1 is $r_1 = \{0, 1, 0\}$. In this way, the model is fully differentiable.
+Let $N\ =\ \{0,\ 1,\ 2,\ \dots,\ I - 1\}$ a set of integers, where $I$ is a integer constant. Because the model in \cite{NRAM:2016} should be trained with the gradient descent, the NRAM does not work directly with integers but with probability distributions $p \in \mathbb{R}^{|N|}$, which must satisfy $p_{i} \geq 0$ and $\sum\limits_{i = 0}^{I-1} p_{i} = 1$. Hence, each register or memory cell plays the role of a random variable. For instance, let $I = 3$ and $r_1$ a register - the probability distribution contained in $r_1$ associated to the integer 1 is $r_1 = \{0, 1, 0\}$. In this way, the model is fully differentiable.
 
 \subsubsection*{The registers}
 The registers is a set of quick access memory cells where each of them contains a vector $p$. The controller does not have a write direct access to the registers, but it can manipulate their values only through the modules.
@@ -104,7 +104,7 @@ where, as stated previously, $a_i, b_i \in \mathbb{R}^{R+i-1}$ are produced by t
 \end{figure}
 Since the registers contain probability distributions, the inputs of the modules are also probability distributions because they are weighted averages of probability distributions. Hence, the gates are extended to work over probability distributions and because the inputs are probability distributions also the output is a probability distribution as follows:
 \begin{equation}
-	P(m_i(A, B) = c) = \sum\limits_{a,b \in N} P(A = a)P(B = b)[m_i(a, b) = c],  for c \in N
+	\mathbb{P}(m_i(A, B) = c) = \sum\limits_{a,b \in N} \mathbb{P}(A = a)\mathbb{P}(B = b)[m_i(a, b) = c], \textrm{for}\ c \in N
 \end{equation}
 At the same time of the emission of the vectors $a_{i}, b_{i} \in \mathbb{R}^{R+i-1}$, the vectors $c_i \in \mathbb{R}^{R+|M|}$ for $i = 1, 2, \dots, R$  are also emitted, which indicate the sources, that can be the register content at timestep $t-1$ or a module output at the current timestep $t$, from which the new registers content is get. So after the circuit is executed, at the Line \ref{lst:nram:line-10}, the registers content is updated as follows:
 \begin{equation}
@@ -170,7 +170,7 @@ The architecture of the memory augmented NRAM is presented in the Figure \ref{fi
 \begin{figure}[t!]
 	\centering
 	\includegraphics[width=\textwidth]{figures/memory-augmented-model.png}
-	\caption{Detailed execution of the NRAM augmented with a memory with $R$ = 4 registers. As can be seen the controller generates the circuit configuration and the $f_i$, starting from the \qq{binarized} version of the registers. Here, that connections are represented with solid lines, except for the interactions with the memory by the \textbf{Read} and \textbf{Write} modules that are represented with dashed lines.}
+	\caption{Detailed execution of the NRAM augmented with a memory with $R$ = 4 registers. As can be seen the controller generates the circuit configuration and the $f_i$, starting from the $\mathbb{P}(r_i = 0)$ of the registers. Here, that connections are represented with solid lines, except for the interactions with the memory by the \textbf{Read} and \textbf{Write} modules that are represented with dashed lines.}
 	\label{fig:memory-nram}
 \end{figure}
 The NRAM uses a system to decide if the execution can be terminated. Recalling that the execution is divided $T$ timesteps, in each of them the controller emits along the circuit configuration a scalar $f_{t} \in [0, 1]$\footnote{The controller emits a scalar $x_{i}$, with which is produced the $f_i = \textbf{sigmoid}(x_{i})$.}, which represents the willingness of finish the execution in the current timestep $t$. Although in the paper is not explicitly specified, we decided that if $f_{t} = 1.0$ than the execution of NRAM is terminated. Starting from these $f_i$, we have the probability that the execution is not finished in the previous timestep is $\prod\limits_{i=1}^{t-1}(1 - f_{i})$ and the probability that the output is produced in the current timestep is $p_{t} = f_{t} \cdot \prod\limits_{i=1}^{t-1}(1 - f_{i})$. As stated previously, the execution is continued for a maximum of timesteps $T$, except for the previous cases, where the NRAM is forced to emits an output and, due to this, the probability to terminate is $p_{T} = 1 - \sum\limits_{i=1}^{T-1}p_{i}$ regardless of the $f_{T}$ of the last timestep. 
