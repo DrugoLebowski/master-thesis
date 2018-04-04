@@ -1,4 +1,10 @@
 
 % Parla del fatto che non tutti i vari algoritmi sono stati appresi dal controllore ipotizzando una motivazione e del fatto che i test con un sottoinsieme delle porte ha evidenziato una migliore capacità da parte del differential evolution di convergere in una soluzione.
 
-% In ``Future works`` il fatto che la NRAM potrebbe essere migliorata inserendo un sistema, ricollegandosi al discorso precedente, per selezionare un sottoinsieme di porte migliore, dove con migliore si intende che direzioni il Differential Evolution a convergere ad un minimo globale in meno generazioni. 
+% In ``Future works`` il fatto che la NRAM potrebbe essere migliorata inserendo un sistema, ricollegandosi al discorso precedente, per selezionare un sottoinsieme di porte migliore, dove con migliore si intende che direzioni il Differential Evolution a convergere ad un minimo globale in meno generazioni.
+As seen in the experiments with the tasks took into account, we can conclude that Differential Evolution and DENN behave well with this type of machine and with MLPs with a large number of weights. As seen previously, in the Access, Increment and Reverse are reached solutions that generalize perfectly also without the use of Curriculum Learning showing that the research made by Differential Evolution is more effective respect to that made by Gradient Descent and ADAM. The only exception is with the task Copy where it was found no solution in any case - for this purpose, we will look for the reason in a future work. 
+
+We observed also that the solutions are more intuitive circuits compared to those in \cite{NRAM:2016}, showing that the exploitation and exploration made by DE and DENN is more effective respect to those executed by GD.
+
+\section{Future works}
+For the future we are going to complete all the experiments with new and the remaining tasks seen in the paper. Moreover, because the current structure of modules is too stringent making the execution excessively static with the forced use of all them, one of our objective is to upgrade the NRAM with a more advanced system for a dynamic selection of them.

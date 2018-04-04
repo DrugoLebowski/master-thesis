@@ -260,7 +260,7 @@ Regard the generalization, we observed that the solutions that reached error zer
 For the easy task, the Curriculum Learning is not always necessary --- in fact, with the tasks \textbf{access}, \textbf{increment} and \textbf{reverse} is possible to search a combination of hyperparameters, both for NRAM and DENN, that make it possible to converge to a solution which generalize perfectly. However this is possible, we observed that the  generated circuits by a controller trained with the Curriculum Learning generates more regulars or smart circuits, like with increment as showed in \ref{subsec:circuits-increment}. 
 
 \subsection{DENN variants results}\label{subsec:circuits}
-
+Following are presented the trends of the various tests. 
 \subsubsection{Access}
 \begin{figure}[h]
 	\centering
@@ -302,7 +302,7 @@ For the easy task, the Curriculum Learning is not always necessary --- in fact, 
 
 			\end{axis}
 	\end{tikzpicture}
-	\caption{Reached costs by DE variants with task \textbf{Access}.}
+	\caption{Costs reached by DE variants with task \textbf{Access}.}
 	\label{fig:access-costs}
 \end{figure}
 \FloatBarrier
@@ -315,42 +315,43 @@ For the easy task, the Curriculum Learning is not always necessary --- in fact, 
   				ylabel={$\textrm{Cost}$},
   				xlabel style={below right},
   				ylabel style={above left},	
-			    xmin=0, xmax=350,
+			    xmin=0, xmax=1000,
 				legend pos=outer north east
 			]
-  				\addplot +[mark=none] table{data/access/adam};
+  				\addplot +[mark=none] table{data/increment/adam};
   				\addlegendentry{ADAM}
-
-  				\addplot +[mark=none] table{data/access/jade_degl};
+			
+  				\addplot +[mark=none] table{data/increment/jade_degl};
   				\addlegendentry{JADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/access/jade_degl_cl};
+  				\addplot +[mark=none] table{data/increment/jade_degl_cl};
   				\addlegendentry{JADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/access/jade_curr_p_best};
+  				\addplot +[mark=none] table{data/increment/jade_curr_p_best};
   				\addlegendentry{JADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/access/jade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/increment/jade_curr_p_best_cl};
   				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
 
-  				\addplot +[mark=none] table{data/access/shade_degl};
+  				\addplot +[mark=none] table{data/increment/shade_degl};
   				\addlegendentry{SHADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/access/shade_degl_cl};
+  				\addplot +[mark=none] table{data/increment/shade_degl_cl};
   				\addlegendentry{SHADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/access/shade_curr_p_best};
+  				\addplot +[mark=none] table{data/increment/shade_curr_p_best};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/access/shade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/increment/shade_curr_p_best_cl};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
 
 			\end{axis}
 	\end{tikzpicture}
-	\caption{Reached costs by DE variants with task \textbf{Increment}.}
+	\caption{Costs reached by DE variants with task \textbf{Increment}.}
 	\label{fig:increment-costs}
 \end{figure}
 \FloatBarrier
+\iffalse
 \subsubsection{Copy}
 \begin{figure}[h]
 	\centering
@@ -360,7 +361,7 @@ For the easy task, the Curriculum Learning is not always necessary --- in fact, 
   				ylabel={$\textrm{Cost}$},
   				xlabel style={below right},
   				ylabel style={above left},	
-			    xmin=0, xmax=350,
+			    xmin=0, xmax=1000,
 				legend pos=outer north east
 			]
   				\addplot +[mark=none] table{data/access/adam};
@@ -392,10 +393,11 @@ For the easy task, the Curriculum Learning is not always necessary --- in fact, 
 
 			\end{axis}
 	\end{tikzpicture}
-	\caption{Reached costs by DE variants with task \textbf{Copy}.}
+	\caption{Costs reached by DE variants with task \textbf{Copy}.}
 	\label{fig:copy-costs}
 \end{figure}
 \FloatBarrier
+\fi
 \subsubsection{Reverse}
 \begin{figure}[h]
 	\centering
@@ -405,34 +407,34 @@ For the easy task, the Curriculum Learning is not always necessary --- in fact, 
   				ylabel={$\textrm{Cost}$},
   				xlabel style={below right},
   				ylabel style={above left},	
-			    xmin=0, xmax=350,
+			    xmin=0, xmax=1000,
 				legend pos=outer north east
 			]
-  				\addplot +[mark=none] table{data/access/adam};
+  				\addplot +[mark=none] table{data/reverse/adam};
   				\addlegendentry{ADAM}
 
-  				\addplot +[mark=none] table{data/access/jade_degl};
+  				\addplot +[mark=none] table{data/reverse/jade_degl};
   				\addlegendentry{JADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/access/jade_degl_cl};
+  				\addplot +[mark=none] table{data/reverse/jade_degl_cl};
   				\addlegendentry{JADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/access/jade_curr_p_best};
+  				\addplot +[mark=none] table{data/reverse/jade_curr_p_best};
   				\addlegendentry{JADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/access/jade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/reverse/jade_curr_p_best_cl};
   				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
 
-  				\addplot +[mark=none] table{data/access/shade_degl};
+  				\addplot +[mark=none] table{data/reverse/shade_degl};
   				\addlegendentry{SHADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/access/shade_degl_cl};
+  				\addplot +[mark=none] table{data/reverse/shade_degl_cl};
   				\addlegendentry{SHADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/access/shade_curr_p_best};
+  				\addplot +[mark=none] table{data/reverse/shade_curr_p_best};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/access/shade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/reverse/shade_curr_p_best_cl};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
 
 			\end{axis}
@@ -441,7 +443,7 @@ For the easy task, the Curriculum Learning is not always necessary --- in fact, 
 	\label{fig:reverse-costs}
 \end{figure}
 \FloatBarrier
-
+\clearpage
 \subsection{Circuits}\label{subsec:circuits}
 In the following we present the circuits generated by the best solutions found with  the training using DENN. For the sake of readability, only the necessary gates and registers are showed in the circuits. In the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} the parameters order is important, indicated with $x$ and $y$. Instead, for the gates \textbf{Read} and \textbf{Write}, the pointer and the value to write are indicated, respectively, with \textbf{ptr} and \textbf{val} labels.\newline\newline
 Overall, the circuits generated differ from those shown in the paper. Moreover, we observed that the solutions found with different DE variants generate differents circuits. As done in \cite{NRAM:2016}, we present only the ``main'' circuits for the best solutions - to compare them please refers to \cite{NRAM:2016}. The tables shown in the following examples contains the states of the memories and registers at the beginning of the steps and the final memory when the NRAM end the execution.
