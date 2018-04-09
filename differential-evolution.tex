@@ -38,7 +38,7 @@ Summing up, firstly the population is initialized with some strategy - the most 
 		x_{ji,G}, & \textrm{if}\ (\textit{randb}(j) > \textit{CR})\ \textrm{and}\ j\neq\textit{rnbr(i)}
 	\end{cases} & i=1,2,\dots,D
 \end{align}
-where  $\textit{randb}(j)$ is a function which generate a real valued number for the $j^{th}$ parameter according to binomial distribution, $\textrm{CR}\in[0,1]$ is the global user defined crossover constant used as a threshold and $\textit{rnbr}(i)$ is a function that generate randomly an index which ensures that is selected at least one parameter of the mutant $v_{i}$.}
+where  $\textit{randb}(j)$ is a function which generate a real-valued number for the $j^{th}$ parameter according to binomial distribution, $\textrm{CR}\in[0,1]$ is the global user-defined crossover constant used as a threshold and $\textit{rnbr}(i)$ is a function that generate a random index which ensures that is selected at least one parameter of the mutant $v_{i}$.}
 	\item{\textbf{Selection}: Each trial is compared one-by-one to the corresponding target using the fitness function - if the target have a smaller cost with respect to the trial, than it is retained as individual of the population of the next generation and vice-versa.}
 \end{itemize}
 
@@ -183,7 +183,7 @@ Moreover, JADE has introduced an optional external memory denoted as \textbf{A} 
 
 \subsubsection{Success-History based Adaptive DE (SHADE)}
 The main problem of JADE is that the generation of $\textit{CR}_{i}$ and $F_{i}$ is controlled by the memories $S_{\textit{CR}}$ and $S_{F}$, that for how are managed could contain poor settings of $\textit{CR}$ and $F$. Hence, this fact can leads JADE to have degraded performances.\newline\newline
-SHADE introduced in \cite{SHADE:2013} aims to strengthen JADE introducing a crossover and mutation constants generation alternative system. This is done leaving out the $S_{\textit{CR}}$ and $S_{F}$ memories and adding two new memories, named \textit{historical memories}, $M_{\textit{CR}}$ and $M_{F}$ where the values that have well performed in the past are stored.
+SHADE introduced in \cite{SHADE:2013} aims to strengthen JADE introducing a crossover and mutation constants generation alternative system. This is done leaving out the $S_{\textit{CR}}$ and $S_{F}$ memories and adding two new memories $M_{\textit{CR}}$ and $M_{F}$, named \textit{historical memories}, where the values that have well performed in the past are stored.
 \begin{table}[t]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|l|}

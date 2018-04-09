@@ -10,7 +10,7 @@ The Perceptron model is the basic and simplest type of Neural Network, firstly p
 \begin{figure}[t]
 	\centering
 
-	\begin{tikzpicture}[shorten >=1pt]
+	\resizebox{0.8\textwidth}{!}{\begin{tikzpicture}[shorten >=1pt]
 		\tikzstyle{unit}=[draw,shape=circle,minimum size=1.15cm]
 		%\tikzstyle{hidden}=[draw,shape=circle,fill=black!25,minimum size=1.15cm]
 		\tikzstyle{hidden}=[draw,shape=circle,minimum size=1.15cm]
@@ -48,7 +48,7 @@ The Perceptron model is the basic and simplest type of Neural Network, firstly p
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (2.5,4.25) -- (3.75,4.25) node [black,midway,yshift=+0.6cm]{weights};
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (5.5, 3) -- (6.75, 3) node [black,midway,yshift=+0.6cm]{output layer};
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (8.5, 2.75) -- (9.75, 2.75) node [black,midway,yshift=+0.6cm]{activation function};
-	\end{tikzpicture}
+	\end{tikzpicture}}
 	\caption{Perceptron model illustration}\label{fig:illustration-perceptron-model}
 \end{figure}	
 This model calculates the output $\hat{y}$ as a weighted sum of the input with respect to the connections weight, to which is summed the bias (a value used to rectify, in this case, the neural network output). Hence, the output of the Perceptron model can be expressed as:
@@ -88,15 +88,12 @@ The Multi-Layer Perceptron (MLP), known as feedforward neural network, has been 
 
 \begin{figure}[t!]
 	\centering
-	\begin{tikzpicture}[scale=.5]
+	\begin{tikzpicture}[scale=.4]
 		\begin{axis}[
 			width=\linewidth, % Scale the plot to \linewidth
     	     	grid=major, % Display a grid
     	      	grid style={dashed,gray!30}, % Set the style
-			xlabel=$x_1$,
-			ylabel=$x_2$,
 			style={mark size=6pt}
-		    %xtick=\empty, ytick=\empty
 		]
 		\addplot [only marks] table {
 			1 8
@@ -114,12 +111,14 @@ The Multi-Layer Perceptron (MLP), known as feedforward neural network, has been 
 	\end{tikzpicture}
 	\caption{Representation of the decision separation of the Perceptron.}\label{fig:perceptron-boundaries}
 \end{figure}
-As for the Perceptron, the goal of MLP is to approximate a function $f^{*}$ that should represents the underlying data with which the neural network is trained, e.g. a classifier where $y=f^{*}(\textbf{x})$ associates an example record $\textbf{x}$ to class $y$.\newline\newline
-These models set, that include also single layered perceptrons, are called \textit{feedforward} because the information flows from the input layer, that contains the data of the example \textbf{x}, through all the intermediate layers called \textbf{hidden layers} and finally to the output layer $\textbf{y}$. So all these levels are connected only with the ones next and feedback connections that fed back the network are missing. Neural networks having this exclusive characteristic are called \textbf{recurrent neural networks}.\newline\newline
+As for the Perceptron, the goal of MLP is to approximate a function $f^{*}$ that should represents the underlying data with which the neural network is trained, e.g. a classifier where $y=f^{*}(\textbf{x})$ associates an example record $\textbf{x}$ to class $y$.
+
+These models set, that include also single layered perceptrons, are called \textit{feedforward} because the information flows from the input layer, that contains the data of the example \textbf{x}, through all the intermediate layers called \textbf{hidden layers} and finally to the output layer $\textbf{y}$. So all these levels are connected only with the ones next and feedback connections that fed back the network are missing. Neural networks having this exclusive characteristic are called \textbf{recurrent neural networks}.
+
 To all of these layers are associated different functions, called \textbf{activation functions}, that allow the layers to produce non-linear output values. Thus, in another perspective, a feedforward can be seen as a chain of activation functions. From this description we can see that the major difference between single-layered Perceptrons and feedforward neural networks is the training strategy. In fact the design of the FFN prevents to approach the training with the same strategy used with the Perceptron because we do not have \textit{a priori} the informations regard the desired output of all the hidden layers.
-\begin{figure}[t]
+\begin{figure}[h]
 	\centering
-	\begin{tikzpicture}[shorten >=1pt]
+	\resizebox{0.6\textwidth}{!}{\begin{tikzpicture}[shorten >=1pt]
 		\tikzstyle{unit}=[draw,shape=circle,minimum size=1.15cm]
 		%\tikzstyle{hidden}=[draw,shape=circle,fill=black!25,minimum size=1.15cm]
 		\tikzstyle{hidden}=[draw,shape=circle,minimum size=1.15cm]
@@ -185,17 +184,19 @@ To all of these layers are associated different functions, called \textbf{activa
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (2.5,4) -- (3.75,4) node [black,midway,yshift=+0.6cm]{$1^{\text{st}}$ hidden layer};
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (5.5,4) -- (6.75,4) node [black,midway,yshift=+0.6cm]{$2^{\text{nd}}$ hidden layer};
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (8.5,3.125) -- (9.75,3.125) node [black,midway,yshift=+0.6cm]{output layer};
-	\end{tikzpicture}
-	\caption[Graph representation of feedforward neural network.]{Graph representation of feedforward neural network with $(2)$-layer, with $D$ input units and $2$ output units (class). For simplicity of representation all the labels $w_{ij}$ associated to the edges, that represent the weights/parameters of the neural networks, are omitted.}
+	\end{tikzpicture}}
+	\caption[Graph representation of feedforward neural network.]{Graph representation of feedforward neural network with $(2)$-layer, with $D$ input units and $2$ output units that represent the classes. For simplicity of representation all the labels $w_{ij}$ associated to the edges, that represent the weights of the neural networks, are omitted.}
 	\label{fig:multilayer-perceptron}
 \end{figure}
+\FloatBarrier
 
 \subsection{Activation functions}\label{sec:activation-functions}
-The activation functions are special functions that can be, in particular, differentiable. This last characteristic is mandatory if the used optimization algorithm is gradient based. These functions are used in every neurons of an ANN and define how the neurons emit their values when stimulated. The following are some activation functions with their plots:\newline\newline
+The activation functions are special functions that can be, in particular, differentiable. This last characteristic is mandatory if the used optimization algorithm is gradient-based. These functions are used in every neurons of an ANN and define how the neurons emit their values when stimulated. The following are some activation functions with their plots:
 
-\begin{tabular*}{\textwidth}{@{} l @{\extracolsep{\fill}} r @{}}
+\begin{figure}[t]
 \centering
-\begin{minipage}{0.475\textwidth}
+\subfloat[Linear activation function]{
+\resizebox{0.4\textwidth}{!}{
 	\begin{tabular}{c}
 			\(\displaystyle
 				\sigma(x) = x
@@ -216,10 +217,10 @@ The activation functions are special functions that can be, in particular, diffe
     					\addplot+[mark=none,ultra thick, red, domain=-1:1, samples=500] {x};
 				\end{axis}
 			\end{tikzpicture}
-	\end{tabular}
-	\captionof{figure}{Linear activation function.}
-\end{minipage}&
-\begin{minipage}{0.475\textwidth}
+	\end{tabular}}}
+	\hfill
+	\subfloat[ReLu activation function]{
+\resizebox{0.4\textwidth}{!}{
 	\begin{tabular}{c}
 			\(\displaystyle
 				\sigma(x) = \begin{cases}
@@ -244,54 +245,53 @@ The activation functions are special functions that can be, in particular, diffe
         				\addplot+[mark=none,ultra thick, red, domain=0:5, samples=500] {x};
 				\end{axis}
 			\end{tikzpicture}
-	\end{tabular}
-	\captionof{figure}{ReLu activation function.}
-	\end{minipage} \\
-\begin{minipage}{0.475\textwidth}
-	\begin{tabular}{c}
-		\(\displaystyle
-			\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^{x}}{e^{x} + 1}
-		\) \\\\
-		\begin{tikzpicture}[smooth,scale=.9]
-			\begin{axis}[
-  				axis x line=middle,
-		        	axis y line=middle,
-			    	grid = major,
-    		    		grid style={dashed, gray!30},
-			    ylabel=$\sigma$,
-		    		xlabel=$x$,
-  				xlabel style={below right},
-	  			ylabel style={above},
-			]
-      			\addplot[domain=-1:1, red, ultra thick,samples=500] {1/(1+exp(-5*x))};
-			\end{axis}
-		\end{tikzpicture}
-	\end{tabular}\captionof{figure}{Sigmoid activation function.}
-\end{minipage} &
-\begin{minipage}{0.475\textwidth}
-	\begin{tabular}{c}
-		\(\displaystyle
-			\sigma(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}
-		\) \\\\
-		\begin{tikzpicture}[smooth,scale=.875]																	\setlength{\belowcaptionskip}{-10pt}
-			\begin{axis}[
-  				axis x line=middle,
-			    axis y line=middle,
-				grid = major,
-    			    grid style={dashed, gray!30},
-				ylabel=$\sigma$,
-		    		xlabel=$x$,
-  				xlabel style={below right},
-	  			ylabel style={above left},
-  				domain=-3:3
-			]
-    				\addplot [mark=none,draw=red,ultra thick] {tanh(\x)};
-			\end{axis}
-		\end{tikzpicture}
-	\end{tabular}\captionof{figure}{Tanh activation function.}
-\end{minipage}
-
-\end{tabular*}
+	\end{tabular}}} \hfill
+	\subfloat[Sigmoid activation function]{
+		\resizebox{0.4\textwidth}{!}{
+		\begin{tabular}{c}
+			\(\displaystyle
+				\sigma(x) = \frac{1}{1 + e^{-x}} = \frac{e^{x}}{e^{x} + 1}
+			\) \\\\
+			\begin{tikzpicture}[smooth,scale=.9]
+				\begin{axis}[
+  					axis x line=middle,
+		     	   	axis y line=middle,
+			 	   	grid = major,
+    		    			grid style={dashed, gray!30},
+			  	  ylabel=$\sigma$,
+		    			xlabel=$x$,
+  					xlabel style={below right},
+	  				ylabel style={above},
+				]
+      				\addplot[domain=-1:1, red, ultra thick,samples=500] {1/(1+exp(-5*x))};
+				\end{axis}
+			\end{tikzpicture}
+		\end{tabular}}} \hfill
+	\subfloat[Tanh activation function]{
+		\resizebox{0.4\textwidth}{!}{
+		\begin{tabular}{c}
+			\(\displaystyle
+				\sigma(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}
+			\) \\\\
+			\begin{tikzpicture}[smooth,scale=.875]											\setlength{\belowcaptionskip}{-10pt}
+				\begin{axis}[
+  					axis x line=middle,
+			 	   axis y line=middle,
+					grid = major,
+    				    grid style={dashed, gray!30},
+					ylabel=$\sigma$,
+		    			xlabel=$x$,
+  					xlabel style={below right},
+	  				ylabel style={above left},
+  					domain=-3:3
+				]
+    					\addplot [mark=none,draw=red,ultra thick] {tanh(\x)};
+				\end{axis}
+			\end{tikzpicture}
+		\end{tabular}}}
+	\caption{Some plots of activation functions.}
+\end{figure}
+\FloatBarrier
 \clearpage
 \section{Artificial Neural Network training} 
 The training of ANN generally follows two main steps: the initialization of the weights of the connections and the computation of these with an iterative algorithm which is guided by the optimization of an objective function\footnote{In specific we speak of \textbf{cost} or \textbf{loss} function if the objective is to minimize this latter.}, searching for a global minimum\footnote{Obviously the global minimum is not guaranteed and this depend by the problem, the ANN design and the optimization algorithm. Often what is found is a local minimum, which not guarantee that the ANN represents the underlying data.}. The specific operations in the second step can be further split in two sub-steps: firstly the objective function is computed, then in the second step the weight of the connections are updated with some strategy/algorithm according to the objective function value. 
@@ -314,7 +314,7 @@ The training of ANN generally follows two main steps: the initialization of the 
 	\caption{Flow of a general algorithm based on the gradient for ANNs.}\label{alg:ann-training}
 \end{algorithm}
 
-\subsection{Gradient based optimization algorithms}
+\subsection{Gradient-based optimization algorithms}
 Once the gradients are computed according to the objective function, for example with the backpropagation technique presented in Section \ref{subsubsec:backpropagation}, they can be used to re-compute the associated parameters. To do this it is possible to use some optimization algorithms that implement gradient descent. These algorithm have as objective the search of the global minimum of the cost function with a search method that is similar to the descent of a bowl (that can be associated to the complete plot of the objective function) by an hypothetical ball, where the bowl bottom corresponds to the global minimum of the function.
 \begin{figure}[!ht]
      \subfloat[The Gradient Descent can be seen as the descent of a bowl by a ball. The end of each arrow is a descent step of an hypothetical ball. With the red and blue are represented respectively the zones of maximum and minimum. \iffalse(Yes, this figure seems more similar to the planet Saturn.)\fi \label{subfig-1:gradient-descent-1}]{%

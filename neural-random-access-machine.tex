@@ -46,10 +46,10 @@ For a better comprehension of the NRAM execution, its pseudocode is visible in t
 	\caption{Execution of the NRAM without the memory}\label{alg:nram}
 \end{algorithm}
 
-The execution of the NRAM starts at the Line \ref{lst:nram:line-5} and continue for all the timesteps. At the Line \ref{lst:nram:line-8}, the controller generates a new configuration with the input from the registers, used successively at the Lines \ref{lst:nram:line-9} and \ref{lst:nram:line-10}. The configuration indicates how the circuit is structured, i.e. for each gate indicates the input sources. Hence, in other words, the controller learns how to connect the gates to resolve the problem on which it is trained. In other words, the inputs for the gate $m_i$ are chosen by the controller from the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ where:
+The execution of the NRAM starts at the Line \ref{lst:nram:line-5} and continues for all the timesteps. At the Line \ref{lst:nram:line-8}, the controller generates a new configuration with the input from the registers, used successively at the Lines \ref{lst:nram:line-9} and \ref{lst:nram:line-10}. The configuration indicates how the circuit is structured, i.e. for each gate indicates the input sources. Hence, in other words, the controller learns how to connect the gates to resolve the problem on which it is trained. In other words, the inputs for the gate $m_i$ are chosen by the controller from the set $\{r_{1}, \dots, r_{R}, o_{1}, \dots, o_{i-1}\}$ where:
 \begin{itemize}
 	\item $r_j$ is the content of the $j^{th}$ register, $j=1,\dots,R$;
-	\item $o_j$ is the output of the $j^{th}$ previous gate with respect to the current $m_i$, $j=1,\dots,|Gates| - 1$.
+	\item $o_k$ is the output of the $k^{th}$ previous gate with respect to the current $m_i$, $k=1,\dots,|Gates| - 1$.
 \end{itemize}
 selected through a weighted average with a coefficient as follows
 \begin{equation}

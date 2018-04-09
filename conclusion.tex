@@ -2,9 +2,16 @@
 % Parla del fatto che non tutti i vari algoritmi sono stati appresi dal controllore ipotizzando una motivazione e del fatto che i test con un sottoinsieme delle porte ha evidenziato una migliore capacità da parte del differential evolution di convergere in una soluzione.
 
 % In ``Future works`` il fatto che la NRAM potrebbe essere migliorata inserendo un sistema, ricollegandosi al discorso precedente, per selezionare un sottoinsieme di porte migliore, dove con migliore si intende che direzioni il Differential Evolution a convergere ad un minimo globale in meno generazioni.
-As seen in the experiments with the tasks took into account, we can conclude that Differential Evolution and DENN behave well with this type of machine and with MLPs with a large number of weights. As seen previously, in the Access, Increment and Reverse are reached solutions that generalize perfectly also without the use of Curriculum Learning showing that the research made by Differential Evolution is more effective respect to that made by Gradient Descent and ADAM. The only exception is with the task Copy where it was found no solution in any case - for this purpose, we will look for the reason in a future work. 
+In this work a version of NRAM with Differential Evolution as optimization engine has been presented. In particular the DENN framework has been used instead of ADAM optimization algorithm. 
 
-We observed also that the solutions are more intuitive circuits compared to those in \cite{NRAM:2016}, showing that the exploitation and exploration made by DE and DENN is more effective respect to those executed by GD.
+%In order to make the fairest comparison possible 
+We implemented two versions of the system, the first is a refactoring and an extending of the project of \hyperref[https://github.com/gibiansky/experiments/tree/master/nram]{Andrew Gibiansky} written in Python with Theano using ADAM algorithm, the second in C++ with DENN. 
+
+As seen in the experiments, we concluded that Differential Evolution and DENN behave well with this type of machine and with large neural networks. As seen previously, in the Access, Increment and Reverse tasks solutions that generalize perfectly are reached, also without the use of Curriculum Learning. This show that the research made by Differential Evolution is more effective respect to the one made by Gradient Descent and ADAM. 
+
+Perhaps it is difficult to provide a final interpretation of these results because more tests and run have to be done, but considering the data obtained so far we can conclude that, a part the case of JADE/DEGL/1/bin + CL, the best performing variants are the ones with the Current-to-pbest mutation method. Despite this, it is clear that the contribution of the Curriculum Learning is crucial in some cases like in the Increment task.
+
+We observed also that the solutions found with DENN return more intuitive circuits compared to those in \cite{NRAM:2016}, showing that the exploitation and exploration done by DENN is more effective respect to those executed by Gradient Descent.
 
 \section{Future works}
-For the future we are going to complete all the experiments with new and the remaining tasks seen in the paper. Moreover, because the current structure of modules is too stringent making the execution excessively static with the forced use of all them, one of our objective is to upgrade the NRAM with a more advanced system for a dynamic selection of them.
+For the future we are going to complete all the experiments also with new tasks. Moreover, because the current structure of gates is too stringent making the execution excessively static with the forced use of all them, one of our objective is to upgrade the NRAM with a more advanced system for a dynamic selection of them.

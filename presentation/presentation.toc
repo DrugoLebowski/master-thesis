@@ -1,4 +1,4 @@
 \beamer@sectionintoc {1}{Neural Random-Access Machines}{2}{0}{1}
-\beamer@sectionintoc {2}{Artificial Neural Network}{16}{0}{2}
-\beamer@sectionintoc {3}{Differential Evolution}{20}{0}{3}
-\beamer@sectionintoc {4}{Implementation and results}{26}{0}{4}
+\beamer@sectionintoc {2}{Artificial Neural Network}{53}{0}{2}
+\beamer@sectionintoc {3}{Differential Evolution \& DENN}{73}{0}{3}
+\beamer@sectionintoc {4}{Implementation and results}{89}{0}{4}

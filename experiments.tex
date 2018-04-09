@@ -1,5 +1,5 @@
 \label{experiments}
-In the first part of this chapter we present part the problems on which the NRAM is trained and in the second part we compare the results and we show the circuits learned by the neural networks.
+In the first part of this chapter we present some problems on which the NRAM is trained, while in the second part, we compare the results and we show the circuits learned by the neural networks.
 
 \section{Tasks}
 The following are the description of the executed task used in our experiments. In the description, big and small letters represents respectively arrays and pointers, \textit{NULL} denotes the value 0 and is used as an ending character or in the lists, as a placeholder for missing next element. In the experiments, along the initial and desired memories, are also generated the cost masks that used during the cost calculation as attention mechanisms.
@@ -15,9 +15,11 @@ Given a value $k$ and an array \textbf{A}, return $\textbf{A}[k]$. Input is give
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
 		\textbf{7} & 5 & 1 & 4 & 7 & 2 & 8 & 3 & 6 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
-		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
+		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Error mask}} \\ \hline
+		1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	\end{tabular}
-	\caption{Expected behaviour with the task Access - the first value is the pointer in the sequence A to which the NRAM should access.}
+	\caption{Expected behaviour with the task Access -- the first value is the pointer in the sequence A to which the NRAM should access.}
 	\label{fig:access-example}
 \end{table}
 \FloatBarrier
@@ -32,9 +34,11 @@ Given an array $\textbf{A}$, increment all its elements by 1. Input is given as 
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
 		6 & 6 & 0 & 4 & 8 & 9 & 0 & 0 & 0 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
-		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline
+		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline\hline\hline
+		\multicolumn{10}{|c|}{\textbf{Error mask}} \\ \hline
+		1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 \\ \hline
 	\end{tabular}
-	\caption{Expected behaviour with the task Increment - each element must be incremented by one, also considering the interval of the values N.}
+	\caption{Expected behaviour with the task Increment -- each element must be incremented by one, also considering the interval of the values N.}
 	\label{fig:increment-example}
 \end{table}
 \FloatBarrier
@@ -49,14 +53,17 @@ Given an array and a pointer to the destination, copy all elements from the arra
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
 		\textbf{5} & 5 & 1 & 4 & 7 & 5 & 1 & 4 & 7 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
-		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\ \hline
+		0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline\hline\hline
+		
+		\multicolumn{10}{|c|}{\textbf{Error mask}} \\ \hline
+		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 \\ \hline
 	\end{tabular}
-	\caption{Expected behaviour with the task Copy -the first value is the pointer to the memory to which the NRAM should starts copy the sequence A. }
+	\caption{Expected behaviour with the task Copy -- the first value is the pointer to the memory to which the NRAM should starts copy the sequence A. }
 	\label{fig:copy-example}
 \end{table}
 \FloatBarrier
 \subsection{Reverse}
-Given an array and a pointer to the destination, copy all elements from the array in reversed order. Input is given as $p,\ \textbf{A}[0],\ \dots,\ \textbf{A}[n-1]$ where $p$ points one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[n-1],\ \dots,\ \textbf{A}[0]$ at positions $p,\ \dots,\ p+n-1$ respectively. An example is visible in Figure \ref{fig:reverse-example}.
+Given an array and a pointer to the destination, copy all elements from the array in reversed order. Input is given as $p, \textbf{A}[0], \dots, \textbf{A}[n-1]$ where $p$ points one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[n-1], \dots, \textbf{A}[0]$ at positions $p, \dots, p+n-1$ respectively. An example is visible in Figure \ref{fig:reverse-example}.
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
@@ -66,9 +73,12 @@ Given an array and a pointer to the destination, copy all elements from the arra
 		\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
 		\textbf{5} & 5 & 1 & 4 & 7 & 7 & 4 & 1 & 5 & 0 \\ \hline\hline\hline
 		\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
-		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\ \hline
+		0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline\hline\hline
+		
+		\multicolumn{10}{|c|}{\textbf{Error mask}} \\ \hline
+		0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 \\ \hline
 	\end{tabular}
-	\caption{Expected behaviour with the task Reverse - the first value is the pointer to the memory to which the NRAM should starts reverse the sequence A.}
+	\caption{Expected behaviour with the task Reverse -- the first value is the pointer to the memory to which the NRAM should starts reverse the sequence A.}
 	\label{fig:reverse-example}
 \end{table}
 \FloatBarrier
@@ -128,10 +138,12 @@ Given pointers to 2 arrays \textbf{A} and \textbf{B}, and the pointer to the out
 \FloatBarrier
 \fi
 \section{The generalization problem}
-Generalization means the capacity of a neural network to recognize in new examples patterns which were never seen before. In a classic classification problem this means that the neural network should recognize the patterns in the features presented to it, classifying them with the correct label. The same concept can be also applied to NRAM, with some differences. Remembering that the training is made over memory with limited size and timesteps, with ``generalization capacity'' means that the controller should learn to create the right circuit also for examples\footnote{Please refer to Section \ref{subsubsec:nram-dataset} to see how the examples are formed.} with memory of different sizes and timesteps. As stated previously in the Paragraph \ref{subpar:curriculum-learning}, the Curriculum Learning is used to boost the training making the neural network more robust - in fact, the training over a specific memory size and timesteps could lead the objective function to have a value equal to zero, but this does not means that the neural network has learnt to generalize.
+Generalization means is the ability of a neural network to recognize patterns in new examples which were never seen before. In a classical classification problem this means that the neural network should recognize the patterns in the features presented to it, classifying them with the correct label. The same concept can be also applied to NRAM, with some differences. Remembering that the training is made using memory with limited size and a given number of timesteps, ``generalization ability'' means that the controller should learn to create the right circuits also for examples\footnote{Please refer to Section \ref{subsubsec:nram-dataset} to see how the examples are formed.} with memory of different sizes and  a different number of timesteps.
+
+As stated previously in the Paragraph \ref{subpar:curriculum-learning}, the Curriculum Learning is used to boost the training making the neural network more robust and giving it a better generalization ability. In fact, in some cases the training using a specific memory size and a given number of timesteps lead the objective function to have a value equal to zero, but the controller is too specialized (overfitting) and produces circuits unable to generalize.
 
 \section{Results}
-In the experiments we have followed what is done in the paper \cite{NRAM:2016}, training of NRAM with DENN and Theano on ``easy'' and ``hard'' tasks. The objectives are to compare the performances of DENN and Theano with and without Curriculum Learning, focusing specially to the generalization capacity of the discovered solutions.\newline
+In the experiments we have used the same structure in \cite{NRAM:2016}, training NRAM with DENN and Theano implementations on some ``easy'' tasks. The main objective are to compare the performances of two versions (DENN and Theano) both with and without Curriculum Learning, focusing specially to the generalization ability of the discovered solutions.\newline
 \begin{table}[t]
 	\centering
 
@@ -166,7 +178,7 @@ In the experiments we have followed what is done in the paper \cite{NRAM:2016}, 
 		Access & $\textrm{len}(A) = 9, t = 3$ & $\times$ \\ 
 		Increment & $\textrm{len}(A) = 9, t = 4$ & $\times$ \\
 		Copy & $\textrm{len}(A) = 5, t = 11$  & $\times$  \\ 
-		Reverse & $\textrm{len}(A) = 5 t = 9$  & $\times$ \\ 
+		Reverse & $\textrm{len}(A) = 4, t = 9$  & $\times$ \\ 
 		\iffalse
 		Swap & $\textrm{len}(A) = 9, t = 6$ & $\times$ \\ \hline
 		Permutation & $\textrm{len}(A) = \_, t = \_$ & $\times$ \\ 
@@ -179,7 +191,7 @@ In the experiments we have followed what is done in the paper \cite{NRAM:2016}, 
 	\end{tabular}
 	\caption{Results of the tests of ADAM. The contained informations follows those in Table \ref{tbl:denn-tests-results}\label{tbl:adam-tests}.}
 \end{table}
-The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, which are combined with the mutation methods \textbf{DEGL} and \textbf{Current-to-pbest} and the crossover method \textbf{bin}. We used in each tests a population of 100 individuals. For DEGL we used a neighborhood in the interval $[4, 8]$ and for Current-to-pbest a $p = 0.1$. All the tests are executed with a feedforward neural network with two hidden levels. The training set is composed of batches of 1000 examples generated at runtime. The cost calculation has been done with the cost function showed in the Section \ref{subsec:cost-function}. The train error is calculated with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with input sequences up to 1000 values. The Curriculum Learning was set up with an interval of batches between $[25, 250]$ and a threshold equal to 0.1. \newline\newline
+The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, which are combined with the mutation methods \textbf{DEGL} and \textbf{Current-to-pbest} and the crossover method \textbf{bin}. We used in each test a population of [100, 400] individuals. For DEGL we used a neighborhood in the interval $[4, 8]$ and for Current-to-pbest we set $p$ to 0.1. All the tests are executed with a feedforward neural network with two hidden layers,. The training set is composed by batches of 1000 examples generated at runtime. The cost calculation is done with the cost function introduced in Section \ref{subsec:cost-function}. The train error is computed with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with input sequences up to 1000 values. The Curriculum Learning was set up with an interval of batches in $[25, 250]$ and a threshold equal to 0.1. \newline\newline
 
 \begin{table}[t]
 	\centering
@@ -204,7 +216,7 @@ The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, 
 	\label{tbl:example-memories-execution}
 \end{table}
 
-The training was executed using configurations of Max-int, timesteps and registers compatible with those used by Kurach et al. As showed in the Table \ref{tbl:denn-tests-results}, for the easy tasks trained with Differential Evolution without the Curriculum Learning we found a set of hyperparameter which reached error 0 during the training, even using shorter input sequences compared to those used in the paper. Differently from which declared in Kurach at al., for tasks Copy and Swap the search of hyperparameters has been difficulty. The same results was not reached in the training with Theano and ADAM, as showed in \ref{tbl:adam-tests}. 
+The training was executed using configurations of Max-int, timesteps and registers compatible with those used by Kurach et al. As showed in the Table \ref{tbl:denn-tests-results}, for the easy tasks trained with Differential Evolution without the Curriculum Learning we found a set of hyperparameter which reached error 0 during the training, even using shorter input sequences compared to those used in \cite{NRAM:2016}. Differently from which declared in Kurach at al., for Copy task the search of hyperparameters has been difficult. The same results was not reached in the training with Theano and ADAM, as showed in \ref{tbl:adam-tests}. Due to the lack of the algorithmic details in \cite{NRAM:2016} our implementations probably differ from the original and an exact comparison cannot be made.
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \begin{table}[t]
 	\centering
@@ -257,21 +269,25 @@ Regard the generalization, we observed that the solutions that reached error zer
 \fi
 
 % Compare DENN without CL with DENN with CL
-For the easy task, the Curriculum Learning is not always necessary --- in fact, with the tasks \textbf{access}, \textbf{increment} and \textbf{reverse} is possible to search a combination of hyperparameters, both for NRAM and DENN, that make it possible to converge to a solution which generalize perfectly. However this is possible, we observed that the  generated circuits by a controller trained with the Curriculum Learning generates more regulars or smart circuits, like with increment as showed in \ref{subsec:circuits-increment}. 
+For the easy tasks, the Curriculum Learning is not always necessary --- in fact, for the tasks \textbf{access}, \textbf{increment} and \textbf{reverse} is possible to search a combination of hyperparameters, both for NRAM and DENN, that make the converge to a solution which generalize perfectly possible. However, we observed that the generated circuits produced by a controller trained with the Curriculum Learning, in general are more regulars or smart, like in the case of increment showed in \ref{subsec:circuits-increment}.
+\clearpage
 
 \subsection{DENN variants results}\label{subsec:circuits}
-Following are presented the trends of the various tests. 
-\subsubsection{Access}
+In this section we show the convergence graphics of the cost function during the training. In the following charts in Figures \ref{fig:access-costs}, \ref{fig:increment-costs} and \ref{fig:reverse-costs} we plotted the values of the cost function obtained running several DE variants as described in the legends. For each chart we chose a different number of generations because of different problem difficulties: while 350 generations are sufficient to train a controller for the Access problem, we need 1000 generations for the Increment problem. 
+
+It is difficult to provide a final interpretation of these results because more tests and run have to be done, but considering the data obtained so far we can conclude that, a part the case of JADE/DEGL/1/bin + CL, the best performing variants are the ones with the Current-to-pbest mutation method.  Despite this, it is clear that the contribution of the Curriculum Learning is crucial in some cases like in the Increment task.
+\subsubsection*{Access}
 \begin{figure}[h]
 	\centering
-	\begin{tikzpicture}[smooth,scale=.875]
+	\resizebox{\textwidth}{!}{\begin{tikzpicture}[smooth,scale=.875]
 			\begin{axis}[  				
   				xlabel={$\textrm{Generation}$},
   				ylabel={$\textrm{Cost}$},
   				xlabel style={below right},
   				ylabel style={above left},	
 			    xmin=0, xmax=350,
-				legend pos=outer north east
+				legend pos=outer north east,
+				cycle list name=colors tesi
 			]
   				\addplot +[mark=none] table{data/access/adam};
   				\addlegendentry{ADAM}
@@ -301,61 +317,63 @@ Following are presented the trends of the various tests.
   				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
 
 			\end{axis}
-	\end{tikzpicture}
-	\caption{Costs reached by DE variants with task \textbf{Access}.}
+	\end{tikzpicture}}
+	\caption{Costs convergence of DE variants with task \textbf{Access}.}
 	\label{fig:access-costs}
 \end{figure}
 \FloatBarrier
-\subsubsection{Increment}
+\clearpage
+\subsubsection*{Increment}
 \begin{figure}[h]
 	\centering
-	\begin{tikzpicture}[smooth,scale=.875]
+	\resizebox{\textwidth}{!}{\begin{tikzpicture}[smooth]
 			\begin{axis}[  				
   				xlabel={$\textrm{Generation}$},
   				ylabel={$\textrm{Cost}$},
   				xlabel style={below right},
   				ylabel style={above left},	
 			    xmin=0, xmax=1000,
-				legend pos=outer north east
+				legend pos=outer north east,
+				cycle list name=colors tesi
 			]
-  				\addplot +[mark=none] table{data/increment/adam};
+  				\addplot +[mark=none] table{data/increment/adam.txt};
   				\addlegendentry{ADAM}
 			
-  				\addplot +[mark=none] table{data/increment/jade_degl};
+  				\addplot +[mark=none] table{data/increment/jade_degl.txt};
   				\addlegendentry{JADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/increment/jade_degl_cl};
+  				\addplot +[mark=none] table{data/increment/jade_degl_cl.txt};
   				\addlegendentry{JADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/increment/jade_curr_p_best};
+  				\addplot +[mark=none] table{data/increment/jade_curr_p_best.txt};
   				\addlegendentry{JADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/increment/jade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/increment/jade_curr_p_best_cl.txt};
   				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
 
-  				\addplot +[mark=none] table{data/increment/shade_degl};
+  				\addplot +[mark=none] table{data/increment/shade_degl.txt};
   				\addlegendentry{SHADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/increment/shade_degl_cl};
+  				\addplot +[mark=none] table{data/increment/shade_degl_cl.txt};
   				\addlegendentry{SHADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/increment/shade_curr_p_best};
+  				\addplot +[mark=none] table{data/increment/shade_curr_p_best.txt};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/increment/shade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/increment/shade_curr_p_best_cl.txt};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
 
 			\end{axis}
-	\end{tikzpicture}
-	\caption{Costs reached by DE variants with task \textbf{Increment}.}
+	\end{tikzpicture}}
+	\caption{Costs convergence of DE variants with task \textbf{Increment}.}
 	\label{fig:increment-costs}
 \end{figure}
 \FloatBarrier
 \iffalse
-\subsubsection{Copy}
+\subsubsection*{Copy}
 \begin{figure}[h]
 	\centering
-	\begin{tikzpicture}[smooth,scale=.875]
+	\begin{tikzpicture}[smooth]
 			\begin{axis}[  				
   				xlabel={$\textrm{Generation}$},
   				ylabel={$\textrm{Cost}$},
@@ -393,70 +411,71 @@ Following are presented the trends of the various tests.
 
 			\end{axis}
 	\end{tikzpicture}
-	\caption{Costs reached by DE variants with task \textbf{Copy}.}
+	\caption{Costs convergence of DE variants with task \textbf{Copy}.}
 	\label{fig:copy-costs}
 \end{figure}
 \FloatBarrier
 \fi
-\subsubsection{Reverse}
+\subsubsection*{Reverse}
 \begin{figure}[h]
 	\centering
-	\begin{tikzpicture}[smooth,scale=.875]
+	\resizebox{\textwidth}{!}{\begin{tikzpicture}[smooth]
 			\begin{axis}[  				
   				xlabel={$\textrm{Generation}$},
   				ylabel={$\textrm{Cost}$},
   				xlabel style={below right},
   				ylabel style={above left},	
 			    xmin=0, xmax=1000,
-				legend pos=outer north east
+				legend pos=outer north east,
+				cycle list name=colors tesi
 			]
-  				\addplot +[mark=none] table{data/reverse/adam};
+  				\addplot +[mark=none] table{data/reverse/adam.txt};
   				\addlegendentry{ADAM}
 
-  				\addplot +[mark=none] table{data/reverse/jade_degl};
+  				\addplot +[mark=none] table{data/reverse/jade_degl.txt};
   				\addlegendentry{JADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/reverse/jade_degl_cl};
+  				\addplot +[mark=none] table{data/reverse/jade_degl_cl.txt};
   				\addlegendentry{JADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/reverse/jade_curr_p_best};
+  				\addplot +[mark=none] table{data/reverse/jade_curr_p_best.txt};
   				\addlegendentry{JADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/reverse/jade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/reverse/jade_curr_p_best_cl.txt};
   				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
 
-  				\addplot +[mark=none] table{data/reverse/shade_degl};
+  				\addplot +[mark=none] table{data/reverse/shade_degl.txt};
   				\addlegendentry{SHADE/DEGL/1/bin}
 
-  				\addplot +[mark=none] table{data/reverse/shade_degl_cl};
+  				\addplot +[mark=none] table{data/reverse/shade_degl_cl.txt};
   				\addlegendentry{SHADE/DEGL/1/bin + CL}
   				
-  				\addplot +[mark=none] table{data/reverse/shade_curr_p_best};
+  				\addplot +[mark=none] table{data/reverse/shade_curr_p_best.txt};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin}
   				
-  				\addplot +[mark=none] table{data/reverse/shade_curr_p_best_cl};
+  				\addplot +[mark=none] table{data/reverse/shade_curr_p_best_cl.txt};
   				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
 
 			\end{axis}
-	\end{tikzpicture}
-	\caption{Reached costs by DE variants with task \textbf{Reverse}.}
+	\end{tikzpicture}}
+	\caption{Costs convergence of DE variants with task \textbf{Reverse}.}
 	\label{fig:reverse-costs}
 \end{figure}
 \FloatBarrier
 \clearpage
 \subsection{Circuits}\label{subsec:circuits}
-In the following we present the circuits generated by the best solutions found with  the training using DENN. For the sake of readability, only the necessary gates and registers are showed in the circuits. In the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} the parameters order is important, indicated with $x$ and $y$. Instead, for the gates \textbf{Read} and \textbf{Write}, the pointer and the value to write are indicated, respectively, with \textbf{ptr} and \textbf{val} labels.\newline\newline
-Overall, the circuits generated differ from those shown in the paper. Moreover, we observed that the solutions found with different DE variants generate differents circuits. As done in \cite{NRAM:2016}, we present only the ``main'' circuits for the best solutions - to compare them please refers to \cite{NRAM:2016}. The tables shown in the following examples contains the states of the memories and registers at the beginning of the steps and the final memory when the NRAM end the execution.
+In the following sections, we present the circuits generated by the best solutions found by the system trained using DENN. For the sake of readability, only the necessary gates and registers are shown in the circuits. In the gates \textbf{Less-Than}, \textbf{Less-Equal-Than}, \textbf{Equality}, \textbf{Min} and \textbf{Max} the order of the parameters $x$ and $y$ is important; for the gate \textbf{Write}, the pointer and the value to write are indicated respectively with the labels \textit{ptr} and \textit{val}.\newline\newline
+Overall, the circuits generated differ from those shown in \cite{NRAM:2016}. In particular, we observed that the solutions found with different DE variants generate different circuits. The tables shown in the following contain the states of the memories and the registers at the beginning of the steps and the final memory obtained at the end of the execution.
 \clearpage
 \subsubsection{Access}
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
-	\subfloat[The circuit generated by the controller from the steps $\geq 2$, found with JADE/current-to-pbest/1/bin without the Curriculum learning.\label{fig:access-circuit}]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth]
+	\subfloat[The circuit generated by the controller from the steps $\geq 2$, found with JADE/current-to-pbest/1/bin without the Curriculum learning.\label{fig:access-circuit}]{\resizebox{0.475\textwidth}{!}{\begin{tikzpicture}[samples=100,smooth]
 		%%
-		\node (R'0) at (409.66bp,119.0bp) [draw,circle] {R'0};
-  \node (R'1) at (119.55bp,22.0bp) [draw,circle] {R'1};
-  \node (R0) at (119.55bp,142.0bp) [draw,circle] {R0};
-  \node (R1) at (20.5bp,38.0bp) [draw,circle] {R1};
+		\node (R'0) at (409.66bp,119.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R'1) at (119.55bp,22.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  \node (R0) at (119.55bp,142.0bp) [draw,circle] {$r_{0}$};
+  \node (R1) at (20.5bp,38.0bp) [draw,circle] {$r_{1}$};
   \node (Read) at (119.55bp,80.0bp) [draw,rectangle,ultra thick] {Read};
   \node (Write) at (323.66bp,119.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (216.55bp,92.0bp) [draw,rectangle,ultra thick] {Add};
@@ -476,10 +495,11 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   \draw (66.776bp,67.0bp) node {ptr};
 		%
 	\end{tikzpicture}}}
-	\subfloat[The circuit generated by the controller from the steps $\geq 2$, found with JADE/current-to-pbest/1/bin with the Curriculum learning.\label{fig:access-circuit}]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth]
+	\hfill
+	\subfloat[The circuit generated by the controller from the steps $\geq 2$, found with JADE/current-to-pbest/1/bin with the Curriculum learning.\label{fig:access-circuit}]{\resizebox{0.475\textwidth}{!}{\begin{tikzpicture}[samples=100,smooth]
 		%%
-		\node (R'1) at (132.55bp,76.0bp) [draw,circle] {R'1};
-  \node (R1) at (27.0bp,99.0bp) [draw,circle] {R1};
+		\node (R'1) at (132.55bp,76.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  \node (R1) at (27.0bp,99.0bp) [draw,circle] {$r_{1}$};
   \node (Read) at (132.55bp,134.0bp) [draw,rectangle,ultra thick] {Read};
   \node (Write) at (239.66bp,36.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Zero) at (132.55bp,18.0bp) [draw,rectangle,ultra thick] {Zero};
@@ -494,6 +514,7 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   \draw (186.1bp,36.0bp) node {ptr};
 		%
 	\end{tikzpicture}}}
+	\hfill
 \end{figure}
 \FloatBarrier
 \begin{table}[h]
@@ -534,19 +555,19 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
 	\centering
 	\subfloat[The generated circuit in the first timestep.]{
 		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
-			\node (R'0) at (119.55bp,290.0bp) [draw,circle] {R'0};
-  \node (R'1) at (332.21bp,210.0bp) [draw,circle] {R'1};
-  \node (R'2) at (225.1bp,348.0bp) [draw,circle] {R'2};
-  \node (R'3) at (225.1bp,22.0bp) [draw,circle] {R'3};
-  \node (R0) at (119.55bp,229.0bp) [draw,circle] {R0};
-  \node (R2) at (20.5bp,311.0bp) [draw,circle] {R2};
+			\node (R'0) at (119.55bp,290.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R'1) at (332.21bp,210.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  \node (R'2) at (225.1bp,348.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (225.1bp,22.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R0) at (119.55bp,229.0bp) [draw,circle] {$r_{0}$};
+  \node (R2) at (20.5bp,311.0bp) [draw,circle] {$r_{2}$};
   \node (Min) at (225.1bp,210.0bp) [draw,rectangle,ultra thick] {Min};
   \node (Read) at (119.55bp,172.0bp) [draw,rectangle,ultra thick] {Read};
   \node (One) at (119.55bp,118.0bp) [draw,rectangle,ultra thick] {One};
   \node (Write) at (332.21bp,92.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (225.1bp,118.0bp) [draw,rectangle,ultra thick] {Add};
-  \node (R4) at (20.5bp,72.0bp) [draw,circle] {R4};
-  \node (R'4) at (225.1bp,52.0bp) [draw,circle] {R'4};
+  \node (R4) at (20.5bp,72.0bp) [draw,circle] {$r_{4}$};
+  \node (R'4) at (225.1bp,52.0bp) [draw,circle] {$r^{\prime}_{4}$};
   \node (Dec) at (119.55bp,348.0bp) [draw,rectangle,ultra thick] {Dec};
   \node (Inc) at (119.55bp,24.0bp) [draw,rectangle,ultra thick] {Inc};
   \draw [->] (R0) ..controls (153.47bp,222.9bp) and (171.69bp,219.61bp)  .. (Min);
@@ -574,17 +595,18 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   \draw (66.776bp,132.0bp) node {ptr};
 		\end{tikzpicture}}
 	}
+	\hfill
 	\subfloat[The circuit generated for every step $\geq 2$ and $\leq \textrm{size}(A)$.]{
 		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
-			\node (R'0) at (119.55bp,84.0bp) [draw,circle] {R'0};
-  \node (R4) at (20.5bp,242.0bp) [draw,circle] {R4};
-  \node (R'2) at (119.55bp,22.0bp) [draw,circle] {R'2};
-  \node (R'3) at (225.1bp,399.0bp) [draw,circle] {R'3};
-  \node (R'4) at (119.55bp,146.0bp) [draw,circle] {R'4};
-  \node (R2) at (20.5bp,53.0bp) [draw,circle] {R2};
-  \node (R3) at (20.5bp,146.0bp) [draw,circle] {R3};
+			\node (R'0) at (119.55bp,84.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R4) at (20.5bp,242.0bp) [draw,circle] {$r_{4}$};
+  \node (R'2) at (119.55bp,22.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (225.1bp,399.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R'4) at (119.55bp,146.0bp) [draw,circle] {$r^{\prime}_{4}$};
+  \node (R2) at (20.5bp,53.0bp) [draw,circle] {$r_{2}$};
+  \node (R3) at (20.5bp,146.0bp) [draw,circle] {$r_{3}$};
   \node (Read) at (119.55bp,242.0bp) [draw,rectangle,ultra thick] {Read};
-  \node (R'1) at (225.1bp,337.0bp) [draw,circle] {R'1};
+  \node (R'1) at (225.1bp,337.0bp) [draw,circle] {$r^{\prime}_{1}$};
   \node (One) at (119.55bp,296.0bp) [draw,rectangle,ultra thick] {One};
   \node (Write) at (332.21bp,212.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (225.1bp,242.0bp) [draw,rectangle,ultra thick] {Add};
@@ -611,15 +633,15 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
 	}
 	\hfill
 	\subfloat[The generated circuit for timestep $ \geq \textrm{size}(A)$ and $\neq \textrm{T}$.]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[samples=100,smooth]
-		\node (R4) at (20.5bp,234.0bp) [draw,circle] {R4};
-  \node (R'0) at (225.1bp,366.0bp) [draw,circle] {R'0};
-  \node (R'2) at (119.55bp,22.0bp) [draw,circle] {R'2};
-  \node (R'3) at (225.1bp,242.0bp) [draw,circle] {R'3};
-  \node (R'4) at (119.55bp,84.0bp) [draw,circle] {R'4};
-  \node (R2) at (20.5bp,22.0bp) [draw,circle] {R2};
-  \node (R3) at (20.5bp,84.0bp) [draw,circle] {R3};
+		\node (R4) at (20.5bp,234.0bp) [draw,circle] {$r_{4}$};
+  \node (R'0) at (225.1bp,366.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R'2) at (119.55bp,22.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (225.1bp,242.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R'4) at (119.55bp,84.0bp) [draw,circle] {$r^{\prime}_{4}$};
+  \node (R2) at (20.5bp,22.0bp) [draw,circle] {$r_{2}$};
+  \node (R3) at (20.5bp,84.0bp) [draw,circle] {$r_{3}$};
   \node (Read) at (119.55bp,234.0bp) [draw,rectangle,ultra thick] {Read};
-  \node (R'1) at (225.1bp,304.0bp) [draw,circle] {R'1};
+  \node (R'1) at (225.1bp,304.0bp) [draw,circle] {$r^{\prime}_{1}$};
   \node (One) at (119.55bp,180.0bp) [draw,rectangle,ultra thick] {One};
   \node (Write) at (332.21bp,150.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (225.1bp,180.0bp) [draw,rectangle,ultra thick] {Add};
@@ -643,21 +665,22 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   \draw [->] (Inc) ..controls (162.46bp,324.46bp) and (182.19bp,337.54bp)  .. (R'0);
   \draw [->] (Inc) ..controls (160.79bp,299.13bp) and (178.05bp,300.43bp)  .. (R'1);
 	\end{tikzpicture}}}
+	\hfill
 	\subfloat[The generated circuit for the step equals to T.]{\resizebox{0.45\textwidth}{!}{\begin{tikzpicture}[samples=100,smooth]
-		\node (R'0) at (252.97bp,84.0bp) [draw,circle] {R'0};
-  \node (R4) at (27.0bp,320.0bp) [draw,circle] {R4};
-  \node (R'2) at (252.97bp,22.0bp) [draw,circle] {R'2};
-  \node (R'3) at (252.97bp,413.0bp) [draw,circle] {R'3};
-  \node (R0) at (27.0bp,198.0bp) [draw,circle] {R0};
-  \node (R2) at (144.26bp,112.0bp) [draw,circle] {R2};
-  \node (R'1) at (252.97bp,351.0bp) [draw,circle] {R'1};
+		\node (R'0) at (252.97bp,84.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R4) at (27.0bp,320.0bp) [draw,circle] {$r_{4}$};
+  \node (R'2) at (252.97bp,22.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (252.97bp,413.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R0) at (27.0bp,198.0bp) [draw,circle] {$r_{0}$};
+  \node (R2) at (144.26bp,112.0bp) [draw,circle] {$r_{2}$};
+  \node (R'1) at (252.97bp,351.0bp) [draw,circle] {$r^{\prime}_{1}$};
   \node (EqualThan) at (144.26bp,210.0bp) [draw,rectangle,ultra thick] {EqualThan};
   \node (Max) at (252.97bp,210.0bp) [draw,rectangle,ultra thick] {Max};
   \node (One) at (27.0bp,262.0bp) [draw,rectangle,ultra thick] {One};
   \node (Write) at (360.08bp,236.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Read) at (144.26bp,314.0bp) [draw,rectangle,ultra thick] {Read};
   \node (Add) at (252.97bp,264.0bp) [draw,rectangle,ultra thick] {Add};
-  \node (R'4) at (252.97bp,146.0bp) [draw,circle] {R'4};
+  \node (R'4) at (252.97bp,146.0bp) [draw,circle] {$r^{\prime}_{4}$};
   \node (Inc) at (144.26bp,368.0bp) [draw,rectangle,ultra thick] {Inc};
   \draw [->] (R2) ..controls (180.23bp,123.25bp) and (203.65bp,130.57bp)  .. (R'4);
   \draw [->] (R2) ..controls (176.91bp,141.43bp) and (204.64bp,166.43bp)  .. (Max);
@@ -713,19 +736,19 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
 	\centering
 	\subfloat[The generated circuit in the first timestep.]{
 		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
-			\node (R4) at (27.0bp,305.5bp) [draw,circle] {R4};
+			\node (R4) at (27.0bp,305.5bp) [draw,circle] {$r_{4}$};
   \node (LessEqualThan) at (157.09bp,20.5bp) [draw,rectangle,ultra thick] {LessEqualThan};
-  \node (R'2) at (480.29bp,54.5bp) [draw,circle] {R'2};
-  \node (R'3) at (287.19bp,228.5bp) [draw,circle] {R'3};
-  \node (R0) at (27.0bp,20.5bp) [draw,circle] {R0};
-  \node (R'4) at (157.09bp,362.5bp) [draw,circle] {R'4};
-  \node (R3) at (27.0bp,156.5bp) [draw,circle] {R3};
+  \node (R'2) at (480.29bp,54.5bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (287.19bp,228.5bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R0) at (27.0bp,20.5bp) [draw,circle] {$r_{0}$};
+  \node (R'4) at (157.09bp,362.5bp) [draw,circle] {$r^{\prime}_{4}$};
+  \node (R3) at (27.0bp,156.5bp) [draw,circle] {$r_{3}$};
   \node (Read) at (157.09bp,74.5bp) [draw,rectangle,ultra thick] {Read};
   \node (Two) at (27.0bp,362.5bp) [draw,rectangle,ultra thick] {Two};
   \node (Min) at (394.29bp,54.5bp) [draw,rectangle,ultra thick] {Min};
-  \node (R'1) at (287.19bp,128.5bp) [draw,circle] {R'1};
+  \node (R'1) at (287.19bp,128.5bp) [draw,circle] {$r^{\prime}_{1}$};
   \node (LessThan) at (157.09bp,297.5bp) [draw,rectangle,ultra thick] {LessThan};
-  \node (R'0) at (287.19bp,297.5bp) [draw,circle] {R'0};
+  \node (R'0) at (287.19bp,297.5bp) [draw,circle] {$r^{\prime}_{0}$};
   \node (One) at (157.09bp,128.5bp) [draw,rectangle,ultra thick] {One};
   \node (Write) at (394.29bp,116.5bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (287.19bp,70.5bp) [draw,rectangle,ultra thick] {Add};
@@ -763,17 +786,18 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
   \draw (234.41bp,70.5bp) node {y};
 		\end{tikzpicture}}
 	}
+	\hfill
 	\subfloat[The circuit generated for the timesteps $ \geq 2$.]{
 		\resizebox{0.45\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
-			\node (R'0) at (279.07bp,24.0bp) [draw,circle] {R'0};
+			\node (R'0) at (279.07bp,24.0bp) [draw,circle] {$r^{\prime}_{0}$};
   \node (LessEqualThan) at (279.07bp,110.0bp) [draw,rectangle,ultra thick] {LessEqualThan};
-  \node (R'2) at (496.72bp,193.0bp) [draw,circle] {R'2};
-  \node (R'3) at (279.07bp,346.0bp) [draw,circle] {R'3};
-  \node (R'4) at (279.07bp,284.0bp) [draw,circle] {R'4};
-  \node (R3) at (27.0bp,346.0bp) [draw,circle] {R3};
+  \node (R'2) at (496.72bp,193.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (279.07bp,346.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R'4) at (279.07bp,284.0bp) [draw,circle] {$r^{\prime}_{4}$};
+  \node (R3) at (27.0bp,346.0bp) [draw,circle] {$r_{3}$};
   \node (Read) at (140.77bp,284.0bp) [draw,rectangle,ultra thick] {Read};
   \node (Min) at (410.72bp,193.0bp) [draw,rectangle,ultra thick] {Min};
-  \node (R'1) at (279.07bp,168.0bp) [draw,circle] {R'1};
+  \node (R'1) at (279.07bp,168.0bp) [draw,circle] {$r^{\prime}_{1}$};
   \node (Zero) at (27.0bp,84.0bp) [draw,rectangle,ultra thick] {Zero};
   \node (One) at (140.77bp,197.0bp) [draw,rectangle,ultra thick] {One};
   \node (Write) at (410.72bp,257.0bp) [draw,rectangle,ultra thick] {Write};
@@ -843,12 +867,12 @@ Overall, the circuits generated differ from those shown in the paper. Moreover, 
 	\centering
 	\begin{tikzpicture}[>=latex',line join=bevel,samples=100,smooth, scale=.875]
 		%%
-		\node (R'0) at (105.0bp,22.0bp) [draw,circle] {R'0};
-  		\node (R'1) at (298.1bp,193.0bp) [draw,circle] {R'1};
-  		\node (R'2) at (298.1bp,40.0bp) [draw,circle] {R'2};
-  		\node (R'3) at (298.1bp,102.0bp) [draw,circle] {R'3};
-  		\node (R0) at (105.0bp,143.0bp) [draw,circle] {R0};
-  		\node (R1) at (20.5bp,34.0bp) [draw,circle] {R1};
+		\node (R'0) at (105.0bp,22.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  		\node (R'1) at (298.1bp,193.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  		\node (R'2) at (298.1bp,40.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  		\node (R'3) at (298.1bp,102.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  		\node (R0) at (105.0bp,143.0bp) [draw,circle] {$r_{0}$};
+  		\node (R1) at (20.5bp,34.0bp) [draw,circle] {$r_{1}$};
   		\node (Read) at (105.0bp,80.0bp) [draw,rectangle,ultra thick] {Read};
   		\node (One) at (105.0bp,200.0bp) [draw,rectangle,ultra thick] {One};
   		\node (Write) at (212.1bp,135.0bp) [draw,rectangle,ultra thick] {Write};
@@ -909,20 +933,20 @@ Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 
 	\resizebox{0.475\textwidth}{!}{
 		\begin{tikzpicture}[samples=100,smooth]
 		%%
-			\node (R'0) at (471.74bp,158.5bp) [draw,circle] {R'0};
+			\node (R'0) at (471.74bp,158.5bp) [draw,circle] {$r^{\prime}_{0}$};
   \node (LessEqualThan) at (361.2bp,24.5bp) [draw,rectangle,ultra thick] {LessEqualThan};
-  \node (R'2) at (361.2bp,86.5bp) [draw,circle] {R'2};
-  \node (R'3) at (471.74bp,24.5bp) [draw,circle] {R'3};
-  \node (R0) at (124.0bp,185.5bp) [draw,circle] {R0};
+  \node (R'2) at (361.2bp,86.5bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (471.74bp,24.5bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R0) at (124.0bp,185.5bp) [draw,circle] {$r_{0}$};
   \node (Sub) at (229.55bp,189.5bp) [draw,rectangle,ultra thick] {Sub};
-  \node (R2) at (124.0bp,114.5bp) [draw,circle] {R2};
-  \node (R'1) at (229.55bp,251.5bp) [draw,circle] {R'1};
+  \node (R2) at (124.0bp,114.5bp) [draw,circle] {$r_{2}$};
+  \node (R'1) at (229.55bp,251.5bp) [draw,circle] {$r^{\prime}_{1}$};
   \node (Read) at (229.55bp,135.5bp) [draw,rectangle,ultra thick] {Read};
   \node (Two) at (27.0bp,245.5bp) [draw,rectangle,ultra thick] {Two};
   \node (Write) at (361.2bp,158.5bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (124.0bp,246.5bp) [draw,rectangle,ultra thick] {Add};
   \node (Inc) at (229.55bp,81.5bp) [draw,rectangle,ultra thick] {Inc};
-  \node (R1) at (229.55bp,20.5bp) [draw,circle] {R1};
+  \node (R1) at (229.55bp,20.5bp) [draw,circle] {$r_{1}$};
   \draw [->] (LessEqualThan) ..controls (421.99bp,24.5bp) and (431.21bp,24.5bp)  .. (R'3);
   \draw [->] (R2) ..controls (157.91bp,121.25bp) and (176.14bp,124.87bp)  .. (Read);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
@@ -954,13 +978,13 @@ Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 
 	\subfloat[The circuit generated for the $t \in [2, \textrm{size}(A))$ and for the odd timesteps $\geq \textrm{size}(A)$.\label{fig:reverse-circuit-2}]{\resizebox{0.475\textwidth}{!}{
 \begin{tikzpicture}[samples=100,smooth]
 		%%
-	\node (R'0) at (455.1bp,203.0bp) [draw,circle] {R'0};
-  \node (R'1) at (369.1bp,22.0bp) [draw,circle] {R'1};
-  \node (R'2) at (263.55bp,84.0bp) [draw,circle] {R'2};
-  \node (R'3) at (455.1bp,141.0bp) [draw,circle] {R'3};
-  \node (R0) at (119.55bp,154.0bp) [draw,circle] {R0};
+	\node (R'0) at (455.1bp,203.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R'1) at (369.1bp,22.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  \node (R'2) at (263.55bp,84.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (455.1bp,141.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R0) at (119.55bp,154.0bp) [draw,circle] {$r_{0}$};
   \node (Sub) at (263.55bp,146.0bp) [draw,rectangle,ultra thick] {Sub};
-  \node (R2) at (20.5bp,143.0bp) [draw,circle] {R2};
+  \node (R2) at (20.5bp,143.0bp) [draw,circle] {$r_{2}$};
   \node (Read) at (191.55bp,203.0bp) [draw,rectangle,ultra thick] {Read};
   \node (Write) at (369.1bp,203.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (263.55bp,22.0bp) [draw,rectangle,ultra thick] {Add};
@@ -991,19 +1015,19 @@ Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 
 		%
 	\end{tikzpicture}}}
 	\hfill
-	\subfloat[The circuit generated for the even timesteps $\geq \textrm{size}(A)$.]{\resizebox{0.475\linewidth}{!}{\begin{tikzpicture}[samples=100,smooth]
-		\node (R'0) at (455.1bp,22.0bp) [draw,circle] {R'0};
-  \node (R'1) at (369.1bp,82.0bp) [draw,circle] {R'1};
-  \node (R'2) at (119.55bp,184.0bp) [draw,circle] {R'2};
-  \node (R'3) at (455.1bp,140.0bp) [draw,circle] {R'3};
-  \node (R0) at (119.55bp,69.0bp) [draw,circle] {R0};
+	\subfloat[The circuit generated for the even timesteps $\geq \textrm{size}(A)$.]{\resizebox{0.475\textwidth}{!}{\begin{tikzpicture}[samples=100,smooth]
+		\node (R'0) at (455.1bp,22.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R'1) at (369.1bp,82.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  \node (R'2) at (119.55bp,184.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (455.1bp,140.0bp) [draw,circle] {$r^{\prime}_{3}$};
+  \node (R0) at (119.55bp,69.0bp) [draw,circle] {$r_{0}$};
   \node (Sub) at (263.55bp,82.0bp) [draw,rectangle,ultra thick] {Sub};
-  \node (R2) at (20.5bp,73.0bp) [draw,circle] {R2};
+  \node (R2) at (20.5bp,73.0bp) [draw,circle] {$r_{2}$};
   \node (Read) at (191.55bp,20.0bp) [draw,rectangle,ultra thick] {Read};
   \node (Write) at (369.1bp,22.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Inc) at (119.55bp,126.0bp) [draw,rectangle,ultra thick] {Inc};
   \node (Dec) at (369.1bp,140.0bp) [draw,rectangle,ultra thick] {Dec};
-  \node (R1) at (20.5bp,184.0bp) [draw,rectangle] {R1};
+  \node (R1) at (20.5bp,184.0bp) [draw,circle] {$r_{1}$};
   \draw [->] (R2) ..controls (52.901bp,55.3bp) and (73.484bp,45.219bp)  .. (92.552bp,39.0bp) .. controls (112.49bp,32.498bp) and (135.45bp,27.921bp)  .. (Read);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
@@ -1055,15 +1079,15 @@ Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 
 	\resizebox{0.475\textwidth}{!}{
 		\begin{tikzpicture}[samples=100,smooth]
 		%%
-			\node (R'0) at (336.66bp,89.0bp) [draw,circle] {R'0};
-  \node (R'1) at (336.66bp,205.0bp) [draw,circle] {R'1};
-  \node (R'2) at (229.55bp,258.0bp) [draw,circle] {R'2};
-  \node (R'3) at (336.66bp,24.0bp) [draw,circle] {R'3};
+			\node (R'0) at (336.66bp,89.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R'1) at (336.66bp,205.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  \node (R'2) at (229.55bp,258.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (336.66bp,24.0bp) [draw,circle] {$r^{\prime}_{3}$};
   \node (Sub) at (229.55bp,198.0bp) [draw,rectangle,ultra thick] {Sub};
-  \node (R1) at (124.0bp,92.0bp) [draw,circle] {R1};
+  \node (R1) at (124.0bp,92.0bp) [draw,circle] {$r_{1}$};
   \node (Min) at (229.55bp,24.0bp) [draw,rectangle,ultra thick] {Min};
   \node (Read) at (229.55bp,90.0bp) [draw,rectangle,ultra thick] {Read};
-  \node (R3) at (27.0bp,203.0bp) [draw,circle] {R3};
+  \node (R3) at (27.0bp,203.0bp) [draw,circle] {$r_{3}$};
   \node (Zero) at (27.0bp,266.0bp) [draw,rectangle,ultra thick] {Zero};
   \node (Two) at (124.0bp,18.0bp) [draw,rectangle,ultra thick] {Two};
   \node (Write) at (336.66bp,147.0bp) [draw,rectangle,ultra thick] {Write};
@@ -1100,19 +1124,19 @@ Final & 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 11 & 15 & 5 & 8 & 13 & 8 & 3 & 0 & 15 & 
 	\subfloat[The circuit generated for the timesteps $ \geq 2$.\label{fig:reverse-circuit-2-NO-CL}]{\resizebox{0.475\textwidth}{!}{
 \begin{tikzpicture}[samples=100,smooth]
 		%%
-	\node (R'0) at (369.1bp,100.0bp) [draw,circle] {R'0};
-  \node (R'1) at (263.55bp,158.0bp) [draw,circle] {R'1};
-  \node (R'2) at (369.1bp,28.0bp) [draw,circle] {R'2};
-  \node (R'3) at (119.55bp,264.0bp) [draw,circle] {R'3};
+	\node (R'0) at (369.1bp,100.0bp) [draw,circle] {$r^{\prime}_{0}$};
+  \node (R'1) at (263.55bp,158.0bp) [draw,circle] {$r^{\prime}_{1}$};
+  \node (R'2) at (369.1bp,28.0bp) [draw,circle] {$r^{\prime}_{2}$};
+  \node (R'3) at (119.55bp,264.0bp) [draw,circle] {$r^{\prime}_{3}$};
   \node (Sub) at (263.55bp,100.0bp) [draw,rectangle,ultra thick] {Sub};
-  \node (R2) at (20.5bp,264.0bp) [draw,circle] {R2};
-  \node (R3) at (119.55bp,84.0bp) [draw,circle] {R3};
+  \node (R2) at (20.5bp,264.0bp) [draw,circle] {$r_{2}$};
+  \node (R3) at (119.55bp,84.0bp) [draw,circle] {$r_{3}$};
   \node (Read) at (191.55bp,213.0bp) [draw,rectangle,ultra thick] {Read};
   \node (Zero) at (119.55bp,18.0bp) [draw,rectangle,ultra thick] {Zero};
   \node (Write) at (369.1bp,188.0bp) [draw,rectangle,ultra thick] {Write};
   \node (Add) at (263.55bp,28.0bp) [draw,rectangle,ultra thick] {Add};
   \node (Inc) at (119.55bp,158.0bp) [draw,rectangle,ultra thick] {Inc};
-  \node (R1) at (20.5bp,191.0bp) [draw,rectangle] {R1};
+  \node (R1) at (20.5bp,191.0bp) [draw,rectangle] {$r_{1}$};
   \draw [->] (R1) ..controls (52.255bp,180.42bp) and (68.315bp,175.07bp)  .. (Inc);
   \draw [->] (Sub) ..controls (300.72bp,130.98bp) and (321.89bp,148.64bp)  .. (Write);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};

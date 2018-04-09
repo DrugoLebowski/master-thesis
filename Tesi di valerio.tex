@@ -83,6 +83,8 @@
 \definecolor{GDSixth}{RGB}{129,165,247}
 \definecolor{GDSeventh}{RGB}{82,110,215}
 
+
+
 \definecolor{Gray}{gray}{0.8}
 \definecolor{LightGray}{gray}{0.9}
 
@@ -147,6 +149,21 @@
 
 \tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm, minimum height=2em]
 
+
+
+\pgfplotscreateplotcyclelist{colors tesi}{%
+teal, dashed,every mark/.append style={fill=teal!80!black},mark=*\\%
+orange,every mark/.append style={fill=orange!80!black},mark=square*\\%
+cyan,every mark/.append style={fill=cyan},mark=otimes*\\%
+red!70!white,mark=star\\%
+lime!80!black,every mark/.append style={fill=lime},mark=diamond*\\%
+red,densely dashed,every mark/.append style={solid,fill=red!80!black},mark=*\\%
+yellow!60!black,densely dashed,
+every mark/.append style={solid,fill=yellow!80!black},mark=square*\\%
+black, densely dotted,every mark/.append style={solid,fill=gray},mark=otimes*\\%
+blue,densely dashed,mark=star,every mark/.append style=solid\\%
+red,densely dashed,every mark/.append style={solid,fill=red!80!black},mark=diamond*\\%
+}
 
 \makeatletter
 
