@@ -9,6 +9,10 @@
 \definecolor{mTableAlert}{HTML}{ED8F34}
 \definecolor{mLightGray}{gray}{0.9}
 
+\definecolor{Gray}{gray}{0.8}
+\definecolor{LightGray}{gray}{0.9}
+
+
 %%%%%%%%%%%%%%%% Packages
 \usepackage{tikz} % TikZ
 	\usetikzlibrary{decorations.pathreplacing}
@@ -374,6 +378,9 @@ selected through a weighted average with a coefficient $s_{i}$ as follows
   \section{Artificial Neural Network}
   \begin{frame}{What are?}
   	The Artificial Neural Network are computing systems inspired by biology and belonging to classification techniques set. Classification systems learn patterns by view examples, i.e. approximate a function $f$ that maps example $x$ to the label $y$, where $(x, y) \in D$.
+  	\begin{figure}
+  		\includegraphics[width=0.8\textwidth]{../figures/neuron.png}
+  	\end{figure}
   \end{frame}
   \begin{frame}{Perceptron}
   	The most simple and old ANN \cite{ROSE:1958} is the Perceptron, formed as follows
@@ -500,7 +507,7 @@ selected through a weighted average with a coefficient $s_{i}$ as follows
   		\uncover<1->{\item{\textbf{Compute $m_{ij}^{(t)}$}: \(m_{ij}^{(t)} = \beta_1m_{ij}^{(t-1)} + (1 - \beta_1)\delta_{ij}^{(t)}\)}}
   		\uncover<2->{\item{\textbf{Compute $v_{ij}^{(t)}$}: \(v_{ij}^{(t)} = \beta_2v_{ij}^{(t-1)} + (1 - \beta_2)\delta_{ij}^{2,  (t)}\)}}
   		\uncover<3->{\item{\textbf{Regularize $m_{ij}^{(t)}$ w.r.t. $\beta_1$:} $\hat{m}_{ij}^{(t)} = \frac{m_{ij}^{(t)}}{1 - \beta_{1}}$}}
-  		\uncover<4->{\item{\textbf{Regularize $v_{ij}^{(t)}$ w.r.t. $\beta_2$:} $\hat{m}_{ij}^{(t)} = \frac{m_{ij}^{(t)}}{1 - \beta_{1}}$}}
+  		\uncover<4->{\item{\textbf{Regularize $v_{ij}^{(t)}$ w.r.t. $\beta_2$:} $\hat{v}_{ij}^{(t)} = \frac{v_{ij}^{(t)}}{1 - \beta_{2}}$}}
   		\uncover<5->{\item{\textbf{Update $w_{ij}^{(t)}$:} $w_{ij}^{(t)} = w_{ij}^{(t)} - \lambda\frac{\hat{m}_{ij}^{(t)}}{\sqrt{\hat{v}_{ij}^{(t)}} + \epsilon}$}}
   	\end{itemize}
   \end{frame}
@@ -547,21 +554,86 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   \begin{frame}{Differential Evolution variants}
   	There exist various DE variants; some of these that are used in the thesis are
   	\begin{itemize}
-  		\uncover<1->{\item{\textbf{JADE}: generate for each target $x_i$, $\textrm{F}_i$ and $\textrm{CR}_i$ with an adaptation system which is based on two memories of \textit{infinite} size called $S_{\textrm{F}}$ and $S_{\textrm{CR}}$;}}
-  		\uncover<2->{\item{\textbf{SHADE}: generate for each target $x_i$, $\textrm{F}_i$ and $\textrm{CR}_i$ with an adaptation system which is based on two memories of \textit{finite} size $M_{\textrm{F}}$ and $M_{\textrm{CR}}$ called \textit{historical memories};}}
-  		\uncover<3->{\item{\textbf{L-SHADE}: similar to SHADE, but bases is function also in a linear reduction of the population.}} 
+  		\uncover<1->{\item{\textbf{JADE}: generates $\textrm{F}_i$ and $\textrm{CR}_i$ for each target $x_i$, with an adaptation system based on two memories denoted as $S_{\textrm{F}}$ and $S_{\textrm{CR}}$ re-generated for each \textbf{G} with the best trials;}}
+  		\uncover<2->{\item{\textbf{SHADE}: generates $\textrm{F}_i$ and $\textrm{CR}_i$ for each target $x_i$, with an adaptation system based on two memories $M_{\textrm{F}}$ and $M_{\textrm{CR}}$ of \textit{finite} size $H$, called \textit{historical memories}, updated with $S_{\textrm{F}}$ and $S_{\textrm{CR}}$;}}
+  		\uncover<3->{\item{\textbf{L-SHADE}: similar to SHADE, but at every generation it reduces linearly the population.}} 
   	\end{itemize}
   \end{frame}
   \begin{frame}{Mutation variants}
-  	
+  	As for the DE variants, also for the mutation methods exist variants; some used in the thesis are the following
+  	\begin{itemize}
+  		\uncover<1->{\item{\textbf{DEGL}: generates a donor $u_i = w \cdot \textbf{G}_{i, G} + (1 - w) \cdot \textbf{L}_{i, G}$ where:
+  			\begin{itemize}
+  				\uncover<2->{\item{$w \in (0, 1)$}}
+  				\uncover<3->{\item{$\textbf{G}_{i, G} = \textbf{x}_{i, G} + \alpha \cdot (\textbf{x}_{\textit{g\_best}, G} - \textbf{x}_{i, G}) + \beta \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})$}}
+  				\uncover<4->{\item{$\textbf{L}_{i, G} = \textbf{x}_{i, G} + \alpha \cdot (\textbf{x}_{\textit{n\_best}_i, G} - \textbf{x}_{i, G}) + \beta \cdot (\textbf{x}_{p, G} - \textbf{x}_{q, G})$}}
+			\end{itemize}}}
+  		\uncover<5->{\item{\textbf{Current-to-pbest}: exists in two versions:
+			\begin{itemize}
+				\uncover<6->{\item{without memory: $\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^p - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})$}}
+				\uncover<7->{\item{with memory: $\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^{p} - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \tilde{\textbf{x}}_{r_2, G})$}}
+			\end{itemize}			  		
+  		}}
+	\end{itemize}  	 
   \end{frame}
-  \begin{frame}{Crossover variants}
-  	
+  \begin{frame}{Crossover variant}
+	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+  \end{frame}
+  \begin{frame}{Crossover variant}
+	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{../figures/bin-0.png}
+	\end{figure}
+  \end{frame}
+  
+  \begin{frame}{Crossover variant}
+	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{../figures/bin-1.png}
+	\end{figure}
+  \end{frame}
+  
+  \begin{frame}{Crossover variant}
+	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{../figures/bin-2.png}
+	\end{figure}
+  \end{frame}
+  
+  \begin{frame}{Crossover variant}
+	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{../figures/bin-3.png}
+	\end{figure}
+  \end{frame}
+  
+  \begin{frame}{Crossover variant}
+	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{../figures/bin-4.png}
+	\end{figure}
   \end{frame}
   \begin{frame}{DENN (Differential Evolution for Neural Network)}
-  
+  	DENN is a framework which implements the concepts of the Differential Evolution to train ANN, for now only MLP. Created by Gabriele Di Bari and Mirco Tracolli, it is written in C++ based on the library Eigen. It has a modular structure, permitting so to decide of how the training should be done.
   \end{frame}
-  \section{Implementation and results}
+  \begin{frame}{	DENN (Differential Evolution for Neural Network)}
+  	Since the population is composed by ANN, Differential Evolution is not applied as is but over a set of sets of weights and biases. 
+  	
+  	For example, let \textit{NP} the population, \textbf{Rand/1} the mutation strategy, $r_1, r_2$ and $r_3$ three mutually exclusive indexes, the donor $\textbf{u}_{1}$ is created as follows:
+	\begin{center}
+		$\textbf{u}_{1}^{w_1} = \textbf{x}_{r_1}^{w_1} + F \cdot (\textbf{x}_{r_2}^{w_1} - \textbf{x}_{r_3}^{w_1})$\\
+		$\textbf{u}_{1}^{b_1} = \textbf{x}_{r_1}^{b_1} + F \cdot (\textbf{x}_{r_2}^{b_1} - \textbf{x}_{r_3}^{b_1})$\\
+		$\cdots$\\
+		$\textbf{u}_{1}^{w_{|\textbf{HL}|}} = \textbf{x}_{r_1}^{w_{|\textbf{HL}|}} + F \cdot (\textbf{x}_{r_2}^{w_{|\textbf{HL}|}} - \textbf{x}_{r_3}^{w_{|\textbf{HL}|}})$\\
+		$\textbf{u}_{1}^{b_{|\textbf{HL}|}} = \textbf{x}_{r_1}^{b_{|\textbf{HL}|}} + F \cdot (\textbf{x}_{r_2}^{b_{|\textbf{HL}|}} - \textbf{x}_{r_3}^{b_{|\textbf{HL}|}})$\\
+	\end{center}
+  \end{frame}
+  \section{Implementation \& results}
   \begin{frame}{Implementation}
   	\begin{figure}
   		\centering
@@ -572,11 +644,30 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   \begin{frame}{Datasets}
   	The datasets used during the training are automatically generated at runtime. Each batch of samples is composed by:
 	\begin{itemize}
-		\item{initial memories: the memories which are manipulated by NRAM during the execution;}
-		\item{expected memories: the memories which are compared to the modified initial memories for cost computation;}
-		\item{cost masks: used to take into account only parts of the memories during the computing of the cost;}
-		\item{error rate masks: used to take into account only parts of the memories during the computing of the error rate;}
+		\item{\textbf{initial memories}: the memories which are manipulated by NRAM during the execution;}
+		\item{\textbf{expected memories}: the memories which are compared to the modified initial memories for cost computation;}
+		\item{\textbf{cost masks}: used to take into account only parts of the memories during the computing of the cost;}
+		\item{\textbf{error rate masks}: used to take into account only parts of the memories during the computing of the error rate;}
 	\end{itemize}
+  \end{frame}
+  \begin{frame}{Additional used techniques}
+  	To help the optimization algorithm searching a solution, we used as in \cite{NRAM:2016} additional technique in the training:
+  	\begin{itemize}
+  		\uncover<1->{\item{\textbf{Gradient clipping}: used only in the Theano implementation, we clipped the gradient in the interval $[C_1,C_2]$ to avoid the common problem of the Gradient Explosion;}}
+  		\uncover<2->{\item{\textbf{Noise}: used only in the Theano implementation, is added a noise to the computed gradient to enhance the exploration;}}
+  		\uncover<3->{\item{\textbf{Curriculum Learning}: used only in the DENN implementation due to the Theano structure, it is used to enhance the learning of the ANN.}}
+  	\end{itemize}
+  \end{frame}
+  \begin{frame}{How the Curriculum Learning works}
+  	Curriculum Learning subdivides the training of the ANN in more increasing difficulties, where for difficulty is intended the tuple formed by the size of Max-Int (hence, also the memory size), input sequence size and maximum number of allowed timesteps. It starts with the basilar difficulty and is changed when the error rate $1 - \frac{c}{m} < \sigma$ and some generations are executed.
+  \end{frame}
+  \begin{frame}{How the Curriculum Learning works}
+  	The selection of the \underline{new} difficulty $d$ is dependent to the \underline{current} difficulty $D$ and works as follows:
+  	\begin{itemize}
+  		\uncover<1->{\item{with probability 10\%: pick $d$ randomly from the set of all difficulties according to a uniform distribution;}}
+  		\uncover<2->{\item{with probability 25\%: pick $d$ randomly from the set $[1, D + e]$ according to a uniform distribution, with $e$ is generated from a geometric distribution with a success probability of 0.5;}}
+  		\uncover<3->{\item{with probability 65\%: set $d = D + e$ where $e$ is sampled as above}}
+  	\end{itemize}
   \end{frame}
   \begin{frame}{Problems}
   	The following are some of the problems introduced in \cite{NRAM:2016}:
@@ -588,7 +679,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   	\end{itemize}
   \end{frame}
   \begin{frame}{Access}
-	Given a value $k$ and an array \textbf{A}, return $\textbf{A}[k]$. Input is given as $k,\ A[0],\ \dots,\ $\\$\textbf{A}[n-1],\ \textit{NULL}$ and the network should replace the first memory cell with $\textbf{A}[k]$. 
+	Given a value $k$ and an array \textbf{A}, return $\textbf{A}[k]$. Input is given as $k, A[0], \dots, \textbf{A}[n-1], \textit{NULL}$ and the network should replace the first memory cell with $\textbf{A}[k]$. 
 	\begin{table}[h!]
 		\centering
 		\resizebox{0.5\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
@@ -625,16 +716,16 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   	Given an array and a pointer to the destination, copy all elements from the array to the given location. Input is given as $p, \textbf{A}[0], \dots, \textbf{A}[n-1]$ where $p$ points to one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[0], \dots, \textbf{A}[n-1]$ at positions $p, \dots, p+n-1$ respectively.			
   	\begin{table}[h!]
 		\centering
-		\resizebox{0.5\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\resizebox{0.5\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 			\hline
-			\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
-			\textbf{5} & 5 & 1 & 4 & 7 & \underline{0} & 0 & 0 & 0 & 0 \\ \hline\hline\hline
-			\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
-			\textbf{5} & 5 & 1 & 4 & 7 & 5 & 1 & 4 & 7 & 0 \\ \hline\hline\hline
-			\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
-			0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline\hline\hline
-			\multicolumn{10}{|c|}{\textbf{Error mask}} \\ \hline
-			0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 \\ \hline
+			\multicolumn{9}{|c|}{\textbf{Initial memory}} \\ \hline
+			\textbf{5} & 5 & 1 & 4 & 7 &\textbf{ \underline{0}} & \textbf{0} & \textbf{0} & \textbf{0} \\ \hline\hline\hline
+			\multicolumn{9}{|c|}{\textbf{Desired memory}} \\ \hline
+			\textbf{5} & 5 & 1 & 4 & 7 & \textbf{5} & \textbf{1} & \textbf{4} & \textbf{7} \\ \hline\hline\hline
+			\multicolumn{9}{|c|}{\textbf{Cost mask}} \\ \hline
+			0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline\hline\hline
+			\multicolumn{9}{|c|}{\textbf{Error mask}} \\ \hline
+			0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\ \hline
 		\end{tabular}}
 \end{table}
   \end{frame}
@@ -642,23 +733,88 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   	Given an array and a pointer to the destination, copy all elements from the array in reversed order. Input is given as $p, \textbf{A}[0], \dots, \textbf{A}[n-1]$ where $p$ points one element after $\textbf{A}[n-1]$. The expected output is $\textbf{A}[n-1], \dots, \textbf{A}[0]$ at positions $p, \dots, p+n-1$.
   	\begin{table}[h!]
 		\centering
-		\resizebox{0.5\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\resizebox{0.5\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 			\hline
-			\multicolumn{10}{|c|}{\textbf{Initial memory}} \\ \hline
-			\textbf{5} & 5 & 1 & 4 & 7 & \underline{0} & 0 & 0 & 0 & 0 \\ \hline\hline\hline
-			\multicolumn{10}{|c|}{\textbf{Desired memory}} \\ \hline
-			\textbf{5} & 5 & 1 & 4 & 7 & 7 & 4 & 1 & 5 & 0 \\ \hline\hline\hline
-			\multicolumn{10}{|c|}{\textbf{Cost mask}} \\ \hline
-			0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\ \hline\hline\hline
-			\multicolumn{10}{|c|}{\textbf{Error mask}} \\ \hline
-			0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 \\ \hline
+			\multicolumn{9}{|c|}{\textbf{Initial memory}} \\ \hline
+			\textbf{5} & 5 & 1 & 4 & 7 & \underline{0} & 0 & 0 & 0 \\ \hline\hline\hline
+			\multicolumn{9}{|c|}{\textbf{Desired memory}} \\ \hline
+			\textbf{5} & 5 & 1 & 4 & 7 & 7 & 4 & 1 & 5 \\ \hline\hline\hline
+			\multicolumn{9}{|c|}{\textbf{Cost mask}} \\ \hline
+			0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\ \hline\hline\hline
+			\multicolumn{9}{|c|}{\textbf{Error mask}} \\ \hline
+			0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\ \hline
 	\end{tabular}}
 	\end{table}
   \end{frame}
+  \begin{frame}{Generalization}
+  	Generalization means is the ability of a neural network to recognize patterns in new examples which were never seen before. Remembering how the training is made, in this case for \textit{generalization} means the ability of the controller to generate the ``right'' circuits also with different parameters of the NRAM.
+  \end{frame}
+  \begin{frame}{Objective}
+  	The objective of this thesis is to compare the performance of Differential Evolution, with and without the help of Curriculum Learning, with respect to Gradient Descent, focusing particularly on the generalization ability of the discovered controllers and the performance of DENN.
+  \end{frame}
   \begin{frame}{Results}
-  
+  	\begin{table}[t]
+	\centering
+
+	\rowcolors{2}{white}{LightGray}
+		\resizebox{\textwidth}{!}{
+			\begin{tabular}{ccccccccc}
+				\rowcolor{Gray} \textbf{Task} & \multicolumn{2}{c}{\textbf{Train complexity}} & \multicolumn{2}{c}{\textbf{Reached cost 0}} & \multicolumn{2}{c}{\textbf{Train error}} & \multicolumn{2}{c}{\textbf{Generalization}} \\
+				\rowcolor{Gray} & No CL & CL & No CL & CL & No CL & CL & No CL & CL \\ \hline
+		
+				Access & $\textrm{len}(A) = 8, t = 5$ & $\textrm{len}(A) \leq 10$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
+				Increment & 	$\textrm{len}(A) = 9, t = 4$ & $\textrm{len}(A) \leq 10$  & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\
+				Copy & $\textrm{len}(A) = 5, t = 12$ & $\textrm{len}(A) \leq 9$  & $\times$ & $\times$ & --- & --- & --- & --- \\ 
+				Reverse & $\textrm{len}(A) = 4, t = 9$ & $\textrm{len}(A) \leq 8$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
+			\end{tabular}
+		}
+		\caption{Results of the tests with DENN. The train complexity represents the maximum length of integers sequence A used in the training. The train error represents the lowest error rate reached by the trained neural networks. The generalization represents the behaviour of the neural networks with memory sequences longer and more timesteps with respect to those used in training. The evaluation is executed as in \cite{NRAM:2016}. With ``\textbf{---}'' we indicate the lack of informations due to non-convergence of controller.}
+	\end{table}
+  \end{frame}
+  \begin{frame}{Results}
+  	\begin{table}[t]
+		\centering
+	
+		\rowcolors{2}{white}{LightGray}
+		\begin{tabular}{ccc}
+		\rowcolor{Gray} \textbf{Task} & \textbf{Train complexity} & \textbf{Reached cost 0} \\ \hline
+		Access & $\textrm{len}(A) = 9, t = 3$ & $\times$ \\ 
+		Increment & $\textrm{len}(A) = 9, t = 4$ & $\times$ \\
+		Copy & $\textrm{len}(A) = 5, t = 11$  & $\times$  \\ 
+		Reverse & $\textrm{len}(A) = 4, t = 9$  & $\times$ \\ 
+		\end{tabular}
+		\caption{Results of the tests of ADAM.}
+	\end{table}
+  \end{frame}
+  \begin{frame}{Results}
+  	\begin{table}[t]
+	\centering
+	\rowcolors{2}{LightGray}{white}
+	\resizebox{\linewidth}{!}{\begin{tabular}{c|cccccccccccc}
+	\rowcolor{Gray} \textbf{Task} & \multicolumn{2}{c}{\textbf{JADE/DEGL/1}} & \multicolumn{2}{c}{\textbf{JADE/Current-to-pbest/1}} & \multicolumn{2}{c}{\textbf{SHADE/DEGL/1}} & \multicolumn{2}{c}{\textbf{SHADE/Current-to-pbest/1}}\\
+		\rowcolor{Gray} & No CL & CL & No CL & CL & No CL & CL & No CL & CL \\ \hline
+		Access & $\times$ & \checkmark & \checkmark & \checkmark & $\times$ & $\times$ & $\times$ & \checkmark  \\
+		Increment & $\times$ & $\times$ & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ & \checkmark \\
+		Copy & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ \\
+		Reverse & $\times$ & \checkmark & \checkmark & $\times$ & \checkmark & \checkmark & $\times$ & \checkmark \\
+	\end{tabular}}
+	\caption{Convergence table. Although not specified, all the variants are associated with the crossover method \textbf{bin}. L-SHADE seems unable to reach a solution in all the tasks, probably due to the linear reducing of the population; due to these results it is not shown in this table. For the other cases, except for the task \textbf{Increment} with JADE/Current-to-pbest/1/bin, it can be seen that Curriculum Learning boost the training of the controller.}
+\end{table}
+  \end{frame}
+  \begin{frame}{Circuits - Access}
+  	\begin{figure}
+  		\includegraphics[width=\textwidth]{../figures/access-circuits.png}
+  	\end{figure}
+  \end{frame}
+  \begin{frame}{Circuits - Reverse}
+  	\begin{figure}
+  		\includegraphics[width=\textwidth]{../figures/reverse-circuits.png}
+  	\end{figure}
+  \end{frame}
+  \begin{frame}[standout]
+  	Thanks for the attention!
   \end{frame}
   \begin{frame}{References}
         \bibliography{bibliography}
-\end{frame}
+  \end{frame}
 \end{document}

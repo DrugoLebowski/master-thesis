@@ -32,7 +32,7 @@ For each task, we have defined manually a set of problems of increasing difficul
 	\item{with probability 25\%: pick $d$ randomly from the set $[1, D + e]$ according to a uniform distribution, with $e$ is generated from a geometric distribution with a success probability of 0.5.}
 	\item{with probability 65\%: set $d = D + e$ where $e$ is sampled as above.}
 \end{itemize}
-The difficulty is increased when $1 - \frac{c}{m} < \lambda$. $1 - \frac{c}{m}$ is the error rate, $c$ represents the correct modified cells, $m$ the cells that should be modified and $\lambda$ is a threshold chosen by the user. Furthermore, we ensure that the difficulty is increased again at least after a given number of generations.
+The difficulty is modified when $1 - \frac{c}{m} < \lambda$. $1 - \frac{c}{m}$ is the error rate, $c$ represents the correct modified cells, $m$ the cells that should be modified and $\lambda$ is a threshold chosen by the user. Furthermore, we ensure that the difficulty is modified again at least after a given number of generations.
 
 
 \section{How we did it}

@@ -217,7 +217,6 @@ The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, 
 \end{table}
 
 The training was executed using configurations of Max-int, timesteps and registers compatible with those used by Kurach et al. As showed in the Table \ref{tbl:denn-tests-results}, for the easy tasks trained with Differential Evolution without the Curriculum Learning we found a set of hyperparameter which reached error 0 during the training, even using shorter input sequences compared to those used in \cite{NRAM:2016}. Differently from which declared in Kurach at al., for Copy task the search of hyperparameters has been difficult. The same results was not reached in the training with Theano and ADAM, as showed in \ref{tbl:adam-tests}. Due to the lack of the algorithmic details in \cite{NRAM:2016} our implementations probably differ from the original and an exact comparison cannot be made.
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \begin{table}[t]
 	\centering
 	\rowcolors{2}{LightGray}{white}
@@ -229,7 +228,7 @@ The training was executed using configurations of Max-int, timesteps and registe
 		Copy & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ \\
 		Reverse & $\times$ & \checkmark & \checkmark & $\times$ & \checkmark & \checkmark & $\times$ & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ \\
 	\end{tabular}}
-	\caption{Convergence table. Although not specified, all the variants are associated with the crossover method \textbf{bin}. As it can be seen, L-SHADE seems unable with all the tasks to search a solution probably due to the linear reduce of the population. For the other cases, except for the task \textbf{Increment} with JADE/Current-to-pbest/1/bin, it can be seen that Curriculum Learning boost the training of the controller.}
+	\caption{Convergence table. Although not specified, all the variants are associated with the crossover method \textbf{bin}. As it can be seen, L-SHADE seems unable to reach a solution in all the tasks, probably due to the linear reducing of the population. For the other cases, except for the task \textbf{Increment} with JADE/Current-to-pbest/1/bin, it can be seen that Curriculum Learning boost the training of the controller.}
 	\label{tbl:convergence-variants}
 \end{table}
 \iffalse
