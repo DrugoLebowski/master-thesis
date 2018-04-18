@@ -1,42 +1,35 @@
+# Directories
 .texpadtmp/
-Tesi\ di\ Valerio.pdf
-Tesi\ di\ valerio.aux
-Tesi\ di\ valerio.dvi
-Tesi\ di\ valerio.lof
-Tesi\ di\ valerio.log
-Tesi\ di\ valerio.out
-Tesi\ di\ valerio.synctex.gz
-Tesi\ di\ valerio.toc
-Tesi.tks
-big-data.tex
-conclusion.aux
-data/
-de.aux
-experiments.aux
-hadoop.tex
-implementation.aux
-introduction.aux
-neural-networks.dvi
-neural-networks.log
-nosql.tex
-nram.aux
-sl-nn.aux
-texput.log
-Tesi\ di\ valerio.bbl
-Tesi\ di\ valerio.blg
-results-tables.tex
+data/*
+
+# Files .log
+*.log
+**/*.log
+
+# Files .lof
+*.lof
+**/.lof
+
+# Files .dvi
+*.dvi
+**/*.div
+
+# Files .bbl
+*.bbl
+**/*.bbl
+
+# Files .blg
+*.blg
+**/*.blg
+
+# Files .toc
+*.toc
+**/*.toc
+
+# Files .aux
+*.aux
+**/*.aux
 
 # Backup files
-Tesi\ di\ valerio.lof.bak
-Tesi\ di\ valerio.tex.bak
-TesiValerio.cls.bak
-bibliografia.bib.bak
-conclusion.tex.bak
-differential-evolution.tex.bak
-experiments.tex.bak
-implementation.tex.bak
-introduction.tex.bak
-neural-networks.tex.bak
-neural-random-access-machine.tex.bak
-ringraziamenti.tex.bak
-results-tables-tex.bak
+*.bak
+**/*.bak
