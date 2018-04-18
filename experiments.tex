@@ -154,7 +154,7 @@ In the experiments we have used the same structure in \cite{NRAM:2016}, training
 		
 		Access & $\textrm{len}(A) = 8, t = 5$ & $\textrm{len}(A) \leq 10$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
 		Increment & 	$\textrm{len}(A) = 9, t = 4$ & $\textrm{len}(A) \leq 10$  & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\
-		Copy & $\textrm{len}(A) = 5, t = 12$ & $\textrm{len}(A) \leq 9$  & $\times$ & $\times$ & --- & --- & --- & --- \\ 
+		Copy & $\textrm{len}(A) = 5, t = 11$ & $\textrm{len}(A) \leq 9$  & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 		Reverse & $\textrm{len}(A) = 4, t = 9$ & $\textrm{len}(A) \leq 8$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
 		
 		\iffalse
@@ -175,7 +175,7 @@ In the experiments we have used the same structure in \cite{NRAM:2016}, training
 	\rowcolors{2}{white}{LightGray}
 	\begin{tabular}{ccc}
 		\rowcolor{Gray} \textbf{Task} & \textbf{Train complexity} & \textbf{Reached cost 0} \\ \hline
-		Access & $\textrm{len}(A) = 9, t = 3$ & $\times$ \\ 
+		Access & $\textrm{len}(A) = 8, t = 5$ & $\times$ \\ 
 		Increment & $\textrm{len}(A) = 9, t = 4$ & $\times$ \\
 		Copy & $\textrm{len}(A) = 5, t = 11$  & $\times$  \\ 
 		Reverse & $\textrm{len}(A) = 4, t = 9$  & $\times$ \\ 
@@ -191,7 +191,7 @@ In the experiments we have used the same structure in \cite{NRAM:2016}, training
 	\end{tabular}
 	\caption{Results of the tests of ADAM. The contained informations follows those in Table \ref{tbl:denn-tests-results}\label{tbl:adam-tests}.}
 \end{table}
-The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, which are combined with the mutation methods \textbf{DEGL} and \textbf{Current-to-pbest} and the crossover method \textbf{bin}. We used in each test a population of [100, 400] individuals. For DEGL we used a neighborhood in the interval $[4, 8]$ and for Current-to-pbest we set $p$ to 0.1. All the tests are executed with a feedforward neural network with two hidden layers,. The training set is composed by batches of 1000 examples generated at runtime. The cost calculation is done with the cost function introduced in Section \ref{subsec:cost-function}. The train error is computed with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with input sequences up to 1000 values. The Curriculum Learning was set up with an interval of batches in $[25, 250]$ and a threshold equal to 0.1. \newline\newline
+The used variants of DE are \textbf{JADE}, \textbf{SHADE} and \textbf{L-SHADE}, which are combined with the mutation methods \textbf{DEGL} and \textbf{Current-to-pbest} and the crossover method \textbf{bin}. We used in each test a population of $[100, 400]$ individuals. For DEGL we used a neighborhood in the interval $[4, 8]$ and for Current-to-pbest we set $p$ to $0.1$. All the tests are executed with a feedforward neural network with two hidden layers,. The training set is composed by batches of $1000$ examples generated at runtime. The cost calculation is done with the cost function introduced in Section \ref{subsec:cost-function}. The train error is computed with the expression introduced in Paragraph \ref{subpar:curriculum-learning}. The generalization tests are executed with input sequences up to 1000 values. The Curriculum Learning was set up with an interval of batches in $[25, 250]$ and a threshold equal to $0.1$. \newline\newline
 
 \begin{table}[t]
 	\centering
@@ -368,53 +368,7 @@ It is difficult to provide a final interpretation of these results because more 
 	\label{fig:increment-costs}
 \end{figure}
 \FloatBarrier
-\iffalse
-\subsubsection*{Copy}
-\begin{figure}[h]
-	\centering
-	\begin{tikzpicture}[smooth]
-			\begin{axis}[  				
-  				xlabel={$\textrm{Generation}$},
-  				ylabel={$\textrm{Cost}$},
-  				xlabel style={below right},
-  				ylabel style={above left},	
-			    xmin=0, xmax=1000,
-				legend pos=outer north east
-			]
-  				\addplot +[mark=none] table{data/access/adam};
-  				\addlegendentry{ADAM}
 
-  				\addplot +[mark=none] table{data/access/jade_degl};
-  				\addlegendentry{JADE/DEGL/1/bin}
-
-  				\addplot +[mark=none] table{data/access/jade_degl_cl};
-  				\addlegendentry{JADE/DEGL/1/bin + CL}
-  				
-  				\addplot +[mark=none] table{data/access/jade_curr_p_best};
-  				\addlegendentry{JADE/Current-to-pbest/1/bin}
-  				
-  				\addplot +[mark=none] table{data/access/jade_curr_p_best_cl};
-  				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
-
-  				\addplot +[mark=none] table{data/access/shade_degl};
-  				\addlegendentry{SHADE/DEGL/1/bin}
-
-  				\addplot +[mark=none] table{data/access/shade_degl_cl};
-  				\addlegendentry{SHADE/DEGL/1/bin + CL}
-  				
-  				\addplot +[mark=none] table{data/access/shade_curr_p_best};
-  				\addlegendentry{SHADE/Current-to-pbest/1/bin}
-  				
-  				\addplot +[mark=none] table{data/access/shade_curr_p_best_cl};
-  				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
-
-			\end{axis}
-	\end{tikzpicture}
-	\caption{Costs convergence of DE variants with task \textbf{Copy}.}
-	\label{fig:copy-costs}
-\end{figure}
-\FloatBarrier
-\fi
 \subsubsection*{Reverse}
 \begin{figure}[h]
 	\centering

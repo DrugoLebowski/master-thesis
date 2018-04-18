@@ -5,14 +5,6 @@
 
 \bibliographystyle{apalike}
 
-%%%%%%%%%%%%%%%% Colors
-\definecolor{mTableAlert}{HTML}{ED8F34}
-\definecolor{mLightGray}{gray}{0.9}
-
-\definecolor{Gray}{gray}{0.8}
-\definecolor{LightGray}{gray}{0.9}
-
-
 %%%%%%%%%%%%%%%% Packages
 \usepackage{tikz} % TikZ
 	\usetikzlibrary{decorations.pathreplacing}
@@ -27,6 +19,35 @@
 \usepackage{pgfplots} % PGFPlots
 	\pgfplotsset{compat=1.13}
 \usepackage{siunitx}
+
+%%%%%%%%%%%%%%%% Colors  	
+\definecolor{GDFirst}{RGB}{203,62,63}
+\definecolor{GDSecond}{RGB}{238,138,112}
+\definecolor{GDThird}{RGB}{245,191,113}
+\definecolor{GDFourth}{RGB}{221,220,220}
+\definecolor{GDFiveth}{RGB}{179,205,249}
+\definecolor{GDSixth}{RGB}{129,165,247}
+\definecolor{GDSeventh}{RGB}{82,110,215}
+
+\definecolor{mTableAlert}{HTML}{ED8F34}
+\definecolor{mLightGray}{gray}{0.9}
+
+\definecolor{Gray}{gray}{0.8}
+\definecolor{LightGray}{gray}{0.9}
+
+\pgfplotscreateplotcyclelist{colors tesi}{%
+	teal, dashed,every mark/.append style={fill=teal!80!black},mark=*\\%
+	orange,every mark/.append style={fill=orange!80!black},mark=square*\\%
+	cyan,every mark/.append style={fill=cyan},mark=otimes*\\%
+	red!70!white,mark=star\\%
+	lime!80!black,every mark/.append style={fill=lime},mark=diamond*\\%
+	red,densely dashed,every mark/.append style={solid,fill=red!80!black},mark=*\\%
+	yellow!60!black,densely dashed,
+	every mark/.append style={solid,fill=yellow!80!black},mark=square*\\%
+	black, densely dotted,every mark/.append 	style={solid,fill=gray},mark=otimes*\\%
+	blue,densely dashed,mark=star,every mark/.append style=solid\\%
+	red,densely dashed,every mark/.append style={solid,fill=red!80!black},mark=diamond*\\%
+}
 
 %%%%%%%%%%%%%%%% Data
 \begin{filecontents}{first-samples.dat}
@@ -48,11 +69,19 @@
 \title{Supervised Learning of Neural Random-Access Machines with Differential Evolution}
 \date{\today}
 \author{Valerio Belli}
-\institute{Università degli Studi di Perugia}
+\institute{University of Perugia}
 \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo.png}}
 
 \begin{document}
   \maketitle
+  
+  \begin{frame}{Table of contents}
+  	\setbeamertemplate{section in toc}[sections numbered]
+  	\tableofcontents[hideallsubsections]
+  \end{frame}  
+
+  
+  
   \section{Neural Random-Access Machines}
   \begin{frame}{What is?}
 	It is a machine introduced in \cite{NRAM:2016} based on a neural network which is capable of manipulating pointers and dereferencing them through ``logical'' circuits. Its objective is to solve a task on which it has been trained creating and executing those circuits.
@@ -377,9 +406,9 @@ selected through a weighted average with a coefficient $s_{i}$ as follows
   \end{frame}
   \section{Artificial Neural Network}
   \begin{frame}{What are?}
-  	The Artificial Neural Network are computing systems inspired by biology and belonging to classification techniques set. Classification systems learn patterns by view examples, i.e. approximate a function $f$ that maps example $x$ to the label $y$, where $(x, y) \in D$.
+  	The Artificial Neural Network are computing systems inspired by biology and belonging to classification techniques set. Classification systems learn patterns by view examples, i.e. approximate a function $f$ that maps example \(\textbf{x}\) to the label $y$, where $(\textbf{x}, y) \in D$.
   	\begin{figure}
-  		\includegraphics[width=0.8\textwidth]{../figures/neuron.png}
+  		\includegraphics[width=\textwidth]{../figures/neuron.png}
   	\end{figure}
   \end{frame}
   \begin{frame}{Perceptron}
@@ -390,10 +419,9 @@ selected through a weighted average with a coefficient $s_{i}$ as follows
 	\end{figure}	
   \end{frame}
   \begin{frame}{Perceptron objective}
-  	The Perceptron objective is to divide the examples in an hyperplane
+  	The objective of the Perceptron is to divide linearly the examples  approximating the underling function that maps \(\textbf{x}\) to \(y\).
   	\begin{figure}[t!]
-		\centering		
-		
+		\centering
 		\resizebox{0.5\textwidth}{!}{\begin{tikzpicture}
 			\begin{axis}[
     	    	 		grid=major, % Display a grid
@@ -409,7 +437,7 @@ selected through a weighted average with a coefficient $s_{i}$ as follows
 				\addplot [only marks] table {first-samples.dat};
 		
 				\addplot [only marks, mark=o] table {second-samples.dat};
-				\addplot [domain=-20:20, samples=2, dashed] {x + 2.5};
+				\addplot [domain=-20:20, samples=2, dashed] {x + 4};
       		\end{axis}
 		\end{tikzpicture}}
 		\caption{Example with only two features, $x_1$ and $x_2$, and two classes, represented by the black and white circles.}
@@ -417,13 +445,13 @@ selected through a weighted average with a coefficient $s_{i}$ as follows
 	\end{figure}
   \end{frame}
   \begin{frame}{Multi Layer Perceptron (MLP)}
-  	An evolution of the Perceptron is the Multi Layer Perceptron, formed as follows
+  	An evolution of the Perceptron is the Multi Layer Perceptron
   	\begin{figure}[t]
 		\centering
 		\includegraphics[width=0.6\textwidth]{../figures/multi-layer-perceptron.png}
 	\end{figure}	
   \end{frame}
-  \begin{frame}{Training of an ANN}
+  \begin{frame}{Training of an Artificial Neural Network}
   	The training of an ANN follows two steps:
   	\begin{itemize}
   		\uncover<1->{\item{The initialization of the weights/parameters}}
@@ -436,14 +464,6 @@ selected through a weighted average with a coefficient $s_{i}$ as follows
   	\hfill
   	\begin{minipage}{0.475\textwidth}
   		\begin{figure}
-  	
-		\definecolor{GDFirst}{RGB}{203,62,63}
-		\definecolor{GDSecond}{RGB}{238,138,112}
-		\definecolor{GDThird}{RGB}{245,191,113}
-		\definecolor{GDFourth}{RGB}{221,220,220}
-		\definecolor{GDFiveth}{RGB}{179,205,249}
-		\definecolor{GDSixth}{RGB}{129,165,247}
-		\definecolor{GDSeventh}{RGB}{82,110,215}
   		\begin{tikzpicture}[samples=100,smooth,scale=0.7]
 			\begin{scope}
 				\draw[opacity=0,fill=GDFirst,fill opacity=1] plot[domain=0:360] ({cos(\x)*sqrt(20/(sin(2*\x)+2))},{sin(\x)*sqrt(20/(sin(2*\x)+2))});
@@ -570,17 +590,17 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
 			\end{itemize}}}
   		\uncover<5->{\item{\textbf{Current-to-pbest}: exists in two versions:
 			\begin{itemize}
-				\uncover<6->{\item{without memory: $\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^p - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})$}}
-				\uncover<7->{\item{with memory: $\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^{p} - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \tilde{\textbf{x}}_{r_2, G})$}}
+				\uncover<6->{\item{without archive: \begin{center}$\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^p - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \textbf{x}_{r_2, G})$\end{center}}}
+				\uncover<7->{\item{with an archive $A$: \begin{center}$\textbf{u}_{i, G} = \textbf{x}_{i, G} + F_i \cdot (\textbf{x}_{\textit{best}, G}^{p} - \textbf{x}_{i, G}) + F_i \cdot (\textbf{x}_{r_1, G} - \tilde{\textbf{x}}_{r_2, G})$\end{center}where $\tilde{\textbf{x}}_{r_2, G}$ is selected in the set $NP \cup A$.}}
 			\end{itemize}			  		
   		}}
 	\end{itemize}  	 
   \end{frame}
   \begin{frame}{Crossover variant}
-	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	As for the DE and mutation operators exist more crossover variants, but we used in this case only the method \textbf{bin} introduced previously.
   \end{frame}
   \begin{frame}{Crossover variant}
-	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	As for the DE and mutation operators exist more crossover variants, but we used in this case only the method \textbf{bin} introduced previously.
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\textwidth]{../figures/bin-0.png}
@@ -588,7 +608,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   \end{frame}
   
   \begin{frame}{Crossover variant}
-	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	As for the DE and mutation operators exist more crossover variants, but we used in this case only the method \textbf{bin} introduced previously.
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\textwidth]{../figures/bin-1.png}
@@ -596,7 +616,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   \end{frame}
   
   \begin{frame}{Crossover variant}
-	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	As for the DE and mutation operators exist more crossover variants, but we used in this case only the method \textbf{bin} introduced previously.
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\textwidth]{../figures/bin-2.png}
@@ -604,7 +624,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   \end{frame}
   
   \begin{frame}{Crossover variant}
-	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	As for the DE and mutation operators exist more crossover variants, but we used in this case only the method \textbf{bin} introduced previously.
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\textwidth]{../figures/bin-3.png}
@@ -612,7 +632,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   \end{frame}
   
   \begin{frame}{Crossover variant}
-	As for the DE and mutation variants, we used in this case only the crossover method \textbf{bin} introduced previously.
+	As for the DE and mutation operators exist more crossover variants, but we used in this case only the method \textbf{bin} introduced previously.
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.7\textwidth]{../figures/bin-4.png}
@@ -659,7 +679,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
   	\end{itemize}
   \end{frame}
   \begin{frame}{How the Curriculum Learning works}
-  	Curriculum Learning subdivides the training of the ANN in more increasing difficulties, where for difficulty is intended the tuple formed by the size of Max-Int (hence, also the memory size), input sequence size and maximum number of allowed timesteps. It starts with the basilar difficulty and is changed when the error rate $1 - \frac{c}{m} < \sigma$ and some generations are executed.
+  	Curriculum Learning subdivides the training of the ANN in increasing difficulties, where for difficulty is intended the tuple formed by the size of Max-Int (hence, also the memory size), input sequence size and maximum number of allowed timesteps. It starts with the basilar difficulty and is changed when the error rate $1 - \frac{c}{m} < \gamma$ and some generations are executed.
   \end{frame}
   \begin{frame}{How the Curriculum Learning works}
   	The selection of the \underline{new} difficulty $d$ is dependent to the \underline{current} difficulty $D$ and works as follows:
@@ -747,10 +767,10 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
 	\end{table}
   \end{frame}
   \begin{frame}{Generalization}
-  	Generalization means is the ability of a neural network to recognize patterns in new examples which were never seen before. Remembering how the training is made, in this case for \textit{generalization} means the ability of the controller to generate the ``right'' circuits also with different parameters of the NRAM.
+  	Generalization means is the ability of a neural network to recognize patterns in new examples which were never seen before. Remembering how the training is made, here \textit{generalization} means the ability of the controller to generate the ``right'' circuits also with different parameters of the NRAM.
   \end{frame}
   \begin{frame}{Objective}
-  	The objective of this thesis is to compare the performance of Differential Evolution, with and without the help of Curriculum Learning, with respect to Gradient Descent, focusing particularly on the generalization ability of the discovered controllers and the performance of DENN.
+  	The objective of this thesis is to compare the performance over the model NRAM of the Differential Evolution, with and without the help of Curriculum Learning, with respect to Gradient Descent, focusing particularly on the generalization ability of the discovered controllers and the performance of DENN.
   \end{frame}
   \begin{frame}{Results}
   	\begin{table}[t]
@@ -764,7 +784,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
 		
 				Access & $\textrm{len}(A) = 8, t = 5$ & $\textrm{len}(A) \leq 10$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
 				Increment & 	$\textrm{len}(A) = 9, t = 4$ & $\textrm{len}(A) \leq 10$  & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\
-				Copy & $\textrm{len}(A) = 5, t = 12$ & $\textrm{len}(A) \leq 9$  & $\times$ & $\times$ & --- & --- & --- & --- \\ 
+				Copy & $\textrm{len}(A) = 5, t = 11$ & $\textrm{len}(A) \leq 9$  & $\times$ & $\times$ & --- & --- & --- & --- \\ 
 				Reverse & $\textrm{len}(A) = 4, t = 9$ & $\textrm{len}(A) \leq 8$ & \checkmark & \checkmark & 0 & 0 & Perfect & Perfect \\ 
 			\end{tabular}
 		}
@@ -778,7 +798,7 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
 		\rowcolors{2}{white}{LightGray}
 		\begin{tabular}{ccc}
 		\rowcolor{Gray} \textbf{Task} & \textbf{Train complexity} & \textbf{Reached cost 0} \\ \hline
-		Access & $\textrm{len}(A) = 9, t = 3$ & $\times$ \\ 
+		Access & $\textrm{len}(A) = 8, t = 5$ & $\times$ \\ 
 		Increment & $\textrm{len}(A) = 9, t = 4$ & $\times$ \\
 		Copy & $\textrm{len}(A) = 5, t = 11$  & $\times$  \\ 
 		Reverse & $\textrm{len}(A) = 4, t = 9$  & $\times$ \\ 
@@ -800,6 +820,97 @@ where  $\textit{randb}(j)$ is a function which generate a real-valued number for
 	\end{tabular}}
 	\caption{Convergence table. Although not specified, all the variants are associated with the crossover method \textbf{bin}. L-SHADE seems unable to reach a solution in all the tasks, probably due to the linear reducing of the population; due to these results it is not shown in this table. For the other cases, except for the task \textbf{Increment} with JADE/Current-to-pbest/1/bin, it can be seen that Curriculum Learning boost the training of the controller.}
 \end{table}
+  \end{frame}
+  \begin{frame}{Charts of convergence - Access}
+	\begin{figure}[h]
+		\centering
+		\resizebox{\textwidth}{!}{\begin{tikzpicture}[smooth,scale=.875]
+			\begin{axis}[  				
+  				xlabel={$\textrm{Generation}$},
+  				ylabel={$\textrm{Cost}$},
+  				xlabel style={below right},
+  				ylabel style={above left},	
+			    xmin=0, xmax=350,
+				legend pos=outer north east,
+				cycle list name=colors tesi
+			]
+  				\addplot +[mark=none] table{../data/access/adam};
+  				\addlegendentry{ADAM}
+
+  				\addplot +[mark=none] table{../data/access/jade_degl};
+  				\addlegendentry{JADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{../data/access/jade_degl_cl};
+  				\addlegendentry{JADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{../data/access/jade_curr_p_best};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{../data/access/jade_curr_p_best_cl};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
+
+  				\addplot +[mark=none] table{../data/access/shade_degl};
+  				\addlegendentry{SHADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{../data/access/shade_degl_cl};
+  				\addlegendentry{SHADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{../data/access/shade_curr_p_best};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{../data/access/shade_curr_p_best_cl};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
+
+			\end{axis}
+		\end{tikzpicture}}
+		\caption{Costs convergence of DE variants with task \textbf{Access}.}
+	\end{figure}
+  \end{frame}
+  \begin{frame}{Charts of convergence - Reverse}
+  	\begin{figure}[h]
+		\centering
+		\resizebox{\textwidth}{!}{\begin{tikzpicture}[smooth]
+			\begin{axis}[  				
+  				xlabel={$\textrm{Generation}$},
+  				ylabel={$\textrm{Cost}$},
+  				xlabel style={below right},
+  				ylabel style={above left},	
+			    xmin=0, xmax=1000,
+				legend pos=outer north east,
+				cycle list name=colors tesi
+			]
+  				\addplot +[mark=none] table{../data/reverse/adam.txt};
+  				\addlegendentry{ADAM}
+
+  				\addplot +[mark=none] table{../data/reverse/jade_degl.txt};
+  				\addlegendentry{JADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{../data/reverse/jade_degl_cl.txt};
+  				\addlegendentry{JADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{../data/reverse/jade_curr_p_best.txt};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{../data/reverse/jade_curr_p_best_cl.txt};
+  				\addlegendentry{JADE/Current-to-pbest/1/bin + CL}
+
+  				\addplot +[mark=none] table{../data/reverse/shade_degl.txt};
+  				\addlegendentry{SHADE/DEGL/1/bin}
+
+  				\addplot +[mark=none] table{../data/reverse/shade_degl_cl.txt};
+  				\addlegendentry{SHADE/DEGL/1/bin + CL}
+  				
+  				\addplot +[mark=none] table{../data/reverse/shade_curr_p_best.txt};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin}
+  				
+  				\addplot +[mark=none] table{../data/reverse/shade_curr_p_best_cl.txt};
+  				\addlegendentry{SHADE/Current-to-pbest/1/bin + CL}
+
+			\end{axis}
+		\end{tikzpicture}}
+		\caption{Costs convergence of DE variants with task \textbf{Reverse}.}
+		\label{fig:reverse-costs}
+	\end{figure}
   \end{frame}
   \begin{frame}{Circuits - Access}
   	\begin{figure}

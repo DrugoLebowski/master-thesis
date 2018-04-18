@@ -1,0 +1,217 @@
+\documentclass{tesi}
+
+% dati obbligatori, necessari al frontespizio
+\titolo{Supervised Learning of Neural Random-Access Machines with Differential Evolution}
+\autore{Valerio Belli}
+\matricola{283514}
+\relatore{Prof.ssa Valentina Poggioni}
+\relatoredue{Prof. Marco Baioletti}
+\annoAccademico{2016/2017}
+
+% --- INIZIO richiamo di pacchetti di utilità. Questi sono un esempio e non sono strettamente necessari al modello per la tesi.
+\usepackage[utf8]{inputenc}
+\usepackage[plainpages=false]{hyperref}	% generazione di collegamenti ipertestuali su indice e riferimenti
+\usepackage[all]{hypcap} % per far si che i link ipertestuali alle immagini puntino all'inizio delle stesse e non alla didascalia sottostante
+\usepackage{amsthm, relsize}	% per definizioni e teoremi
+
+\usepackage{mathtools, amssymb, latexsym}	% per ``cases'' environment
+	\numberwithin{equation}{subsection}
+\usepackage[labelfont=bf]{caption} %Per i nomi delle figure in grassetto
+
+% --- FINE riachiamo di pacchetti di utilità
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{fourier} 
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{sidecap}
+\usepackage{placeins}
+\usepackage{tikz}
+	\usetikzlibrary{decorations.pathreplacing}
+	\usetikzlibrary{fadings}
+	\usetikzlibrary{positioning}
+	\usetikzlibrary{calc}
+	\usetikzlibrary{fit}
+	\usetikzlibrary{shapes}
+	\usetikzlibrary{snakes}
+	\usetikzlibrary{arrows}
+\usepackage{breakcites}
+\usepackage{adjustbox}	
+\usepackage{fontspec}					
+
+
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{0.8ex}
+
+\tikzset{
+    ultra thin/.style= {line width=0.1pt},
+    very thin/.style=  {line width=0.2pt},
+    thin/.style=       {line width=0.4pt},% thin is the default
+    semithick/.style=  {line width=0.6pt},
+    thick/.style=      {line width=0.8pt},
+    very thick/.style= {line width=1.2pt},
+    ultra thick/.style={line width=1.6pt}
+}
+
+\pgfdeclareradialshading{ring}{\pgfpoint{0cm}{0cm}}%
+{
+	rgb(0cm)=(1,1,1);
+	rgb(0.7cm)=(1,1,1);	
+	rgb(0.719cm)=(1,1,1);
+	rgb(0.72cm)=(0.975,0,0);
+	rgb(0.9cm)=(1,1,1)
+}
+
+\definecolor{GDFirst}{RGB}{203,62,63}
+\definecolor{GDSecond}{RGB}{238,138,112}
+\definecolor{GDThird}{RGB}{245,191,113}
+\definecolor{GDFourth}{RGB}{221,220,220}
+\definecolor{GDFiveth}{RGB}{179,205,249}
+\definecolor{GDSixth}{RGB}{129,165,247}
+\definecolor{GDSeventh}{RGB}{82,110,215}
+
+
+
+\definecolor{Gray}{gray}{0.8}
+\definecolor{LightGray}{gray}{0.9}
+
+\usepackage{pgfplots}
+	\pgfplotsset{compat=1.13}
+\usepackage{siunitx}
+
+\usepackage{mwe}
+\usepackage{subfig}
+
+\usepackage{wrapfig}
+
+\usepackage{textcmds}
+
+\usepackage[font=footnotesize]{caption}
+
+%\pgfplotsset{compat=newest} % Allows to place the legend below plot
+\usepgfplotslibrary{units} % Allows to enter the units nicely
+\sisetup{
+  round-mode          = places,
+  round-precision     = 2,
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstset{language=C++,
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+
+% Tikz styles
+
+\tikzstyle{decision} = [diamond, draw, fill=white!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+
+\tikzstyle{block} = [rectangle, draw, fill=white!20, text width=5em, text centered, rounded corners, minimum height=4em]
+
+\tikzstyle{voidpoint} = [coordinate]
+
+\tikzstyle{round} = [draw, ellipse, fill=white!20, node distance=3cm, minimum height=3em]
+
+\tikzstyle{arrow} = [draw]
+
+\tikzstyle{line} = [draw]
+
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm, minimum height=2em]
+
+
+
+\pgfplotscreateplotcyclelist{colors tesi}{%
+teal, dashed,every mark/.append style={fill=teal!80!black},mark=*\\%
+orange,every mark/.append style={fill=orange!80!black},mark=square*\\%
+cyan,every mark/.append style={fill=cyan},mark=otimes*\\%
+red!70!white,mark=star\\%
+lime!80!black,every mark/.append style={fill=lime},mark=diamond*\\%
+red,densely dashed,every mark/.append style={solid,fill=red!80!black},mark=*\\%
+yellow!60!black,densely dashed,
+every mark/.append style={solid,fill=yellow!80!black},mark=square*\\%
+black, densely dotted,every mark/.append style={solid,fill=gray},mark=otimes*\\%
+blue,densely dashed,mark=star,every mark/.append style=solid\\%
+red,densely dashed,every mark/.append style={solid,fill=red!80!black},mark=diamond*\\%
+}
+
+\makeatletter
+
+% Algorithmic Function new command
+\renewcommand{\Function}[2]{%
+  \csname ALG@cmd@\ALG@L @Function\endcsname{#1}{#2}%
+  \def\jayden@currentfunction{#1}%
+}
+
+% Algorithmic ForEach new command
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+\input{lib/tikzlibrarypaths.ortho.code}
+
+\makeatother
+
+% Define checkmark
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+
+
+\begin{document}
+% ----- Pagine di frontespizio, numerate in romano (i,ii,iii,iv...) (obbligatorio)
+\frontmatter
+
+\generaFrontespizio
+
+\introduzione{introduction}		% inserisce l'introduzione e la prende in questo caso da introduzione.tex
+
+\generaIndice
+
+% ----- Pagine di tesi, numerate in arabo (1,2,3,4,...) (obbligatorio)
+\mainmatter
+% il comando ``capitolo'' ha come parametri:
+% 1) il titolo del capitolo\include{neural-networks}
+% 2) il nome del file tex (senza estensione) che contiene il capitolo. Tale nome \`e usato anche come label del capitolo
+\capitolo{Neural Random-Access Machines}{neural-random-access-machine}
+\capitolo{Artificial Neural networks}{neural-networks}
+\capitolo{Differential evolution and DENN}{differential-evolution}
+\capitolo{Implementation}{implementation}
+\capitolo{Experiments}{experiments}
+
+% ----- Parte finale della tesi (obbligatorio)
+\backmatter
+
+\conclusioni{conclusion}
+
+
+% Bibliografia con BibTeX (obbligatoria)
+% Non si deve specificare lo stile della bibliografia
+\bibliography{bibliografia} % inserisce la bibliografia e la prende in questo caso da bibliografia.bib
+
+\generaIndiceFigure
+
+\ringraziamenti{ringraziamenti}	% inserisce i ringraziamenti e li prende in questo caso da ringraziamenti.tex
+\end{document}
+

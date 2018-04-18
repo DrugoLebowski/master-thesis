@@ -33,3 +33,11 @@ data/*
 # Backup files
 *.bak
 **/*.bak
+
+# Files .out
+*.out
+**/*.out
+
+# Synctex
+*.synctex.gz
+**/*.synctex.gz
